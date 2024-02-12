@@ -3,7 +3,6 @@ import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
 import { CarouselWithContent } from '../components/TextCarousel';
-import Navbar from '../components/Navbar'
 // import TextCarousel from '../components/TextCarousel';
 
 const Home = () => {
