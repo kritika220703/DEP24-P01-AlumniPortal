@@ -5,13 +5,13 @@ import NavLinks from "./NavLinks"
 const Navbar = () => {
   const[open , setOpen] = React.useState(false)
   return (
-   <nav className='bg-white-900'>
+   <nav className='bg-customBlue text-white font-normal'>
      <div className='flex items-center font-medium justify-around'>
         <div className='flex flex-row items-center z-50 p-5 md:w-auto w-full '>
           <div className='flex  items-center'>
-            <img src={logo}alt="" className='md:cursor-pointer bg-white h-12 mr-2'/>
+            <img src={logo}alt="" className='md:cursor-pointer bg-white h-12 w-13 mr-3 p-1 rounded-full'/>
             <div className='flex flex-col '>
-              <span className="font-extrabold">Alumini Relations</span> <span className='font-normal hover:text-blue-500'>Indian Institute of Technology Ropar</span>
+              <span className="font-bold text-2xl">Alumini Relations</span> <span className='hover:text-blue-500'>Indian Institute of Technology Ropar</span>
             </div>
           </div>
         </div>
@@ -21,7 +21,7 @@ const Navbar = () => {
         
         {/* Desktop View */}
 
-       <ul className=' md:flex hidden  items-center gap-8 font-[Poppins] text-black-300 '>
+       <ul className=' md:flex hidden  items-center gap-8 text-black-300 '>
         {/* <li>
           <Link to="/pages/Home" className="py-7 px-3 inline-block">Home
           </Link>

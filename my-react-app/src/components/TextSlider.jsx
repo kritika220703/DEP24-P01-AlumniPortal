@@ -31,7 +31,7 @@ const TextSlider = ({ slides, interval = 3000 }) => {
             <div className="slider-container relative flex justify-center items-center h-full">
                 {slides.map((slide, i) => (
                     <div key={i} onClick={() => goToSlide(i)} className={`slide relative flex items-center ${i === index ? 'opacity-100' : 'opacity-0'}`}>
-                        <img src={slide.image} alt="Slide Image" className="w-24 h-24 rounded-full mr-4" />
+                        <img src={slide.image} alt="Slide Image" className="w-50 h-50 rounded-full mr-6" />
                         <div>
                             <h2 className="text-xl font-bold mb-2">{slide.heading}</h2>
                             <p className="text-gray-700 mb-2">{slide.body}</p>

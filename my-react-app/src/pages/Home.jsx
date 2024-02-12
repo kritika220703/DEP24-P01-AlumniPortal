@@ -3,6 +3,7 @@ import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
 import { CarouselWithContent } from '../components/TextCarousel';
+import Gallery from '../components/Gallery'
 // import TextCarousel from '../components/TextCarousel';
 
 const Home = () => {
@@ -24,7 +25,6 @@ const Home = () => {
     
   return (
     <div className='ml-8 mr-8 mt-4'>
-        {/* <Navbar/> */}
         <div className="">
             <BecomeMember /> {/* Rendering the BecomeMember component */}
         </div>
@@ -83,7 +83,9 @@ const Home = () => {
                 </div>
             </div>
         </div>
-        <hr className="border-gray-300 my-8" />
+        {/* <hr className="border-gray-300 my-8" /> */}
+        <Gallery/>
+        {/* <hr className="border-gray-300 my-8" /> */}
         <div className='container mx-auto py-8 '>
             <TextSlider slides={slides} interval={5000} />
         </div>
