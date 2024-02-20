@@ -3,7 +3,6 @@ import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
 import { CarouselWithContent } from '../components/TextCarousel';
-import Gallery from '../components/Gallery'
 // import TextCarousel from '../components/TextCarousel';
 
 const Home = () => {
@@ -19,6 +18,12 @@ const Home = () => {
             heading: 'Slide 2 Heading',
             body: 'Slide 2 Body Text',
             author: 'Author 2',
+        },
+        {
+            image: '/images/download.jfif',
+            heading: 'Slide 3 Heading',
+            body: 'Slide 3 Body Text',
+            author: 'Author 3',
         },
         // Add more slide objects as needed
     ];
@@ -84,7 +89,6 @@ const Home = () => {
             </div>
         </div>
         {/* <hr className="border-gray-300 my-8" /> */}
-        <Gallery/>
         {/* <hr className="border-gray-300 my-8" /> */}
         <div className='container mx-auto py-8 '>
             <TextSlider slides={slides} interval={5000} />

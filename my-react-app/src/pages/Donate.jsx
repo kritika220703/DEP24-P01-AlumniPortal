@@ -16,9 +16,9 @@ const Donate = () => {
         <img src="/images/car1.jpg" alt="Donate Image" /> 
         <div className='container2'>
           <div className='box'>
-            <h4>WHY GIVE BACK ?</h4>
+            <h1>WHY GIVE BACK ?</h1>
             <p>
-              Your invaluable monetary support shall help IITR to build new infrastructure and undertake further developmental activities. It is of critical significance in helping IITR climb up the ladder of global excellence.
+              Your invaluable monetary support shall help IIT RPR to build new infrastructure and undertake further developmental activities. It is of critical significance in helping IIT RPR climb up the ladder of global excellence.
               The received funds shall be useful in various domains and will directly benefit and/or create opportunities for programmes like:
               Running scholarships and awards for needy and deserving students as well as award recognition for notable alumni to promote the culture of learning and excellence.
               To further strengthen world class research facilities and create an ideal environment for scientific innovation.
@@ -30,7 +30,7 @@ const Donate = () => {
       <div className='container3'>
         <div className='box'>
           <h3>BENEFITS</h3>
-          <p>"All the donations made to IIT Roorkee are 100% deductible from total taxable income u/s 80G of the Income Tax Act 1961 and may be used to support a wide variety of schemes. The options to choose from include providing financial aid to needy students, encouraging academic and all-round excellence through various scholarships as well as funding technical team projects on campus and travel support. Other schemes include sponsoring fellowship to recognise research and outstanding contribution of faculty members. IITR also offers naming opportunities on making infrastructural donation. Moreover, the donation doesn't necessarily have to be as per one of the schemes, any small, general purpose donations are acceptable."</p>
+          <p>"All the donations made to IIT Ropar are 100% deductible from total taxable income u/s 80G of the Income Tax Act 1961 and may be used to support a wide variety of schemes. The options to choose from include providing financial aid to needy students, encouraging academic and all-round excellence through various scholarships as well as funding technical team projects on campus and travel support. Other schemes include sponsoring fellowship to recognise research and outstanding contribution of faculty members. IIT RPR also offers naming opportunities on making infrastructural donation. Moreover, the donation doesn't necessarily have to be as per one of the schemes, any small, general purpose donations are acceptable."</p>
         </div>
         <img src="/images/images.jpg" alt="Donate Image" />
       </div>
