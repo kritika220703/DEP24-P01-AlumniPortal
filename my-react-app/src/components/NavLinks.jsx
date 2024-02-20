@@ -30,7 +30,7 @@ const NavLinks = () => {
           
         ]
         },
-        {name: "Contact us", path:"/pages/ContactUs"},
+        {name: "Contact", path:"/pages/Contact"},
         
     ]
   return (

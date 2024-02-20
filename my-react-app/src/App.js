@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Donate from './pages/Donate';
-import ContactUs from './pages/ContactUs';
+import Contact from './pages/Contact';
 import CommunityEvents from './pages/CommunityEvents';
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/Donate" element={<Donate />} />
-        <Route exact path="/ContactUs" element={<ContactUs />} />
+        <Route exact path="/pages/Contact" element={<Contact />} />
         <Route exact path="/CommunityEvents" element={<CommunityEvents />} />
       </Routes>
     </div>
