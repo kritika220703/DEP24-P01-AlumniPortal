@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Donate from './pages/Donate';
 import ContactUs from './pages/ContactUs';
 import CommunityEvents from './pages/CommunityEvents';
+import GivingBack from './pages/GivingBack';
 
 function App() {
   // <NavbarComponent/>
@@ -14,6 +15,7 @@ function App() {
         <Route exact path="/Donate" element={<Donate />} />
         <Route exact path="/ContactUs" element={<ContactUs />} />
         <Route exact path="/CommunityEvents" element={<CommunityEvents />} />
+        <Route exact path="/GivingBack" element={<GivingBack />} />
       </Routes>
     </div>
   );

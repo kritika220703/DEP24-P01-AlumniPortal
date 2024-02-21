@@ -1,0 +1,119 @@
+.Giving-back-heading {
+  text-align: center;
+  padding: 20px;
+  background-color: #f2f2f2;
+}
+
+.Giving-back-heading h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0;
+  padding: 10px;
+  color: rgb(30 58 138);
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.main-cont-1 {
+  display: flex;
+  align-items: center;
+}
+
+.G_container-1 {
+  display: flex;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.G_container-1 img {
+  width: 50%;
+  height: 300px;
+  padding-top: 40px;
+  padding-right: 30px;
+  border-radius: 10px;
+}
+
+.Text_box {
+  width: 50%;
+  padding-right: 50px;
+  padding-left: 50px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.Text_box h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-align: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.Text_box p {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  padding-bottom: 10px;
+}
+
+.outer_form {
+  padding: 50px;
+}
+
+.details_form {
+  border: 2px solid #6d6d6d; /* Add border to the form */
+  padding: 40px; /* Add padding inside the border */
+  margin-top: 20px; /* Add space above the form */
+  width: 100%; /* Make the form take full width */
+  border-radius: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 10px;
+  display: block;
+  font-weight: 500;
+}
+
+input,
+select {
+  padding: 5px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  /* width: 100%; */
+}
+
+.submit  {
+  padding: 10px 20px;
+  background-color:rgb(30 58 138);
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.text_input {
+  width: 100%;
+}
+
+button:hover {
+  background-color: #535353;
+}
