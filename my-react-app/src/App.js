@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Contact from './pages/Contact';
 import CommunityEvents from './pages/CommunityEvents'
+import SignUpPage from './pages/SignUpPage';
 
 import { AuthProvider } from './utilities/AuthContext';
 
@@ -17,7 +18,8 @@ function App() {
     <div className="App">
       <AuthProvider>
         <Routes>
-          <Route exact path="/" element={<SignUp />} />
+          <Route exact path="/" element={<SignUpPage />} />
+          <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/home" element={<Home />} />
