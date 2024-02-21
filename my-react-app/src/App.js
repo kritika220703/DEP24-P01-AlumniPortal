@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Contact from './pages/Contact';
 import CommunityEvents from './pages/CommunityEvents'
+// import GivingBack from './pages/GivingBack';
 
 import { AuthProvider } from './utilities/AuthContext';
 import GivingBack from './pages/GivingBack';
@@ -22,6 +23,7 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/home" element={<Home />} />
+          <Route exact path="/GivingBack" element={<GivingBack />} />
           <Route exact path="/Donate" element={<Donate />} />
           <Route exact path="/ContactUs" element={<Contact />} />
           <Route exact path="/CommunityEvents" element={<CommunityEvents />} />
