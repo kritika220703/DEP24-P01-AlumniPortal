@@ -11,6 +11,7 @@ import CommunityEvents from './pages/CommunityEvents'
 import SignUpPage from './pages/SignUpPage';
 
 import { AuthProvider } from './utilities/AuthContext';
+import GivingBack from './pages/GivingBack';
 
 function App() {
   // <NavbarComponent/>
