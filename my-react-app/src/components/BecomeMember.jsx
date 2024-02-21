@@ -7,8 +7,8 @@ function BecomeMember() {
         {/* <div className="bg-black opacity-50 absolute inset-0"></div> */}
       </div>
       <div className="relative z-10 p-8 text-white">
-        <h2 className="text-2xl font-bold mb-4">How To Become A Member</h2>
-        <p className="text-lg text-gray-200">Anyone who has completed one academic year as a student at IIT Ropar is eligible for life membership.</p>
+        <h2 className="text-2xl font-bold mb-4">Become A Member</h2>
+        <p className="text-lg text-gray-200">Register now and become a member of Alumni Association of IIT (RPR) Ropar.</p>
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
           Register Now
         </button>

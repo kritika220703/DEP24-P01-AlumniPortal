@@ -33,7 +33,7 @@ const TextSlider = ({ slides, interval = 3000 }) => {
                     <div key={i} onClick={() => goToSlide(i)} className={`slide relative flex items-center ${i === index ? 'opacity-100' : 'opacity-0'}`}>
                         <img src={slide.image} alt="Slide Image" className="w-50 h-50 rounded-full mr-6" />
                         <div>
-                            <h2 className="text-xl font-bold mb-2">{slide.heading}</h2>
+                            <h2 className="text-xl font-bold mb-2 ">{slide.heading}</h2>
                             <p className="text-gray-700 mb-2">{slide.body}</p>
                             <p className="text-sm text-gray-500">Author: {slide.author}</p>
                         </div>

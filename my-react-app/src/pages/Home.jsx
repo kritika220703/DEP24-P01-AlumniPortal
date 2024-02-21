@@ -18,6 +18,12 @@ const Home = () => {
             body: 'Slide 2 Body Text',
             author: 'Author 2',
         },
+        {
+            image: '/images/download.jfif',
+            heading: 'Slide 3 Heading',
+            body: 'Slide 3 Body Text',
+            author: 'Author 3',
+        },
         // Add more slide objects as needed
     ];
     
