@@ -1,51 +1,64 @@
 import React from 'react';
-import './DonationPage.css'; // Import the CSS file
+import image from '.././assets/img5.jpg'
+import image1 from '.././assets/img4.jpg'
+import image2 from '.././assets/img6.jpg'
 
 const Donate = () => {
   return (
-    <div className="donate-container">
-      <div className="donate-content">
-        <img src="/images/EXi7_9wWkAANJ7W.jpg" alt="Donate Image" />
-      </div>
-      <div className='text-on-image pl-3'>
-        <h3>GIVING BACK</h3>
-        <p> "Giving back to continue to grow together and raise the tradition of excellence."</p>
-        <button className='donate-button bg-green-500 text-white px-4 py-2 mt-4 rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50'>Donate</button>
-      </div>
-      <div className='container1 h-full'>
-        <img src="/images/car1.jpg" alt="Donate Image" /> 
-        <div className='container2'>
-          <div className='box'>
-            <h4>WHY GIVE BACK ?</h4>
-            <p>
-              Your invaluable monetary support shall help IITR to build new infrastructure and undertake further developmental activities. It is of critical significance in helping IITR climb up the ladder of global excellence.
-              The received funds shall be useful in various domains and will directly benefit and/or create opportunities for programmes like:
-              Running scholarships and awards for needy and deserving students as well as award recognition for notable alumni to promote the culture of learning and excellence.
-              To further strengthen world class research facilities and create an ideal environment for scientific innovation.
-              To bridge the student - faculty ratio to facilitate interactive world-class learning.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className='container3'>
-        <div className='box'>
-          <h3>BENEFITS</h3>
-          <p>"All the donations made to IIT Roorkee are 100% deductible from total taxable income u/s 80G of the Income Tax Act 1961 and may be used to support a wide variety of schemes. The options to choose from include providing financial aid to needy students, encouraging academic and all-round excellence through various scholarships as well as funding technical team projects on campus and travel support. Other schemes include sponsoring fellowship to recognise research and outstanding contribution of faculty members. IITR also offers naming opportunities on making infrastructural donation. Moreover, the donation doesn't necessarily have to be as per one of the schemes, any small, general purpose donations are acceptable."</p>
-        </div>
-        <img src="/images/images.jpg" alt="Donate Image" />
-      </div>
-      <div className='container4'>
-        <div className='box mb-5'>
-          <p>Convenience of the donors is taken care of at each step, with multiple payment options including provision for online donations,demand drafts and feature of installments for donations above INR 10 Lacs. Status of the donation is informed to them regularly through a financial statement mailed each year with the details of opening amount, interest earned, expenditure, and balance amount of their donation. Institute also conveys the information of the list of beneficiaries through email to keep the donors updated.</p>
-          <h4>To donate please visit <a href='#'>here</a></h4>
-        </div>
-      </div>
-      {/* <div className='query'>
-        <h2>HAVE ANY QUERIES</h2>
-        <p> <b>Please write to: </b> Prof. R.D. Garg, Dean of Resources & Alumni Affairs</p>
-        <p>(Email: dora@iitr.ac.in, dora.office@iitr.ac.in)</p>
-      </div> */}
-    </div>
+   <div>
+     <div
+  className='flex flex-col w-full h-[700px] rounded-xl overflow-hidden'
+  style={{
+    backgroundImage: `url(${image})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    opacity: '0.7'
+  }}
+>
+<div className="text-center mt-[200px]">
+  <h1 className="text-extrabold text-5xl text-white font-serif leading-tight">
+    Help IIT Ropar deliver greater value and <br /> attain 
+    higher levels of quality in its teaching and research.
+  </h1>
+  <button className='font-serif mt-8 text-[20px] w-[200px] h-[50px] bg-indigo-950 text-white hover:bg-white hover:text-black'>Give to IIT Ropar</button>
+</div>
+</div>
+
+ 
+<div className='bg-indigo-950 flex flex-row items-center justify-between  text-white text-[30px] font-extrabold w-full h-[230px]'>
+  <p className='ml-[150px]'>5000 CR <br/> 10 year goal</p>
+  <p>500 CR <br/> Pledged Donations</p>
+  <p className='mr-[150px]'>100+ <br/> Donors</p>
+</div>
+
+<div className='bg-gray-200 w-full h-[660px] flex flex-row  gap-6 '>
+  <div className='mt-[70px] ml-[200px]'>
+    <p className='text-bold text-[30px] font-serif'>Giving Back</p>
+    <p className='text-bold text-[20px] mt-[20px] font-serif'>“... And miles to go before I sleep.” - Robert Frost</p>
+    <p className='w-[600px] h-[30px] text-bold text-[20px] mt-[20px] font-serif'>IIT Ropar has come a long way since its inception but has miles to go, as Robert Frost mentions. Together, we can support IIT Ropar in its vision.</p>
+    <p className='w-[600px] h-[30px] text-bold text-[19px] mt-[90px] font-serif'>IIT Ropar Endowment Fund is helping IIT Ropar in its journey. Endowments are structured to exist in perpetuity, meaning that the institution can rely on the endowment’s earnings forever.</p>
+    <p className='w-[600px] h-[30px] text-bold text-[20px] mt-[90px] font-serif'>Your generous contributions will help not only today’s generation but also generations to follow and ensure a smooth glide path for IIT Ropar to reach for the skies.</p>
+  </div>
+
+  <div className='h-[600px] mt-8 bg-white w-[500px]  rounded-3xl shadow-lg ml-auto mr-[150px] border border-gray-300'>
+    <img src={image1} className='w-[430px] h-[300px] mt-8 ml-8 rounded-xl'/>
+    <div className='text-extrabold text-[30px] font-serif ml-8 mt-3'>General Funds</div>
+    <div className='text-normal text-[18px] font-serif ml-8 mt-3'>Contributions made to the General Fund help IIT Ropar the freedom to undertake innovative projects, support pathbreaking research initiatives, and promote student well being.</div>
+    <button className='text-bold text-white text-sans w-[170px] h-[45px] bg-blue-900 rounded-3xl mt-3 ml-8'>Modes of Donation</button>
+  </div>
+ 
+</div>
+
+<div className='flex flex-row w-full h-[600px]'>
+  <div className='mt-[70px] ml-[200px]'>
+  <p className='text-bold text-[30px] font-serif'>Impact of Giving</p>
+  <p className='text-normal w-[600px] h-[30px] text-[20px] mt-10 font-serif'>The Endowment and other gifts to the University support IIT Delhi’s mission. These financial resources provide critical support to the University by advancing pioneering research, building infrastructure for growth, and supporting student welfare.</p>
+  <button className='mt-[100px] w-[100px] h-[45px] rounded-lg bg-blue-900 text-white text-normal '>View More </button>
+  </div>
+  <img src={image2} className='w-[600px] mt-10 object-cover h-[400px]'/>
+</div>
+   </div>
   );
 }
 

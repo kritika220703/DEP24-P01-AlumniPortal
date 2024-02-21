@@ -3,7 +3,7 @@ import React from 'react'
 const NavLinks = () => {
     const links = [
         {name: "Home",
-        //  path:"/pages/Home"
+         path:"/home",
         submenu:true,
         sublinks:[
             {name:"News and Updates",path:"/pages/NewsAndUpdates"},
@@ -18,11 +18,11 @@ const NavLinks = () => {
         sublinks:[
             {name:"Alumini Initiatives",path:"/pages/NewsAndUpdates"},
             {name:"Donate",path:"/pages/Gallery"},
-        ]
-        // path:"/pages/GivingBack"
+        ],
+        path:"/donate",
         },
         {name: "Community Events",
-        //  path:"/pages/CommunityEvents"
+         path:"/CommunityEvents",
         submenu:true,
         sublinks:[
             {name:"Events",path:"/pages/NewsAndUpdates"},
@@ -30,7 +30,7 @@ const NavLinks = () => {
           
         ]
         },
-        {name: "Contact us", path:"/pages/ContactUs"},
+        {name: "Contact us", path:"/ContactUs"},
         
     ]
   return (
