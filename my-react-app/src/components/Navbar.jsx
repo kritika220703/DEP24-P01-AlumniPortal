@@ -11,7 +11,7 @@ const Navbar = () => {
           <div className='flex  items-center'>
             <img src={logo}alt="" className='md:cursor-pointer bg-white h-12 w-13 mr-3 p-1 rounded-full'/>
             <div className='flex flex-col '>
-              <span className="font-bold text-2xl">Alumini Relations</span> <span className='hover:text-blue-500'>Indian Institute of Technology Ropar</span>
+              <span className="font-bold text-2xl">Alumni Relations</span> <span className='hover:text-blue-500'>Indian Institute of Technology Ropar</span>
             </div>
           </div>
         </div>
