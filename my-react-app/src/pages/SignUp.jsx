@@ -237,7 +237,7 @@ const SignUp = () => {
             </form>
         ):(
             <form onSubmit={handleOTPSubmit}>
-                <div className='mb-6 flex flex-col items-center justify-center gap-5 mx-auto h-screen bg-gray-200'>
+                <div className='mb-6 flex flex-col items-center justify-center gap-5 mx-auto h-screen w-full bg-gray-200'>
                     {/* <h1 className="text-3xl font-bold">Verify OTP</h1> */}
                     <label
                         htmlFor="otp"
