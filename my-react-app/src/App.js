@@ -27,6 +27,7 @@ function App() {
           <Route exact path="/Donate" element={<Donate />} />
           <Route exact path="/ContactUs" element={<Contact />} />
           <Route exact path="/CommunityEvents" element={<CommunityEvents />} />
+          <Route exact path="/givingBack" element={<GivingBack />} />
         </Routes>
       </AuthProvider>
     </div>

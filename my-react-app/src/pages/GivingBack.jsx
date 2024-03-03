@@ -12,10 +12,10 @@ const GivingBack = () => {
           <img src="/images/giveback.png" alt="Giving Back" />
           <div className='Text_box'>
             <h1>Give Back In Kind - Volunteering Form</h1>
-            <p> Dear IIT Delhi Alumnus,
-                <br/>Alumni have always been the intrinsic strength at IIT Delhi and a have played an active role in driving a number of high impact initiatives for the Institute. The institute recognizes and immensely values your passion and commitment towards the betterment of the Institute & Students.
+            <p> Dear IIT Ropar Alumnus,
+                <br/>Alumni have always been the intrinsic strength at IIT Ropar and a have played an active role in driving a number of high impact initiatives for the Institute. The institute recognizes and immensely values your passion and commitment towards the betterment of the Institute & Students.
                 <br/>As a proud alumni, you can also make an immense contribution towards the future & vision of your alma mater by your Volunteering Efforts where you can support by means of your time, expertise, passion, valuable experience & by other means which are non-monetary.
-                <br/>This form is designed to collect your interest to Volunteer for Give Back in Kind to IIT Delhi. Our team will share your interest and match it with the right opportunity for you to make an impact through your contributions, as they transpire.
+                <br/>This form is designed to collect your interest to Volunteer for Give Back in Kind to IIT Ropar. Our team will share your interest and match it with the right opportunity for you to make an impact through your contributions, as they transpire.
             </p>
           </div>
         </div>
@@ -42,7 +42,7 @@ const GivingBack = () => {
               </label>
               <br />
               <label>
-                Your Department at IIT Delhi:
+                Your Department at IIT Ropar:
                 <br/>
                 <select name="department" className='text_input'>
                 <option value="">Choose</option>
@@ -68,7 +68,7 @@ const GivingBack = () => {
               </label>
               <br />
               <label>
-              Degree or Type of Program(s) Enrolled in at IIT Delhi:
+              Degree or Type of Program(s) Enrolled in at IIT Ropar:
               <br />
               <input type="checkbox" name="degree" value="undergraduate" /> Undergraduate (B.Tech/ B.E./B.Sc./B.Design)
               <br />
