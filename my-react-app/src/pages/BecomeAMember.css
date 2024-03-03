@@ -58,6 +58,8 @@
     background-color: #dadada;
     border-radius:1cap;
     animation: fadeInUp 1s ease-out;
+    padding-top : 40px;
+    padding-bottom: 40px;
   }
 
   .member-button{
@@ -162,5 +164,22 @@
     padding: 20px;
   }
 
+  .add-div-button {
+    display: block;
+    margin-top: 10px;
+    padding: 5px;
+    background-color: #505050;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width:110px;
+    font-size: 0.6rem;
+  }
+
+  
+  .add-div-button:hover {
+    background-color: #212121;
+  }
 
 

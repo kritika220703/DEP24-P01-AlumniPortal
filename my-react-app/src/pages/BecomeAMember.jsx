@@ -161,7 +161,7 @@ const BecomeAMember = () => {
                     <br />
                   </div>
                 ))}
-                <button onClick={addEducationDetail}> Add Education Details</button>
+                <button onClick={addEducationDetail}  className='add-div-button' > Add Education Details</button>
               </div>
             ) : ischeckbox === 1 ? (
               <div className='working-details'>
@@ -219,7 +219,7 @@ const BecomeAMember = () => {
                     <br />
                   </div>
                 ))}
-                <button onClick={addWorkExperience}> Add work Experience</button>
+                <button onClick={addWorkExperience} className='add-div-button'> Add work Experience</button>
               </div>
             ) : ischeckbox === 3 ? (
               <div>
