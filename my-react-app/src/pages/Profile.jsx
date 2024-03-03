@@ -1,9 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import { FaUser, FaEnvelope, FaPhone } from 'react-icons/fa';
-import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
+import { FaUser, FaEnvelope, FaPhone, FaBuilding } from 'react-icons/fa';
+import { GiDiploma } from 'react-icons/gi';
 import { db, auth } from "../firebase";
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import SchoolIcon from '@mui/icons-material/School';
+import { IoIosBusiness } from 'react-icons/io';
+import { AiOutlineNumber } from 'react-icons/ai';
+import { MdEvent } from 'react-icons/md';
+import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
 
 const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -32,7 +37,7 @@ const Profile = () => {
             try {
                 console.log("trying to fetch");
                 const userId = auth.currentUser.uid;
-                console.log("suerid:  ", userId);
+                console.log("userid:  ", userId);
                 
                 const colRef = collection(db, 'Users');
                 console.log(colRef);
@@ -156,34 +161,73 @@ const Profile = () => {
 
     const renderProfileDetails = () => {
         return (
-            <div className="p-4 ">
+            <div className="p-6 mt-0">
                 {userData ? (
-                    <>
-                        <div className="text-center mb-4">
-                            <FaUser className="text-4xl text-indigo-500 mb-2" />
-                            <h1 className="text-2xl font-bold text-gray-800">{userData.name}</h1>
+                    <div className='flex flex-row justify-between'>
+                        <div className="text-center mb-4 flex flex-col ">
+                            {/* <FaUser className="text-4xl text-indigo-500 mb-2" /> */}
+                            <img src="/images/profile.jpeg"/>
+                            <h1 className="text-2xl font-bold text-gray-800 mb-1">{userData.name}</h1>
+                            <p className="text-gray-500">{userData.email}</p>
                         </div>
+                        
+                        <div className='flex flex-col border-l border-r border-gray-300 h-screen w-[600px] p-8'>
+                            <h2 className="text-2xl font-bold text-gray-800 mb-6">Profile Details</h2>
+                            <div className="mb-5">
+                                <p className="text-gray-600 flex flex-row">
+                                    <FaEnvelope className="text-lg text-gray-400 mr-4" />
+                                    <strong className='mr-3'>Email Id:</strong> {userData.email}
+                                </p>
+                            </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">
-                                <FaEnvelope className="text-lg text-gray-400 mr-2" />
-                                {userData.email}
-                            </p>
-                        </div>
+                            <div className="mb-4">
+                                <p className="text-gray-600 flex flex-row">
+                                    <FaPhone className="text-lg text-gray-400 mr-4" />
+                                    <strong className='mr-3'>Phone No:</strong> {userData.phone}
+                                </p>
+                            </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">
-                                <FaPhone className="text-lg text-gray-400 mr-2" />
-                                {userData.phone}
-                            </p>
-                        </div>
+                            <div className="mb-4">
+                                <p className="text-gray-600 flex flex-row">
+                                    <FaBuilding className="text-lg text-gray-400 mr-4" />
+                                    <strong className='mr-3'>Institute:</strong> {userData.institute}
+                                </p>
+                            </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">
-                                <strong>Institute:</strong> {userData.institute}
-                            </p>
+                            <div className="mb-4">
+                                <p className="text-gray-600 flex flex-row">
+                                    <SchoolIcon className="text-lg text-gray-400 mr-4" />
+                                    <strong className='mr-3'>Degree:</strong> {userData.degree}
+                                </p>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600 flex flex-row">
+                                    <IoIosBusiness className="text-lg text-gray-400 mr-4" />
+                                    <strong className='mr-3'>Department:</strong> {userData.department}
+                                </p>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600 flex flex-row">
+                                    <AiOutlineNumber className="text-lg text-gray-400 mr-4" />
+                                    <strong className='mr-3'>Entry Number:</strong> {userData.entryNo}
+                                </p>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600 flex flex-row">
+                                    <MdEvent className="text-lg text-gray-400 mr-4" />
+                                    <strong className='mr-3'>Year of Passing:</strong> {userData.passingYear}
+                                </p>
+                            </div>
                         </div>
-                    </>
+                        
+                        <div className='flex flex-col h-screen w-[400px] p-4'>
+                            <h3 className="text-2xl font-bold text-gray-800">Participation in Events</h3>
+                        </div>
+                    </div>
+                        
                 ) : (
                     <p>Loading user data...</p>
                 )}
@@ -243,7 +287,7 @@ const Profile = () => {
                 <div className="mb-4">
                     <button
                         className="bg-indigo-500 text-white px-4 py-2 rounded-md"
-                        // onClick={handleSaveChanges}
+                        onClick={handleSaveChanges}
                     >
                         Save Changes
                     </button>
@@ -253,14 +297,14 @@ const Profile = () => {
     };
 
     return (
-        <div className="container mx-auto mt-8 p-4 flex items-center h-screen">
-            <div className="w-[60%] max-w-[800px] mx-auto bg-white rounded-md overflow-hidden shadow-md flex flex-col">
-                {/* {isEditing ? renderEditProfileForm() : renderProfileDetails()} */}
+        <div className="container mx-auto mt-0 p-6 w-full flex items-center h-screen bg-slate-200">
+            <div className="w-[100%] max-w-[10000px] h-full mx-auto mt-0 p-6 bg-white rounded-md overflow-hidden shadow-md flex flex-col">
+                {isEditing ? renderEditProfileForm() : renderProfileDetails()}
 
                 <div className="p-4">
                     <button
                         className="bg-indigo-500 text-white px-4 py-2 rounded-md"
-                        // onClick={handleEditClick}
+                        onClick={handleEditClick}
                         disabled={isEditing} // Disable button while editing
                     >
                         {isEditing ? 'Cancel Editing' : 'Edit Profile'}
