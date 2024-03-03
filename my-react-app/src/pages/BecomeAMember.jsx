@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
+import { Checkmark } from 'react-checkmark'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faCheckSquare  } from '@fortawesome/free-solid-svg-icons';
 import './BecomeAMember.css'; // Assuming you have a CSS file for this component
 
 const BecomeAMember = () => {
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(0);
   const [ischeckbox, setIsWorkingProfessional] = useState(0);
+  const [workExperiences, setWorkExperiences] = useState([]);
+  const [educationDetails, setEducationDetails] = useState([]);
+  const [profilePicture, setProfilePicture] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsFormSubmitted(true);
+    setIsFormSubmitted(1);
+  };
+
+  const handleSubmit2 = (e) => {
+    e.preventDefault();
+    setIsFormSubmitted(2);
+  };
+
+  const handleSubmit3 = (e) => {
+    e.preventDefault();
+    setIsFormSubmitted(3);
   };
 
   const handleworking = (e) => {
@@ -33,13 +47,25 @@ const BecomeAMember = () => {
     }
   };
 
+  const addWorkExperience = () => {
+    setWorkExperiences([...workExperiences, {}]);
+  };
+
+  const addEducationDetail = () => {
+    setEducationDetails([...educationDetails, {}]);
+  };
+
+  const handleProfilePictureChange = (e) => {
+    setProfilePicture(e.target.files[0]);
+  };
+
   return (
     <div>
       <div className='Become-Member-heading'>
         <h1> <FontAwesomeIcon icon={faUsers} /> Become A Member </h1>
       </div>
       <div className='member-info'>
-      {isFormSubmitted ? (
+        {isFormSubmitted === 1 ? (
           <div className='member-form-container2'>
             <h1> Let us know a bit more about you </h1>
             <p>Fields marked * are mandatory</p>
@@ -47,49 +73,191 @@ const BecomeAMember = () => {
               <div className='member-form-inside2'>
                 <label>
                   What are you doing currently?
-                  <br/>
-                  <br/>
-                  <input type="checkbox" name="work" value="working" onChange={handleworking}/> Working as a professional
                   <br />
-                  <br/>
-                  <input type="checkbox" name="time" value="Education" onChange={handleeducation} /> Pursuing higher Studies
                   <br />
-                  <br/>
-                  <input type="checkbox" name="time" value="Others" onChange={handleothers}/> Others
+                  <input
+                    type="checkbox"
+                    name="work"
+                    value="working"
+                    onChange={handleworking}
+                  />{' '}
+                  Working as a professional
                   <br />
-                  <br/>
-                </label> 
+                  <br />
+                  <input
+                    type="checkbox"
+                    name="time"
+                    value="Education"
+                    onChange={handleeducation}
+                  />{' '}
+                  Pursuing higher Studies
+                  <br />
+                  <br />
+                  <input
+                    type="checkbox"
+                    name="time"
+                    value="Others"
+                    onChange={handleothers}
+                  />{' '}
+                  Others
+                  <br />
+                  <br />
+                </label>
               </div>
             </form>
-            {ischeckbox==1 ? (
-                <div className='working-details'>
-                  <h3>Add Work Experience</h3>
-                  <form>
+            {ischeckbox === 2 ? (
+              <div className='working-details'>
+                {educationDetails.map((edu, index) => (
+                  <div key={index} className='working-details-inside'>
                     <label>
-                      Work title
-                      <br/>
-                      <input type="text" name="fullName" className='text_input-member' placeholder='Your Name'/>
+                      Name Of Institute:
+                      <br />
+                      <input
+                        type="text"
+                        name="Institute"
+                        placeholder='Ex. IIM Ahemdabad'
+                      />
                     </label>
+                    <br />
                     <label>
-                      Full Name:
-                      <br/>
-                      <input type="text" name="fullName" className='text_input-member' placeholder='Your Name'/>
+                     Degree:
+                      <br />
+                      <input
+                        type="text"
+                        name="Degree"
+                        placeholder='MBA'
+                      />
                     </label>
+                    <br />
                     <label>
-                      Full Name:
-                      <br/>
-                      <input type="text" name="fullName" className='text_input-member' placeholder='Your Name'/>
+                      Department
+                      <br />
+                      <input
+                        type="text"
+                        name="department"
+                        placeholder='Marketing'
+                      />
                     </label>
-                  </form>
-                </div>
-            ): ischeckbox==2 ? (<div>
-              <h3>Add new Education Details </h3>
-            </div>) 
-          : ischeckbox==3 ? (<div>
-            <h3> Others </h3>
-          </div>):
-          (<div></div>) }
+                    <br />
+                    <label>
+                      Start Year:
+                      <br />
+                      <input
+                        type="text"
+                        name="startYear"
+                        placeholder='Year'
+                      />
+                    </label>
+                    <br />
+                    <label>
+                      End Year:
+                      <br />
+                      <input
+                        type="text"
+                        name="endYear"
+                        placeholder='Year'
+                      />
+                    </label>
+                    <br />
+                  </div>
+                ))}
+                <button onClick={addEducationDetail}> Add Education Details</button>
+              </div>
+            ) : ischeckbox === 1 ? (
+              <div className='working-details'>
+                {workExperiences.map((exp, index) => (
+                  <div key={index} className='working-details-inside'>
+                    <label>
+                      Work title:
+                      <br />
+                      <input
+                        type="text"
+                        name="workTitle"
+                        placeholder='Ex. Software Engineer'
+                      />
+                    </label>
+                    <br />
+                    <label>
+                      Company Name:
+                      <br />
+                      <input
+                        type="text"
+                        name="companyName"
+                        placeholder='Ex. Google'
+                      />
+                    </label>
+                    <br />
+                    <label>
+                      Work Industry:
+                      <br />
+                      <input
+                        type="text"
+                        name="workIndustry"
+                        placeholder='Ex. E-commerce'
+                      />
+                    </label>
+                    <br />
+                    <label>
+                      Start Year:
+                      <br />
+                      <input
+                        type="text"
+                        name="startYear"
+                        placeholder='Year'
+                      />
+                    </label>
+                    <br />
+                    <label>
+                      End Year:
+                      <br />
+                      <input
+                        type="text"
+                        name="endYear"
+                        placeholder='Year'
+                      />
+                    </label>
+                    <br />
+                  </div>
+                ))}
+                <button onClick={addWorkExperience}> Add work Experience</button>
+              </div>
+            ) : ischeckbox === 3 ? (
+              <div>
+                <label>
+                  Others
+                  <br />
+                  <input
+                    type="text"
+                    name="Others"
+                  />
+                </label>
+
+              </div>
+            ) : (
+              <div></div>
+            )}
+            <br/>
+            <br/>
+
+          <form>
+              <h2>Upload Profile Photo</h2>
+              <input type="file" accept="image/*" onChange={handleProfilePictureChange} />
+            </form>
+            <br/>
+            <div className='member-button'>
+                <button type="submit" className='submit-member' onClick={handleSubmit2} >Next Step</button>
+            </div>
           </div>
+        ) : isFormSubmitted === 2 ? (
+          <div className='member-form-container2'>
+            <Checkmark />
+          <div className='member-form-container3' > 
+            <h1> Thank You Virat, for joining IIT Ropar Alumni Network </h1>
+          </div>
+          <div className='member-button'>
+                <button type="submit" className='submit-member' >SignUp</button>
+          </div>
+        </div>
         ) : (
         <div className='member-form-container'>
           <h1> Add your role details in - Indian Institute of Technology Ropar </h1>
