@@ -1,11 +1,13 @@
 import React from 'react';
 import './GivingBack.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandHoldingUsd } from '@fortawesome/free-solid-svg-icons';
 
 const GivingBack = () => {
   return (
     <div>
       <div className='Giving-back-heading'>
-        <h1>Give Back In Kind</h1>
+        <h1> <FontAwesomeIcon icon={faHandHoldingUsd } /> Give Back In Kind</h1>
       </div>
       <div className='main-cont-1'>
         <div className='G_container-1'>
@@ -36,6 +38,18 @@ const GivingBack = () => {
               </label>
               <br />
               <label>
+                Entry Number :
+                <br/>
+                <input type="text" name="Entry_no" className='text_input'/>
+              </label>
+              <br />
+              <label>
+                Year of Passing:
+                <br/>
+                <input type="text" name="Year_of_passing" className='text_input'/>
+              </label>
+              <br />
+              <label>
                 Your Phone/WhatsApp Numbers:
                 <br/>
                 <input type="tel" name="phone" className='text_input'/>
@@ -46,10 +60,21 @@ const GivingBack = () => {
                 <br/>
                 <select name="department" className='text_input'>
                 <option value="">Choose</option>
-                <option value="CSE">Computer Science and Engineering</option>
-                <option value="EE">Electrical Engineering</option>
-                <option value="ME">Mechanical Engineering</option>
-                {/* Add more options as needed */}
+                <option value="CSE">Computer Science</option>
+                <option value="EE">Electrical</option>
+                <option value="ME">Mechanical</option>
+                <option value="MnC">Mathematics and Computing</option>
+                <option value="CH">Chemical</option>
+                <option value="Civil">Civil</option>
+                <option value="EP">Engineering Physics</option>
+                <option value="Ai">Artifical Intelligence</option>
+                <option value="ME">Metalurgy Engineering</option>
+                <option value="DS">Data Science</option>
+                <option value="bio">Biomedical</option>
+                <option value="Maths">Maths</option>
+                <option value="Phy">Physics</option>
+                <option value="chem">Chemistry</option>
+                <option value="Humanities">Humanities</option>
               </select>
               </label>
               <br />
@@ -70,17 +95,15 @@ const GivingBack = () => {
               <label>
               Degree or Type of Program(s) Enrolled in at IIT Ropar:
               <br />
-              <input type="checkbox" name="degree" value="undergraduate" /> Undergraduate (B.Tech/ B.E./B.Sc./B.Design)
+              <input type="checkbox" name="degree" value="undergraduate"/> Undergraduate (B.Tech/ B.E./B.Sc.)
               <br />
-              <input type="checkbox" name="degree" value="masters" /> Masters (M.Tech/M.Sc./M.Design)
+              <input type="checkbox" name="degree" value="masters" /> Masters (M.Tech/M.Sc.)
               <br />
               <input type="checkbox" name="degree" value="phd" /> Ph.D
               <br />
-              <input type="checkbox" name="degree" value="mba" /> MBA
-              <br />
               <input type="checkbox" name="degree" value="dualDegree" /> Dual Degree (Integrated Program - Undergraduate + Masters)
               <br />
-              <input type="checkbox" name="degree" value="others" /> Others (Certificate/ Diploma/ Others)
+              <input type="text" name="others_degree" className='text_input' placeholder='Others' />
             </label>
               <br />
               <label>
@@ -98,17 +121,7 @@ const GivingBack = () => {
               <label>
                 Giving back to the Institute/ Staff Or Faculty in 'Kind' with Gifts & Grants:
                 <br />
-                <input type="checkbox" name="gifts[]" value="careKits" /> Care Kits/ Medical Kits
-                <br />
-                <input type="checkbox" name="gifts[]" value="researchPapers" /> Research Papers/ Books Or Study Material
-                <br />
-                <input type="checkbox" name="gifts[]" value="technicalEquipment" /> Technical Equipment
-                <br />
-                <input type="checkbox" name="gifts[]" value="clothesAccessories" /> Clothes or Accessories
-                <br />
-                <input type="checkbox" name="gifts[]" value="sportsGoods" /> Sports Goods/ Equipment
-                <br />
-                <input type="checkbox" name="gifts[]" value="stationery" /> Stationery
+                <input type="text" name="Kind" className='text_input' />
               </label>
               <br />
               <label>

@@ -1,6 +1,8 @@
 import React from 'react'
 import Gallery from '../components/Gallery'
 import './CommunityEvents.css' // Assuming you have a CSS file for this component
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandshake } from '@fortawesome/free-solid-svg-icons';
 
 const CommunityEvents = () => {
   const renderReunionRow = (batch, year, date, title) => (
@@ -9,6 +11,7 @@ const CommunityEvents = () => {
       <td>{year}</td>
       <td>{date}</td>
       <td>{title}</td>
+      <td><button className='reunion-button'>Register</button></td>
     </tr>
   );
 
@@ -26,7 +29,7 @@ const CommunityEvents = () => {
   return (
     <div>
       <div className='community-events-heading'>
-        <h1>Community Events</h1>
+        <h1>  <FontAwesomeIcon icon={faHandshake } />  Community Events</h1>
       </div>
       <Gallery/>
 
@@ -53,6 +56,7 @@ const CommunityEvents = () => {
               <th>Year</th>
               <th>Tentative Date & Period</th>
               <th>Title</th>
+              <th>Register </th>
             </tr>
           </thead>
           <tbody>
