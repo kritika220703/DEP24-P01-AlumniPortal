@@ -31,7 +31,7 @@ const TextSlider = ({ slides, interval = 3000 }) => {
             <div className="slider-container relative flex justify-start items-center w-[1350px] h-full mx-8 p-6 border border-gray-300 overflow-hidden shadow-lg">
                 {slides.map((slide, i) => (
                     <div key={i} onClick={() => goToSlide(i)} className={`w-full flex items-center justify-center ${i === index ? 'block' : 'hidden'} transition-opacity duration-1000 ease-in-out`}>
-                        <img src={slide.image} alt="Slide Image" className="w-1/3 h-50 rounded-full mx--4 mt-4 mb-4 p-10" style={{ objectFit: 'cover' }} />
+                        <img src={slide.image} alt="Slide Image" className="w-1/6 h-50 rounded-full mx-auto mt-4 mb-4 p-10 border border-gray-400" style={{ objectFit: 'cover' }} />
                         <div className='w-2/3'>
                             <h2 className="text-xl font-bold mb-2 ">{slide.heading}</h2>
                             <p className="text-gray-700 mb-2">{slide.body}</p>
