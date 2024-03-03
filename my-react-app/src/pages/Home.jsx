@@ -7,7 +7,7 @@ import Gallery from '../components/Gallery'
 const Home = () => {
     const slides = [
         {
-            image: '/images/download.jfif',
+            image: '/images/profile.jpeg',
             heading: 'Message from Prof. Pramod Kumar Jain',
             body: 'The founding of the Alumni Association of IIT (BHU) Varanasi is a vital step towards advancing the vision of the institute through mutually propitious interactions among the institute, alumni, students, and alumni chapters. The vibrant and animated alumni network will work towards achieving the shared goals by strengthening the ties between the alumni and the institute, and by transformatively engaging students for a leap into prominence.\nI extend my best wishes to the alumni association office bearers and hope the association will go a long way in achieving its goals.',
             author: 'Author 1',

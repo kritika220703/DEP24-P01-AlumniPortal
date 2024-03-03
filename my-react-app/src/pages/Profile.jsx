@@ -526,7 +526,6 @@ const Profile = () => {
                             />
                         </div>
 
-
                         <div className="mb-1">
                             <input
                                 type="text"
