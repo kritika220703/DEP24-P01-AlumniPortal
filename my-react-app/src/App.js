@@ -12,6 +12,7 @@ import SignUpPage from './pages/SignUpPage';
 
 import { AuthProvider } from './utilities/AuthContext';
 import GivingBack from './pages/GivingBack';
+import NewAndUpdates from './pages/NewAndUpdates';
 
 function App() {
   // <NavbarComponent/>
@@ -28,6 +29,7 @@ function App() {
           <Route exact path="/Donate" element={<Donate />} />
           <Route exact path="/ContactUs" element={<Contact />} />
           <Route exact path="/CommunityEvents" element={<CommunityEvents />} />
+          <Route exact path="/News" element={<NewAndUpdates />} />
         </Routes>
       </AuthProvider>
     </div>
