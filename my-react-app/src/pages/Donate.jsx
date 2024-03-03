@@ -2,8 +2,11 @@ import React from 'react';
 import image from '.././assets/img5.jpg'
 import image1 from '.././assets/img4.jpg'
 import image2 from '.././assets/img6.jpg'
+import { motion } from "framer-motion";
+import { useNavigate } from 'react-router-dom';
 
 const Donate = () => {
+  const Navigate = useNavigate();
   return (
    <div>
      <div
@@ -16,15 +19,42 @@ const Donate = () => {
     opacity: '0.7'
   }}
 >
-<div className="text-center mt-[200px]">
-  <h1 className="text-extrabold text-5xl text-white font-serif leading-tight">
-    Help IIT Ropar deliver greater value and <br /> attain 
-    higher levels of quality in its teaching and research.
-  </h1>
-  <button className='font-serif mt-8 text-[20px] w-[200px] h-[50px] bg-indigo-950 text-white hover:bg-white hover:text-black'>Give to IIT Ropar</button>
-</div>
-</div>
 
+<div className="text-center mt-[200px]">
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        // transition={{ delay: 0.5, duration: 1.5 }}
+        className="text-extrabold text-5xl text-white font-serif leading-tight"
+      >
+        <motion.span
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{delay:0.5 , duration: 1 }}
+        >
+          Help IIT Ropar deliver greater value and
+        </motion.span>
+        <br />
+        <motion.span
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{delay:0.7, duration: 1 }}
+        >
+          attain higher levels of quality in its teaching and research.
+        </motion.span>
+      </motion.h1>
+      <motion.button
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="font-serif mt-8 text-[20px] w-[200px] h-[50px] bg-indigo-950 text-white hover:bg-white hover:text-black"
+        whileHover={{ scale: 1.1 }}
+        onClick={()=>{Navigate('/givetoiitropar')}}
+      >
+        Give to IIT Ropar
+      </motion.button>
+    </div>
+</div>
  
 <div className='bg-indigo-950 flex flex-row items-center justify-between  text-white text-[30px] font-extrabold w-full h-[230px]'>
   <p className='ml-[150px]'>5000 CR <br/> 10 year goal</p>

@@ -2,10 +2,11 @@ import React from 'react'
 import logo from "./../assets/logo.png"
 import {Link} from "react-router-dom"
 import NavLinks from "./NavLinks"
-
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const[open , setOpen] = React.useState(false)
   const[toggle,setToggle] = React.useState(false);
+  const navigate = useNavigate()
   return (
    <nav className='text-black font-normal'>
      <div className='flex items-center font-medium justify-around'>
@@ -24,10 +25,6 @@ const Navbar = () => {
         {/* Desktop View */}
 
        <ul className=' md:flex hidden  items-center gap-8 text-black-300 '>
-        {/* <li>
-          <Link to="/pages/Home" className="py-7 px-3 inline-block">Home
-          </Link>
-        </li> */}
         <NavLinks/>
         <div className='w-[150px] h-9 rounded-lg flex flex-row border-2 border-blue-700 items-center justify-center'>
   <div
@@ -36,7 +33,10 @@ const Navbar = () => {
         ? 'bg-white text-black transition-all duration-300'
         : 'bg-blue-500 text-white transition-all duration-300'
     } w-[75px] h-7 ml-1 flex items-center justify-center rounded-lg cursor-pointer`}
-    onClick={() => setToggle(!toggle)}
+    onClick={() => {
+      setToggle(!toggle);
+      navigate('/login');
+    }}
   >
     Login
   </div>
@@ -46,7 +46,10 @@ const Navbar = () => {
         ? 'bg-white text-black transition-all duration-300'
         : 'bg-blue-500 text-white transition-all duration-300'
     } w-[100px] h-7 mr-2 flex items-center justify-center rounded-lg cursor-pointer`}
-    onClick={() => setToggle(!toggle)}
+    onClick={() => {
+      setToggle(!toggle);
+    
+      navigate('/signup');}}
   >
     Sign Up
   </div>
