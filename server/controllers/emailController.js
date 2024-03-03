@@ -141,8 +141,54 @@ const sendContactUsmail = async (req, res) => {
     }
 };
 
+const sendGivingBackInKindmail = async (req, res) => {
+    try {
+        console.log("in send giving back in kind api")
+        const Email = req.body.email;
+        const Name = req.body.name;
+        const Phone = req.body.phone;
+        const department = req.body.department
+        const entryNo = req.body.entryNo
+        const passingYear = req.body.passingYear
+        const hostel = req.body.hostel
+        const degree = req.body.degree
+        const country = req.body.country
+        const linkedIn = req.body.linkedIn
+        const itemName = req.body.itemName
+        const duration = req.body.duration
+        const messageSubject = `New  Giving Back In Kind Message from Name : ${Name}, Email : ${Email}, Phone No.: ${Phone}`;
+        const messageBody= `Name : ${Name}\n 
+                            Email : ${Email}\n
+                            Phone No.: ${Phone}\n
+                            Degree : ${degree}\n
+                            Department : ${department}\n
+                            Entry No.: ${entryNo}\n
+                            Year of Passing: ${passingYear}\n
+                            Hostel : ${hostel}\n
+                            Country of Residence : ${country}\n
+                            LinkedIn Profile Link : ${linkedIn}\n\n
+                            
+                            Details about the Item to be given back:\n
+                            Item's name : ${itemName}\n
+                            If a suitable 
+                            'Giving Back in Kind' opportunity comes up, time required to donate : ${duration}
+                            `;
+
+        await sendEmail("2021csb1184@iitrpr.ac.in", messageSubject, messageBody);
+
+        console.log("giving back in kind mail sent");
+        
+        res.status(200).send("giving back in kind mail Sent");
+
+        // res.status(200).status(200);
+    } catch(error) {
+        res.status(400).send(error.message);
+    }
+};
+
 module.exports = {
     sendOTPmail,
     verifyOTPmail,
-    sendContactUsmail
+    sendContactUsmail,
+    sendGivingBackInKindmail
 };

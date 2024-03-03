@@ -1,9 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import { FaUser, FaEnvelope, FaPhone } from 'react-icons/fa';
-import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
+import { FaUser, FaEnvelope, FaPhone, FaBuilding } from 'react-icons/fa';
+import { GiDiploma } from 'react-icons/gi';
 import { db, auth } from "../firebase";
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import SchoolIcon from '@mui/icons-material/School';
+import { IoIosBusiness } from 'react-icons/io';
+import { MdEvent } from 'react-icons/md';
+import { UserIcon } from '@heroicons/react/solid';
+import { AiOutlineNumber, AiOutlineMail, AiOutlinePhone, AiFillLinkedin, AiOutlineHome  } from 'react-icons/ai';
+import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
 
 const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -12,6 +18,14 @@ const Profile = () => {
         email: '',
         phone: '',
         institute: '',
+        entryNo: '',
+        linkedin: '',
+        address: '',
+        degree: '',
+        department: '',
+        passingYear: '',
+        work_exp: [{}], // Store work experience as an array
+        higherEducation: [{}] // Store work experience as an array
     });
     const [userData, setUserData] = useState(null);
 
@@ -32,7 +46,7 @@ const Profile = () => {
             try {
                 console.log("trying to fetch");
                 const userId = auth.currentUser.uid;
-                console.log("suerid:  ", userId);
+                console.log("userid:  ", userId);
                 
                 const colRef = collection(db, 'Users');
                 console.log(colRef);
@@ -75,14 +89,83 @@ const Profile = () => {
             email: userData?.email || '',
             phone: userData?.phone || '',
             institute: userData?.institute || '',
+            entryNo: userData?.entryNo || '',
+            linkedin: userData?.linkedin || '',
+            address: userData?.address || '',
+            degree: userData?.degree || '',
+            department: userData?.department || '',
+            passingYear: userData?.passingYear || '',
+            work_exp: userData?.work_exp || [{}],
+            higherEducation: userData?.work_exp || [{}]
         });
     };
+
+    // const handleInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setEditedUser({
+    //         ...editedUser,
+    //         [name]: value,
+    //     });
+    // };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEditedUser({
             ...editedUser,
             [name]: value,
+        });
+    };
+
+    const handleInputChangeWorkExp = (e, index) => {
+        const { name, value } = e.target;
+        const updatedWorkExp = [...editedUser.work_exp];
+        updatedWorkExp[index] = { ...updatedWorkExp[index], [name]: value };
+        setEditedUser({ ...editedUser, work_exp: updatedWorkExp });
+    };
+    
+    const handleInputChangeHigherEdu = (e, index) => {
+        const { name, value } = e.target;
+        const updatedHigherEdu = [...editedUser.higherEducation];
+        updatedHigherEdu[index] = { ...updatedHigherEdu[index], [name]: value };
+        setEditedUser({ 
+            ...editedUser, 
+            higherEducation: updatedHigherEdu 
+        });
+    };
+
+    const handleRemoveWorkExp = (index) => {
+        // Remove the work experience at the specified index
+        const updatedWorkExp = [...editedUser.work_exp];
+        updatedWorkExp.splice(index, 1);
+        setEditedUser({
+            ...editedUser,
+            work_exp: updatedWorkExp
+        });
+    };
+
+    const handleAddWorkExp = () => {
+        // Add an empty work experience object to the array
+        setEditedUser({
+            ...editedUser,
+            work_exp: [...editedUser.work_exp, {}]
+        });
+    };
+
+    const handleRemoveHighEdu = (index) => {
+        // Remove the work experience at the specified index
+        const updatedHighEdu = [...editedUser.higherEducation];
+        updatedHighEdu.splice(index, 1);
+        setEditedUser({
+            ...editedUser,
+            higherEducation: updatedHighEdu
+        });
+    };
+
+    const handleAddHighEdu = () => {
+        // Add an empty work experience object to the array
+        setEditedUser({
+            ...editedUser,
+            higherEducation: [...editedUser.higherEducation, {}]
         });
     };
 
@@ -124,6 +207,20 @@ const Profile = () => {
         }
     };
 
+    const renderYearOptions = () => {
+        const currentYear = new Date().getFullYear();
+        const years = [];
+        for (let year = currentYear; year >= currentYear - 50; year--) {
+            years.push(
+                <option key={year} value={year}>
+                    {year}
+                </option>
+            );
+        }
+        return years;
+    };
+
+
     function stringToColor(string) {
         let hash = 0;
         let i;
@@ -156,34 +253,124 @@ const Profile = () => {
 
     const renderProfileDetails = () => {
         return (
-            <div className="p-4 ">
+            <div className="p-6 mt-0">
+                <div className="text-center mb-4 flex items-center justify-center">
+                    <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md w-[200px]">Profile</h1>
+                    {/* Use the UserIcon component */}
+                    {/* <UserIcon className="h-8 w-8 text-blue-500" /> */}
+                </div>
+
                 {userData ? (
-                    <>
-                        <div className="text-center mb-4">
-                            <FaUser className="text-4xl text-indigo-500 mb-2" />
-                            <h1 className="text-2xl font-bold text-gray-800">{userData.name}</h1>
+                    <div className='flex flex-row justify-between'>
+                        <div className='flex flex-col items-center justify-center'>
+                            <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6">
+                                <img src="/images/profile.jpeg" className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/>
+                                <h1 className="text-2xl font-bold text-gray-800 mb-1">{userData.name}</h1>
+                                <p className="text-gray-500">{userData.email}</p>
+                            </div>
+                            <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6">
+                                <h3 className='text-2xl font-bold text-gray-800 mb-4'>Contact Details</h3>
+                                <div className="flex items-center mb-2">
+                                    <AiOutlineMail className="text-gray-500 mr-2" />
+                                    <p className="text-gray-500">{userData.email}</p>
+                                </div>
+                                <div className="flex items-center mb-2">
+                                    <AiOutlinePhone className="text-gray-500 mr-2" />
+                                    <p className="text-gray-500">{userData.phone}</p>
+                                </div>
+                                <div className="flex items-center mb-2">
+                                    <AiFillLinkedin className="text-gray-500 mr-2" />
+                                    <p className="text-gray-500">{userData.linkedin}</p>
+                                </div>
+                                <div className="flex items-center">
+                                    <AiOutlineHome className="text-gray-500 mr-2" />
+                                    <p className="text-gray-500">{userData.address}</p>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <div className='flex flex-col items-center justify-center'>
+                            <div className='flex flex-col border-l border-r border-gray-300 bg-slate-100 w-[600px] p-8 mb-4 rounded-md overflow-hidden shadow-md'>
+                                <h2 className="text-2xl font-bold text-gray-800 mb-6">Basic Details</h2>
+                                <div className="mb-5">
+                                    <p className="text-gray-600 flex flex-row">
+                                        <FaEnvelope className="text-lg text-gray-400 mr-4" />
+                                        <strong className='mr-3'>Email Id:</strong> {userData.email}
+                                    </p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">
-                                <FaEnvelope className="text-lg text-gray-400 mr-2" />
-                                {userData.email}
-                            </p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600 flex flex-row">
+                                        <AiOutlineNumber className="text-lg text-gray-400 mr-4" />
+                                        <strong className='mr-3'>Entry Number:</strong> {userData.entryNo}
+                                    </p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">
-                                <FaPhone className="text-lg text-gray-400 mr-2" />
-                                {userData.phone}
-                            </p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600 flex flex-row">
+                                        <SchoolIcon className="text-lg text-gray-400 mr-4" />
+                                        <strong className='mr-3'>Degree:</strong> {userData.degree}
+                                    </p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">
-                                <strong>Institute:</strong> {userData.institute}
-                            </p>
+                                <div className="mb-4">
+                                    <p className="text-gray-600 flex flex-row">
+                                        <IoIosBusiness className="text-lg text-gray-400 mr-4" />
+                                        <strong className='mr-3'>Department:</strong> {userData.department}
+                                    </p>
+                                </div>
+
+                                <div className="mb-4">
+                                    <p className="text-gray-600 flex flex-row">
+                                        <MdEvent className="text-lg text-gray-400 mr-4" />
+                                        <strong className='mr-3'>Year of Passing:</strong> {userData.passingYear}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className='flex flex-col border-l border-r border-gray-300 bg-slate-100 w-[600px] p-8 rounded-md overflow-hidden shadow-md'>
+                                <h2 className="text-2xl font-bold text-gray-800 mb-6">Higher Education</h2>
+                                {Array.isArray(userData.higherEducation) && userData.higherEducation.length > 0 ? (
+                                    <ul className="list-disc pl-4">
+                                        {userData.work_exp.map((highEdu, index) => (
+                                            <li key={index} className="mb-4">
+                                                <h3 className="text-xl font-semibold">{highEdu.course}</h3>
+                                                <h4 className="text-xl font-semibold">{highEdu.specialization}</h4>
+                                                <h4 className="text-xl font-semibold">{highEdu.institute}</h4>
+                                                <h5>{highEdu.duration}</h5>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p>No higher Education available</p>
+                                )}
+                            </div>
+
                         </div>
-                    </>
+                        
+                        
+                        <div className='flex flex-col w-[400px] p-8 bg-slate-100 rounded-md overflow-hidden shadow-md '>
+                            <h3 className="text-2xl font-bold text-gray-800 mb-2">Work Experience</h3>
+                            {Array.isArray(userData.work_exp) && userData.work_exp.length > 0 ? (
+                                <ul className="list-disc pl-4">
+                                    {userData.work_exp.map((workExp, index) => (
+                                        <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between">
+                                            <div>
+                                                <h4 className="text-lg font-semibold">{workExp.job_title}</h4>
+                                                <p className="text-sm text-gray-500">{workExp.company}</p>
+                                            </div>
+                                            <div className="flex flex-col justify-center items-end">
+                                                <p className="text-sm text-gray-500">{workExp.duration}</p>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>No work experience available</p>
+                            )}
+                        </div>
+                    </div>
+                        
                 ) : (
                     <p>Loading user data...</p>
                 )}
@@ -193,79 +380,274 @@ const Profile = () => {
 
     const renderEditProfileForm = () => {
         return (
-            <div className="p-4 ">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Edit Profile</h2>
-
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Name"
-                        value={editedUser.name}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                    />
+            <>
+                
+                <div className="text-center mb-4 flex items-center justify-center">
+                    <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md">Edit Profile</h1>
+                    {/* Use the UserIcon component */}
+                    {/* <UserIcon className="h-8 w-8 text-blue-500" /> */}
                 </div>
 
-                <div className="mb-4">
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email id"
-                        value={editedUser.email}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                    />
-                </div>
+                <div className="p-10 flex flex-col bg-slate-200 bg-opacity-60 rounded-md mx-10 mt-2 mb-3 md:flex-row md:space-x-8 md:justify-between">
+                    
+                    <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
 
-                <div className="mb-4">
-                    <input
-                        type="number"
-                        name="phone"
-                        placeholder="Phone No."
-                        value={editedUser.phone}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                    />
-                </div>
+                        <div className="flex flex-row justify-center mb-2">
+                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Basic Details</h3>
+                        </div>
+                        <div className="mb-1">
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Name"
+                                value={editedUser.name}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            />
+                        </div>
 
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        name="institute"
-                        placeholder="Institute Name"
-                        value={editedUser.institute}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                    />
-                </div>
+                        <div className="mb-1">
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email id"
+                                value={editedUser.email}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            />
+                        </div>
 
-                <div className="mb-4">
+                        <div className="mb-1">
+                            <input
+                                type="text"
+                                name="entryNo"
+                                placeholder="Entry Number"
+                                value={editedUser.entryNo}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            />
+                        </div>
+
+                        <div className="mb-1">
+                            <input
+                                type="text"
+                                name="degree"
+                                placeholder="Degree"
+                                value={editedUser.degree}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto"
+                            />
+                        </div>
+
+                        <div className="mb-1">
+                            <input
+                                type="text"
+                                name="department"
+                                placeholder="Department"
+                                value={editedUser.department}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto"
+                            />
+                        </div>
+
+                        <div className="mb-1">
+                            <select
+                                type="year"
+                                name="passingYear"
+                                value={editedUser.passingYear}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            >
+                                <option value="">Select Year of Passing</option>
+                                {renderYearOptions()}
+                            </select>
+                        </div>
+
+                        <div className="mb-1">
+                            <input
+                                type="url"
+                                name="linkedin"
+                                placeholder="LinkedIN URL"
+                                value={editedUser.linkedin}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            />
+                        </div>
+
+                        <div className="flex flex-row justify-center mb-2">
+                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Contact Information</h3>
+                        </div>
+                        <div className="mb-1">
+                            <input
+                                type="number"
+                                name="phone"
+                                placeholder="Phone No."
+                                value={editedUser.phone}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            />
+                        </div>
+
+                        <div className="mb-1">
+                            <input
+                                type="text"
+                                name="address"
+                                placeholder="Address"
+                                value={editedUser.address}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            />
+                        </div>
+
+                    </div>
+                    
+                    <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
+
+                        <div className="flex flex-row justify-center mb-2">
+                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Higher Education</h3>
+                        </div>
+                        {editedUser.higherEducation.map((highEdu, index) => (
+                            <div key={index} className="mb-4 border border-gray-300 bg-slate-100 bg-opacity-0.8 rounded-md p-4">
+                                <input
+                                    type="text"
+                                    name="course"
+                                    placeholder="Course"
+                                    value={highEdu.course || ''}
+                                    onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                />
+                                <input
+                                    type="text"
+                                    name="specialization"
+                                    placeholder="Specialization"
+                                    value={highEdu.specialization || ''}
+                                    onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                />
+                                <input
+                                    type="text"
+                                    name="institute"
+                                    placeholder="Institute"
+                                    value={highEdu.institute || ''}
+                                    onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                />
+                                <input
+                                    type="text"
+                                    name="duration"
+                                    placeholder="Duration"
+                                    value={highEdu.duration || ''}
+                                    onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                />
+                                <button
+                                    onClick={() => handleRemoveHighEdu(index)}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        ))}
+                        <div className='flex flex-row justify-center'>
+                            {/* Button to add new work experience */}
+                            <button 
+                                onClick={handleAddHighEdu}
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                            >
+                                Add Higher Education
+                            </button>
+                        </div>
+                        
+                    </div>
+
+                    <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
+                        <div className="flex flex-row justify-center mb-2">
+                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Work Experience</h3>
+                        </div>
+                        {editedUser.work_exp.map((workExp, index) => (
+                            <div key={index} className="mb-4 border border-gray-300 bg-slate-100 bg-opacity-0.8 rounded-md p-4">
+                                <input
+                                    type="text"
+                                    name="job_title"
+                                    placeholder="Job Title"
+                                    value={workExp.job_title || ''}
+                                    onChange={(e) => handleInputChangeWorkExp(e, index)}
+                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                />
+                                <input
+                                    type="text"
+                                    name="company"
+                                    placeholder="Company"
+                                    value={workExp.company || ''}
+                                    onChange={(e) => handleInputChangeWorkExp(e, index)}
+                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                />
+                                <input
+                                    type="text"
+                                    name="duration"
+                                    placeholder="Duration"
+                                    value={workExp.duration || ''}
+                                    onChange={(e) => handleInputChangeWorkExp(e, index)}
+                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                />
+                                <button
+                                    onClick={() => handleRemoveWorkExp(index)}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        ))}
+                        <div className='flex flex-row justify-center'>
+                            {/* Button to add new work experience */}
+                            <button 
+                                onClick={handleAddWorkExp}
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                            >
+                                Add Work Experience
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <div className="mb-4 p-1 flex justify-center">
                     <button
-                        className="bg-indigo-500 text-white px-4 py-2 rounded-md"
-                        // onClick={handleSaveChanges}
+                        className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-semibold"
+                        onClick={handleSaveChanges}
                     >
                         Save Changes
                     </button>
                 </div>
-            </div>
+            </>
+            
         );
     };
 
     return (
-        <div className="container mx-auto mt-8 p-4 flex items-center h-screen">
-            <div className="w-[60%] max-w-[800px] mx-auto bg-white rounded-md overflow-hidden shadow-md flex flex-col">
-                {/* {isEditing ? renderEditProfileForm() : renderProfileDetails()} */}
+        <div className="container mx-auto mt-0 p-6 w-full flex items-center min-h-[800px] bg-blue-800"
+        style={{
+            backgroundImage: `url("/images/car1.jpg")`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: '0.9'
+          }}
+        >
+            <div className="w-[100%] max-w-[10000px] h-full mx-auto mt-0 p-6 bg-none rounded-md overflow-hidden shadow-md flex flex-col">
+                {isEditing ? renderEditProfileForm() : renderProfileDetails()}
 
-                <div className="p-4">
-                    <button
-                        className="bg-indigo-500 text-white px-4 py-2 rounded-md"
-                        // onClick={handleEditClick}
-                        disabled={isEditing} // Disable button while editing
-                    >
-                        {isEditing ? 'Cancel Editing' : 'Edit Profile'}
-                    </button>
-                </div>
+                {!isEditing && (
+                    <div className="p-2 flex justify-center">
+                        <button
+                            className="bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold"
+                            onClick={handleEditClick}
+                            disabled={isEditing}
+                        >
+                            Edit Profile
+                        </button>
+                    </div>
+                )}
+
 
                 {/* <Stack direction="row" spacing={2} className="ml-auto">
                     <Avatar {...stringAvatar(userData.name)} sx={{ width: 80, height: 80 }} />

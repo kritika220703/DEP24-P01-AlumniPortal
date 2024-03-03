@@ -83,7 +83,7 @@ const Contact = () => {
       } else {
         notifySuccess("Contact Us message sent to your email id");
       }
-      
+
       setEmail("");
       setFullName("");
       setMessage("");
@@ -112,10 +112,12 @@ const Contact = () => {
       <div className='bg-gray-300 text-black mt-0 py-2 text-[25px] font-bold flex items-center justify-center'>
         Contact Us
       </div>
+
       <div className='flex flex-row '>
-        <div className='w-[750px] h-[500px]'>
-          <img src={admin} className='object-cover w-full h-full' />
+        <div className='w-[750px] h-[500px] ml-6 rounded-xl'>
+          <img src={admin} className='object-cover w-full h-full rounded-xl' />
         </div>
+
         <div className='flex flex-col gap-5'>
           <div className=' mt-5 w-[750px] flex flex-col gap-6 ml-[50px]'>
             <h1 className='text-[30px] font-extrabold font-serif text-gray-900 '>
@@ -128,7 +130,7 @@ const Contact = () => {
             </p>            
           </div>
           <div class="bg-gray-300 h-px w-[600px] my-4 ml-[100px]"></div>
-          <div className='flex flex-row items-center justify-center gap-[55px] text-gray-700 ml-[162px] text-[25px] w-[600px] h-1'>
+          <div className='flex flex-row items-center gap-[55px] text-gray-700 ml-[162px] text-[25px] w-[600px] h-1'>
             <p >Email</p>
             <p >-</p>
             <p>alumniaffairs@iitrpr.ac.in</p>
@@ -141,6 +143,7 @@ const Contact = () => {
           </div>
         </div>
       </div>
+
       <div className='flex flex-row'>
         <div className="w-[700px] h-[700px] mt-[50px] mx-auto bg-white p-8 border border-gray-300 rounded-lg">
           <h1 className="text-xl font-bold mb-4 ml-[150px]">Call Back or mail to <br/>office.alumni@iitrpr.ac.in</h1>
@@ -199,6 +202,7 @@ const Contact = () => {
             </button>
           </form>
         </div>
+
         <div className=' flex flex-col  mt-[50px] ml-auto mr-[50px] mb-[50px] w-[700px] h-[700px] rounded-xl overflow-hidden' 
           style={{ backgroundImage: `url(${image})`, opacity: '0.7', backgroundSize: 'cover', backgroundPosition: 'center' }}>
           <div className='text-white text-[50px] font-bold ml-[130px] mt-[50px]'>
@@ -214,6 +218,7 @@ const Contact = () => {
           </button>
         </div>
       </div>
+
       <ToastContainer />
     </div>
   )
