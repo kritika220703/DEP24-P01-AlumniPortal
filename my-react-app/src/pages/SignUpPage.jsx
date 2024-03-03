@@ -20,7 +20,7 @@ const SignUpPage = () => {
                 <div className="bg-white p-12 rounded-3xl shadow-md flex flex-col items-center justify-center" style={{ width: "400px", height: "300px" }}>
                     <img src="/images/download.png" alt="Admin Icon" className="w-24 h-24 rounded-full mb-6" />
                     <h2 className="text-2xl font-bold mb-6">Sign Up as Admin</h2>
-                    <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:shadow-outline">
+                    <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:shadow-outline">
                         Sign up
                     </button>
                 </div>

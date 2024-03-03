@@ -61,6 +61,7 @@ const sendOTP = async(recipient) => {
 
     } catch (error) {
         console.log("error sending otp: ",error);
+        throw error;
     }
 };
 
@@ -78,6 +79,7 @@ const verifyOTP = (recipient, userOTP) => {
         console.log("otp matching");
         return true;
     }else{
+        console.log('Invalid OTP');
         return false;
     }
 };
@@ -118,8 +120,29 @@ const verifyOTPmail = async(req, res) => {
     }
 };
 
+const sendContactUsmail = async (req, res) => {
+    try {
+        console.log("in send contact us api")
+        const Email = req.body.email;
+        const Name = req.body.name;
+        const Phone = req.body.phone;
+        const messageSubject = `New  Contact Us Message from Name : ${Name}, Email : ${Email}, Phone No.: ${Phone}`;
+        const messageBody= req.body.message;
+
+        await sendEmail("2021csb1184@iitrpr.ac.in", messageSubject, messageBody);
+
+        console.log("contact us mail sent");
+        
+        res.status(200).send("Contact Us mail Sent");
+
+        // res.status(200).status(200);
+    } catch(error) {
+        res.status(400).send(error.message);
+    }
+};
 
 module.exports = {
     sendOTPmail,
-    verifyOTPmail
+    verifyOTPmail,
+    sendContactUsmail
 };
