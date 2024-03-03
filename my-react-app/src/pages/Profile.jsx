@@ -8,11 +8,16 @@ import SchoolIcon from '@mui/icons-material/School';
 import { IoIosBusiness } from 'react-icons/io';
 import { MdEvent } from 'react-icons/md';
 import { UserIcon } from '@heroicons/react/solid';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { AiOutlineNumber, AiOutlineMail, AiOutlinePhone, AiFillLinkedin, AiOutlineHome  } from 'react-icons/ai';
 import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
 
 const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [userData, setUserData] = useState(null);
     const [editedUser, setEditedUser] = useState({
         name: '',
         email: '',
@@ -27,7 +32,6 @@ const Profile = () => {
         work_exp: [{}], // Store work experience as an array
         higherEducation: [{}] // Store work experience as an array
     });
-    const [userData, setUserData] = useState(null);
 
     // const user = {
     //     name: 'John Doe',
@@ -220,6 +224,27 @@ const Profile = () => {
         return years;
     };
 
+    // Define arrays for course and specialization options
+    const courseOptions = ["B.Tech", "M.tech", "Ph.D.", "BSc", "MSc", "Dual Degree"];
+    const specializationOptions = ["Computer Science", "Electrical", "Mechanical", "Chemical", "Civil", "Metallurgy and Materials", "Mathematics and Computing", "Engineering Physics", "AI", "Data Sience", "Bio-Medical", "Mathematics", "Humanaties", "Chemistry", "Physics"];
+
+    // Array of country code options
+    const countryCodeOptions = [
+        { value: '+1', label: '+1 (USA)' },
+        { value: '+44', label: '+44 (UK)' },
+        { value: '+91', label: '+91 (India)' },
+        // Add more options as needed
+    ];
+
+    const handleStartDateChange = (date) => {
+        setStartDate(date);
+        // Additional logic if needed
+    };
+
+    const handleEndDateChange = (date) => {
+        setEndDate(date);
+        // Additional logic if needed
+    };
 
     function stringToColor(string) {
         let hash = 0;
@@ -477,16 +502,30 @@ const Profile = () => {
                         <div className="flex flex-row justify-center mb-2">
                             <h3 className="text-2xl font-bold text-gray-800 mb-1">Contact Information</h3>
                         </div>
-                        <div className="mb-1">
+                        <div className="flex flex-row mb-1">
+                            <select
+                                name="countryCode"
+                                value={editedUser.countryCode}
+                                onChange={handleInputChange}
+                                className="w-1/4 px-4 py-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                            >
+                                <option value="">Country Code</option>
+                                {countryCodeOptions.map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
                             <input
-                                type="number"
+                                type="text"
                                 name="phone"
                                 placeholder="Phone No."
                                 value={editedUser.phone}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-3/4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                             />
                         </div>
+
 
                         <div className="mb-1">
                             <input
@@ -510,36 +549,65 @@ const Profile = () => {
                             <div key={index} className="mb-4 border border-gray-300 bg-slate-100 bg-opacity-0.8 rounded-md p-4">
                                 <input
                                     type="text"
-                                    name="course"
-                                    placeholder="Course"
-                                    value={highEdu.course || ''}
-                                    onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                />
-                                <input
-                                    type="text"
-                                    name="specialization"
-                                    placeholder="Specialization"
-                                    value={highEdu.specialization || ''}
-                                    onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                />
-                                <input
-                                    type="text"
                                     name="institute"
-                                    placeholder="Institute"
+                                    placeholder="Name of Institute"
                                     value={highEdu.institute || ''}
                                     onChange={(e) => handleInputChangeHigherEdu(e, index)}
                                     className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                 />
-                                <input
-                                    type="text"
-                                    name="duration"
-                                    placeholder="Duration"
-                                    value={highEdu.duration || ''}
-                                    onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                />
+                                <div className="flex flex-row mb-2 space-x-4">
+                                    <DatePicker
+                                        selected={startDate}
+                                        onChange={handleStartDateChange}
+                                        selectsStart
+                                        startDate={startDate}
+                                        endDate={endDate}
+                                        placeholderText="Start Date"
+                                        className="w-full px-4 py-2 mr-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        showPopperArrow={true}
+                                    />
+                                    <DatePicker
+                                        selected={endDate}
+                                        onChange={handleEndDateChange}
+                                        selectsEnd
+                                        startDate={startDate}
+                                        endDate={endDate}
+                                        minDate={startDate}
+                                        placeholderText="End Date"
+                                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        showPopperArrow={true}
+                                    />
+                                </div>
+
+                                <div className='flex flex-row space-x-1'>
+                                    <select
+                                        name="course"
+                                        value={highEdu.course || ''}
+                                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                        className="w-1/3 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    >
+                                        <option value="">Course</option>
+                                        {courseOptions.map((option, i) => (
+                                            <option key={i} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <select
+                                        name="specialization"
+                                        value={highEdu.specialization || ''}
+                                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                        className="w-2/3 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    >
+                                        <option value="">Specialization</option>
+                                        {specializationOptions.map((option, i) => (
+                                            <option key={i} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                
                                 <button
                                     onClick={() => handleRemoveHighEdu(index)}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
