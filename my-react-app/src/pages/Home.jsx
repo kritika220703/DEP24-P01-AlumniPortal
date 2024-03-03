@@ -7,21 +7,21 @@ import Gallery from '../components/Gallery'
 const Home = () => {
     const slides = [
         {
-            image: '/images/profile.jpeg',
-            heading: 'Message from Prof. Pramod Kumar Jain',
-            body: 'The founding of the Alumni Association of IIT (BHU) Varanasi is a vital step towards advancing the vision of the institute through mutually propitious interactions among the institute, alumni, students, and alumni chapters. The vibrant and animated alumni network will work towards achieving the shared goals by strengthening the ties between the alumni and the institute, and by transformatively engaging students for a leap into prominence.\nI extend my best wishes to the alumni association office bearers and hope the association will go a long way in achieving its goals.',
+            image: '/images/director.jpeg',
+            heading: 'Message from Prof. Rajeev Ahuja',
+            body: 'The Institute is committed to create an ambience for nurturing innovation, creativity and excellence within its students. We, at IIT Ropar, strongly support interdisciplinary research and development for the benefit of Industry and Society.\n\nWe emphasise on developing all round leadership skills. We are proud to say that the Institute is ideally placed to exploit the synergy within the engineering and science departments at the Institute. In doing so, we believe the Institute will continue to create unique and novel programmes to make significant contributions to Science and Technology as a domain. We are confident that all our efforts will grow into significant epitomes of achievements in the larger academic parlance. Hopefully, our labors in all the major areas of science and technology will produce fruitful results in academic innovation, top-tier journal publications, citations and technology developments.',
             author: 'Author 1',
         },
         {
-            image: '/images/download.jfif',
-            heading: 'Slide 2 Heading',
-            body: 'Slide 2 Body Text',
+            image: '/images/director.jpeg',
+            heading: 'Message from Prof. Rajeev Ahuja',
+            body: 'The Institute is committed to create an ambience for nurturing innovation, creativity and excellence within its students. We, at IIT Ropar, strongly support interdisciplinary research and development for the benefit of Industry and Society.\n\nWe emphasise on developing all round leadership skills. We are proud to say that the Institute is ideally placed to exploit the synergy within the engineering and science departments at the Institute. In doing so, we believe the Institute will continue to create unique and novel programmes to make significant contributions to Science and Technology as a domain. We are confident that all our efforts will grow into significant epitomes of achievements in the larger academic parlance. Hopefully, our labors in all the major areas of science and technology will produce fruitful results in academic innovation, top-tier journal publications, citations and technology developments.',
             author: 'Author 2',
         },
         {
-            image: '/images/download.jfif',
-            heading: 'Slide 3 Heading',
-            body: 'Slide 3 Body Text',
+            image: '/images/director.jpeg',
+            heading: 'Message from Prof. Rajeev Ahuja',
+            body: 'The Institute is committed to create an ambience for nurturing innovation, creativity and excellence within its students. We, at IIT Ropar, strongly support interdisciplinary research and development for the benefit of Industry and Society.\n\nWe emphasise on developing all round leadership skills. We are proud to say that the Institute is ideally placed to exploit the synergy within the engineering and science departments at the Institute. In doing so, we believe the Institute will continue to create unique and novel programmes to make significant contributions to Science and Technology as a domain. We are confident that all our efforts will grow into significant epitomes of achievements in the larger academic parlance. Hopefully, our labors in all the major areas of science and technology will produce fruitful results in academic innovation, top-tier journal publications, citations and technology developments.',
             author: 'Author 3',
         },
         // Add more slide objects as needed

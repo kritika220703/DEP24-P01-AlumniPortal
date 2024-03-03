@@ -9,7 +9,7 @@ import { getDocs, collection, query, where, addDoc } from "firebase/firestore";
 import {
   signInWithEmailAndPassword
 } from "firebase/auth";
-import image from '.././assets/img5.jpg'
+import image from '.././assets/administration-block-iit-ropar-8176406.webp'
 
 const toastOptions = {
   position: "bottom-right",
@@ -167,7 +167,7 @@ const Login = () => {
       {!isOtpSent ? (
         <form
           className="flex justify-center items-center h-screen"
-          style={{ backgroundImage: `url(${image})`, opacity: '0.7', backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: `url(${image})`, opacity: '0.8', backgroundSize: 'cover', backgroundPosition: 'center' }}
           onSubmit={handleSubmit}
         >
           <div className='bg-white p-8 rounded-md shadow-md max-w-md w-full'>

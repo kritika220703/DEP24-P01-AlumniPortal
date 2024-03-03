@@ -8,7 +8,7 @@ import {
 import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import image from '.././assets/img5.jpg'
+import image from '.././assets/administration-block-iit-ropar-8176406.webp'
 
 const toastOptions = {
     position: "bottom-right",
@@ -197,7 +197,7 @@ const SignUp = () => {
     <>
         {/* <div>SignUp</div> */}
         {!isOtpSent ? (
-            <form onSubmit={handleSubmit} className="flex justify-center items-center h-screen " style={{ backgroundImage: `url(${image})`, opacity: '0.7', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+            <form onSubmit={handleSubmit} className="flex justify-center items-center h-screen " style={{ backgroundImage: `url(${image})`, opacity: '0.8', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 <div className='bg-white p-8 rounded-md shadow-md max-w-md w-full'>
                     <h1 className="text-3xl font-bold mb-6">Sign Up</h1>
 
