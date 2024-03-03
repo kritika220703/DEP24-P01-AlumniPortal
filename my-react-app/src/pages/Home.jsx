@@ -2,8 +2,7 @@ import React from 'react'
 import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
-import { CarouselWithContent } from '../components/TextCarousel';
-// import TextCarousel from '../components/TextCarousel';
+import Gallery from '../components/Gallery'
 
 const Home = () => {
     const slides = [
@@ -89,6 +88,7 @@ const Home = () => {
             </div>
         </div>
         {/* <hr className="border-gray-300 my-8" /> */}
+        {/* <Gallery/> */}
         {/* <hr className="border-gray-300 my-8" /> */}
         <div className='container mx-auto py-8 '>
             <TextSlider slides={slides} interval={5000} />
