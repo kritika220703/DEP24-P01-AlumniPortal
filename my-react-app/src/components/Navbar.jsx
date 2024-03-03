@@ -2,10 +2,12 @@ import React from 'react'
 import logo from "./../assets/logo.png"
 import {Link} from "react-router-dom"
 import NavLinks from "./NavLinks"
+
 const Navbar = () => {
   const[open , setOpen] = React.useState(false)
+  const[toggle,setToggle] = React.useState(false);
   return (
-   <nav className='bg-customBlue text-white font-normal'>
+   <nav className='text-black font-normal'>
      <div className='flex items-center font-medium justify-around'>
         <div className='flex flex-row items-center z-50 p-5 md:w-auto w-full '>
           <div className='flex  items-center'>
@@ -27,6 +29,29 @@ const Navbar = () => {
           </Link>
         </li> */}
         <NavLinks/>
+        <div className='w-[150px] h-9 rounded-lg flex flex-row border-2 border-blue-700 items-center justify-center'>
+  <div
+    className={`${
+      toggle
+        ? 'bg-white text-black transition-all duration-300'
+        : 'bg-blue-500 text-white transition-all duration-300'
+    } w-[75px] h-7 ml-1 flex items-center justify-center rounded-lg cursor-pointer`}
+    onClick={() => setToggle(!toggle)}
+  >
+    Login
+  </div>
+  <div
+    className={`${
+      !toggle
+        ? 'bg-white text-black transition-all duration-300'
+        : 'bg-blue-500 text-white transition-all duration-300'
+    } w-[100px] h-7 mr-2 flex items-center justify-center rounded-lg cursor-pointer`}
+    onClick={() => setToggle(!toggle)}
+  >
+    Sign Up
+  </div>
+</div>
+
        </ul>
 
        {/* Mobile View */}
