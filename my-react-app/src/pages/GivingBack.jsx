@@ -98,19 +98,19 @@ const GivingBack = () => {
     console.log(colRef);
     const q = query(colRef, where('email', '==', email));
 
-    try {
-      console.log("in giving back in kind try part")
-      const snapshot = await getDocs(q);
+    // try {
+    //   console.log("in giving back in kind try part")
+    //   const snapshot = await getDocs(q);
     
-      if (snapshot.size > 0) {
-        // Documents satisfying the query exist
-          errorMessage = "Entered email is already in use. Please log in or use different email id.";
-          toast.error(errorMessage, toastOptions);
-          return;
-      } 
-    } catch (error) {
-      console.error('Error getting documents:', error);
-    }
+    //   if (snapshot.size > 0) {
+    //     // Documents satisfying the query exist
+    //       errorMessage = "Entered email is already in use. Please log in or use different email id.";
+    //       toast.error(errorMessage, toastOptions);
+    //       return;
+    //   } 
+    // } catch (error) {
+    //   console.error('Error getting documents:', error);
+    // }
 
     setIsLoading(true);
     try {
@@ -158,12 +158,25 @@ const GivingBack = () => {
           linkedIn: linkedin,
           itemName: donation,
           duration: duration
-      });
+        });
       }
     } catch {
       errorMessage = "Failed to send mail";
       toast.error(errorMessage, toastOptions);
     }
+
+    setName("");
+    setEmail("");
+    setEntryNo("");
+    setYearOfPassing("");
+    setphone("");
+    setDepartment("");
+    setHostel("");
+    setCourse("");
+    setCountry("");
+    setLinkedin("");
+    setDonation("");
+    setDuration("");
     setIsLoading(false);
   }
 
