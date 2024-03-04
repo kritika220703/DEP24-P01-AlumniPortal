@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Captcha from '../captcha';
 
 const ContactUs = () => {
   const [fullName, setFullName] = useState('');
@@ -130,18 +131,8 @@ const ContactUs = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="captcha" className="block text-sm font-medium text-gray-700">
-              CAPTCHA: {captchaExpression} =
-            </label>
-            <input
-              type="text"
-              id="captcha"
-              placeholder="Your answer"
-              value={captcha}
-              onChange={handleCaptchaChange}
-              className="w-full px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500"
-              required
-            />
+            <p>capcha</p>
+            <Captcha/>
           </div>
           <button
             type="submit"

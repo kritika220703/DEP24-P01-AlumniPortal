@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import Captcha from 'react-captcha-code';
+import Captcha from '../captcha';
 
 const toastOptions = {
   position: "bottom-right",
@@ -189,22 +190,13 @@ const Contact = () => {
                 className="w-full h-[100px] bg-gray-200 rounded-lg px-4 py-2 focus:bg-white transition-colors duration-300"
               ></textarea>
             </div>
-            {/* <div className="mb-4">
-              <label className="block text-gray-700">Captcha</label> */}
-              {/* <Captcha charNum={6} onChange={handleCaptchaChange} /> */}
-              {/* <button
-                type="button"
-                className="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg mt-2 hover:bg-white hover:text-gray-900 transition-colors duration-300"
-                // onClick={handleGenerateCaptcha}
-              >
-                Generate New Captcha
-              </button>
-            </div> */}
+            <div className="mb-4">
+              <Captcha/>
+            </div>
             <div className='flex flex-row justify-center'>
               <button
                 type="submit"
-                className="bg-indigo-800 text-white py-2 px-8 rounded-lg hover:bg-white hover:text-indigo-800 border border-gray-300 transition-colors duration-300"
-              >
+                className="bg-indigo-800 text-white py-2 px-8 rounded-lg hover:bg-white hover:text-indigo-800 border border-gray-300 transition-colors duration-300">
                 Submit
               </button>
             </div>
