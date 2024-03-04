@@ -69,6 +69,7 @@ const SignUp = () => {
             });
             console.log("auth.currentuser::   ",auth.currentUser);
             login(user);
+
         } catch (error) {
             console.log("error: ",error.message);
             const errorCode = error.code;
