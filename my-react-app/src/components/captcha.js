@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import captchaImg from './assets/captcha.jpeg';
+import captchaImg from '../assets/captcha.jpeg';
 
-function Captcha() {
+function Captcha({ setVerified }) {  // Receive setVerified as prop
     const [user, setUser] = useState({ username: "" });
     const [captcha, setCaptcha] = useState("");
 
@@ -25,7 +25,7 @@ function Captcha() {
     };
 
     const onSubmit = () => {
-        const element = document.getElementById("succesBTN");
+        const element = document.getElementById("successBTN");
         const inputData = document.getElementById("inputType");
         element.style.cursor = "wait";
         element.innerHTML = "Checking...";
@@ -34,19 +34,23 @@ function Captcha() {
 
         const myFunctions = () => {
             if (captcha === user.username) {
-                element.style.backgroundColor = "green";
+                setVerified(true);
+                element.classList.remove("bg-white", "text-black");
+                element.classList.add("bg-green-500", "text-white");
                 element.innerHTML = "Captcha Verified";
                 element.disabled = true;
-                element.style.cursor = "not-allowed";
+                element.classList.add("cursor-not-allowed");
                 inputData.style.display = "none";
             } else {
-                element.style.backgroundColor = "red";
-                element.style.cursor = "not-allowed";
+                setVerified(false);
+                element.classList.add("bg-red-500", "text-white");
+                element.classList.add("cursor-not-allowed");
                 element.innerHTML = "Not Matched";
                 element.disabled = true;
                 const myFunction = () => {
-                    element.style.backgroundColor = "white";
-                    element.style.cursor = "pointer";
+                    element.classList.remove("bg-red-500", "text-white");
+                    element.classList.add("bg-white", "text-black");
+                    element.classList.remove("cursor-not-allowed");
                     element.innerHTML = "Verify Captcha";
                     element.disabled = false;
                     inputData.disabled = false;
@@ -54,9 +58,23 @@ function Captcha() {
                 };
                 setTimeout(myFunction, 5000);
             }
-        };
+        };        
         setTimeout(myFunctions, 5000);
     };
+
+    useEffect(() => {
+        const handleDOMContentLoaded = () => {
+            const element = document.getElementById("successBTN");
+            const inputData = document.getElementById("inputType");
+            if (element && inputData) {
+                element.addEventListener("click", onSubmit);
+            }
+        };
+        document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
+        return () => {
+            document.removeEventListener("DOMContentLoaded", handleDOMContentLoaded);
+        };
+    }, []);
 
     return (
         <div className="container">
@@ -66,9 +84,23 @@ function Captcha() {
                     <img src={captchaImg} style={{ width: "150px", height: "50px" }} alt="Captcha" />
                     <h4 id="captcha" style={{ position: "absolute", top: "25%", left: "12%", transform: "translate(-50%, -50%)", color: "black", textShadow: "1px 1px 2px black" }}>{captcha}</h4>
                     <div className="form-group row mt-3">
-                        <input type="text" id="inputType" className="form-control" placeholder="Enter Captcha"
-                            name="username" onChange={handleChange} autoComplete="off" style={{ width: "20%" }} />
-                        <button type="button" id="succesBTN" onClick={onSubmit} className="btn btn-primary ml-3 border border-gray-400 p-1 rounded-md shadow-md">Verify Captcha</button>
+                        <input 
+                            type="text" 
+                            id="inputType" 
+                            className="form-control w-1/5 rounded-md mr-3 p-2 border border-gray-400" 
+                            placeholder="Enter Captcha"
+                            name="username" 
+                            onChange={handleChange} 
+                            autoComplete="off" 
+                        />
+                        <button 
+                            type="submit" 
+                            id="successBTN" 
+                            className="btn btn-primary ml-3 border border-gray-400 p-2 rounded-md"
+                            onClick={onSubmit}
+                        >
+                            Verify Captcha
+                        </button>
                     </div>
                 </div>
             </div>

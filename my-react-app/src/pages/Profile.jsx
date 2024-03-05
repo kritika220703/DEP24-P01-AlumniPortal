@@ -12,12 +12,21 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AiOutlineNumber, AiOutlineMail, AiOutlinePhone, AiFillLinkedin, AiOutlineHome  } from 'react-icons/ai';
 import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
+import {
+    ref,
+    uploadBytesResumable,
+    getDownloadURL 
+  } from "firebase/storage";
+import {storage} from "../firebase.js"
 
 const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
     const [userData, setUserData] = useState(null);
+    const [profilePicture, setProfilePicture] = useState(null);
+    let dp = "";
+    const [profileURL, setProfileURL] = useState(dp);
     const [editedUser, setEditedUser] = useState({
         name: '',
         email: '',
@@ -30,8 +39,11 @@ const Profile = () => {
         department: '',
         passingYear: '',
         work_exp: [{}], // Store work experience as an array
-        higherEducation: [{}] // Store work experience as an array
+        higherEducation: [{}], // Store work experience as an array
+        profilepic: '',
+        profileURL: ''
     });
+    
 
     // const user = {
     //     name: 'John Doe',
@@ -64,8 +76,10 @@ const Profile = () => {
                       snapshot.forEach((doc) => {
                         console.log(doc.id, '=>', doc.data());
                         setUserData(doc.data());
-                        console.log("after: ",userData);
-                      });
+                        setProfileURL(doc.data.profileURL);
+                        console.log("profile url",profileURL);
+                        // console.log("after: ",userData);
+                    });
                     } else {
                       console.log('No documents found for the given query.');
                     }
@@ -100,7 +114,9 @@ const Profile = () => {
             department: userData?.department || '',
             passingYear: userData?.passingYear || '',
             work_exp: userData?.work_exp || [{}],
-            higherEducation: userData?.work_exp || [{}]
+            higherEducation: userData?.higherEducation || [{}],
+            profilepic: userData?.profilePicture || '',
+            profileURL: userData.profileURL || ''
         });
     };
 
@@ -173,6 +189,17 @@ const Profile = () => {
         });
     };
 
+    const handleProfilePictureChange = (e) => {
+        setProfilePicture(e.target.files[0]);
+        // const { name, value } = e.target;
+        //   setEditedUser({
+        //       ...editedUser,
+        //       [name]: e.target.files[0],
+        //   });
+        // console.log(editedUser)
+        console.log(profilePicture);
+    };
+
     const handleSaveChanges = async () => {
         try {
             const userId = auth.currentUser.uid;
@@ -186,6 +213,26 @@ const Profile = () => {
             if (querySnapshot.size > 0) {
             // Get the reference to the first matching document
             const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
+            
+            if (profilePicture) {
+                const storageRef = ref(storage,`/files/${userData.entryNo}`)
+                console.log("stor ref: ",storageRef);
+                const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+             
+                uploadTask.on(
+                    "state_changed",
+                    (err) => console.log(err),
+                    () => {
+                        console.log("innnn");
+                        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                            console.log("URL: ",url);
+                            // setProfileURL(process.env.PROFILE_BASE_URL + url);
+                            setEditedUser({ ...editedUser, profileURL: url });
+                        });
+                    }
+                ); 
+                console.log(profileURL);
+            }
 
             // Update the document with the new data
             await updateDoc(docRef, editedUser);
@@ -196,6 +243,24 @@ const Profile = () => {
             if (updatedSnapshot.exists()) {
                 // Update the userData state with the new data
                 setUserData(updatedSnapshot.data());
+            }
+
+            if (profilePicture) {
+                const storageRef = ref(storage,`/files/${userData.entryNo}`);
+                console.log("full: ",storageRef);
+                const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+             
+                uploadTask.on(
+                    "state_changed",
+                    (err) => console.log(err),
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                            console.log(url);
+                            // setProfileURL(url);
+                            setEditedUser({ ...editedUser, profileURL: url });
+                        });
+                    }
+                ); 
             }
 
             console.log('Document successfully updated!');
@@ -236,15 +301,17 @@ const Profile = () => {
         // Add more options as needed
     ];
 
-    const handleStartDateChange = (date) => {
-        setStartDate(date);
-        // Additional logic if needed
-    };
-
-    const handleEndDateChange = (date) => {
-        setEndDate(date);
-        // Additional logic if needed
-    };
+    // const handleStartDateChange = (date, index) => {
+    //     const updatedHigherEducation = [...editedUser.higherEducation];
+    //     updatedHigherEducation[index].startDate = date;
+    //     setEditedUser({ ...editedUser, higherEducation: updatedHigherEducation });
+    // };
+    
+    // const handleEndDateChange = (date, index) => {
+    //     const updatedHigherEducation = [...editedUser.higherEducation];
+    //     updatedHigherEducation[index].endDate = date;
+    //     setEditedUser({ ...editedUser, higherEducation: updatedHigherEducation });
+    // };      
 
     function stringToColor(string) {
         let hash = 0;
@@ -286,14 +353,14 @@ const Profile = () => {
                 </div>
 
                 {userData ? (
-                    <div className='flex flex-row justify-between'>
+                    <div className='flex flex-row justify-between auto-rows-fr'>
                         <div className='flex flex-col items-center justify-center'>
-                            <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6">
-                                <img src="/images/profile.jpeg" className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/>
+                            <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[270px]">
+                                <img src={`https://console.firebase.google.com/u/0/project/alumni-portal-df4f5/storage/alumni-portal-df4f5.appspot.com/${profileURL}`} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/>
                                 <h1 className="text-2xl font-bold text-gray-800 mb-1">{userData.name}</h1>
                                 <p className="text-gray-500">{userData.email}</p>
                             </div>
-                            <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6">
+                            <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[300px]">
                                 <h3 className='text-2xl font-bold text-gray-800 mb-4'>Contact Details</h3>
                                 <div className="flex items-center mb-2">
                                     <AiOutlineMail className="text-gray-500 mr-2" />
@@ -357,12 +424,18 @@ const Profile = () => {
                                 <h2 className="text-2xl font-bold text-gray-800 mb-6">Higher Education</h2>
                                 {Array.isArray(userData.higherEducation) && userData.higherEducation.length > 0 ? (
                                     <ul className="list-disc pl-4">
-                                        {userData.work_exp.map((highEdu, index) => (
-                                            <li key={index} className="mb-4">
-                                                <h3 className="text-xl font-semibold">{highEdu.course}</h3>
-                                                <h4 className="text-xl font-semibold">{highEdu.specialization}</h4>
-                                                <h4 className="text-xl font-semibold">{highEdu.institute}</h4>
-                                                <h5>{highEdu.duration}</h5>
+                                        {userData.higherEducation.map((highEdu, index) => (
+                                            <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between">
+                                                <div>
+                                                    <h3 className="text-lg font-semibold">{highEdu.course}</h3>
+                                                    <h4 className="text-sm text-gray-500">{highEdu.specialization}</h4>
+                                                    <p className="text-sm text-gray-500">{highEdu.institute}</p>
+                                                </div>
+                                                <div className="flex flex-row justify-center items-center">
+                                                    <h5>
+                                                        {highEdu.startYear}-{highEdu.endYear}
+                                                    </h5>
+                                                </div>                                                
                                             </li>
                                         ))}
                                     </ul>
@@ -420,6 +493,15 @@ const Profile = () => {
                         <div className="flex flex-row justify-center mb-2">
                             <h3 className="text-2xl font-bold text-gray-800 mb-1">Basic Details</h3>
                         </div>
+                        <form>
+                            <h2>Upload Profile Photo</h2>
+                            <input 
+                                name= "profilepic" 
+                                type="file" 
+                                accept="image/*" 
+                                onChange={handleProfilePictureChange} 
+                            />
+                        </form>
                         <div className="mb-1">
                             <input
                                 type="text"
@@ -555,26 +637,21 @@ const Profile = () => {
                                     className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                 />
                                 <div className="flex flex-row mb-2 space-x-4">
-                                    <DatePicker
-                                        selected={startDate}
-                                        onChange={handleStartDateChange}
-                                        selectsStart
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        placeholderText="Start Date"
-                                        className="w-full px-4 py-2 mr-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                        showPopperArrow={true}
+                                    <input
+                                        type="text"
+                                        name="startYear"
+                                        placeholder='Start Year'
+                                        value={highEdu.startYear || ''}
+                                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                     />
-                                    <DatePicker
-                                        selected={endDate}
-                                        onChange={handleEndDateChange}
-                                        selectsEnd
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        minDate={startDate}
-                                        placeholderText="End Date"
-                                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                        showPopperArrow={true}
+                                    <input
+                                        type="text"
+                                        name="endYear"
+                                        placeholder='Start Year'
+                                        value={highEdu.endYear || ''}
+                                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                     />
                                 </div>
 
@@ -649,14 +726,24 @@ const Profile = () => {
                                     onChange={(e) => handleInputChangeWorkExp(e, index)}
                                     className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                 />
-                                <input
-                                    type="text"
-                                    name="duration"
-                                    placeholder="Duration"
-                                    value={workExp.duration || ''}
-                                    onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                />
+                                <div className="flex flex-row mb-2 space-x-4">
+                                    <input
+                                        type="text"
+                                        name="startYear"
+                                        placeholder='Start Year'
+                                        value={workExp.startYear || ''}
+                                        onChange={(e) => handleInputChangeWorkExp(e, index)}
+                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    />
+                                    <input
+                                        type="text"
+                                        name="endYear"
+                                        placeholder='Start Year'
+                                        value={workExp.endYear || ''}
+                                        onChange={(e) => handleInputChangeWorkExp(e, index)}
+                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    />
+                                </div>
                                 <button
                                     onClick={() => handleRemoveWorkExp(index)}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"

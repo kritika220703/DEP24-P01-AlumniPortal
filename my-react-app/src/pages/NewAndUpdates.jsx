@@ -73,37 +73,37 @@ const newsletterItems = [
     id: 1,
     image: "/images/images.jpg",
     heading: "Feburary 2024",
-    driveLink: "https://drive.google.com/file/d/1B28VTl_sZbFH553kZRDDKstmjUpHBsAe/view?usp=drive_link"
+    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%20Volume%2012%2C%20Issue%20III%2C%20August%202023.pdf"
   },
   {
     id: 2,
     image: "/images/car1.jpg",
     heading: "January 2024",
-    driveLink: "https://drive.google.com/file/d/1B28VTl_sZbFH553kZRDDKstmjUpHBsAe/view?usp=drive_link"
+    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Newsletter-1_compressed.pdf"
   },
   {
     id: 3,
     image: "/images/IIT_Front.webp",
     heading: "December 2023",
-    driveLink: "https://drive.google.com/file/d/1B28VTl_sZbFH553kZRDDKstmjUpHBsAe/view?usp=drive_link"
+    driveLink: "https://www.iitrpr.ac.in/sites/default/files/IIT%20Ropar%20January%20Newsletter%202023.pdf"
   },
   {
     id: 4,
     image: "/images/download.jpg",
     heading: "November 2023",
-    driveLink: "https://drive.google.com/file/d/1B28VTl_sZbFH553kZRDDKstmjUpHBsAe/view?usp=drive_link"
+    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%20-%20Volume%2011%20-%20Issue%203%2C%20Nov%202022-compressed.pdf"
   },
   {
     id: 5,
     image: "/images/car1.jpg",
     heading: "October 2023",
-    driveLink: "https://drive.google.com/file/d/1B28VTl_sZbFH553kZRDDKstmjUpHBsAe/view?usp=drive_link"
+    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%20Volume%2011%2C%20Issue%202%2C%20July%202022.pdf"
   },
   {
     id: 6,
     image: "/images/images.jpg",
     heading: "September 2023",
-    driveLink: "https://drive.google.com/file/d/1B28VTl_sZbFH553kZRDDKstmjUpHBsAe/view?usp=drive_link"
+    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%2C%20Volume%2011%20Issue%201%20April%202022.pdf"
   },
 ];
 
