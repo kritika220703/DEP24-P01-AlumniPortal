@@ -35,6 +35,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const {login} = useAuth();
+  // console.log("user:", auth);
 
   const handleLogin = async (email, password) => {
     try {
@@ -45,7 +46,7 @@ const Login = () => {
           password
       );
 
-      console.log(user);
+      // console.log("user: ", user);
 
       login(user);
     } catch (error) {
@@ -90,6 +91,8 @@ const Login = () => {
           toast.error(errorMessage, toastOptions);
           return;
         }
+
+        console.log("snap:  ", snapshot);
   
       } catch (error) {
         console.error('Error getting documents:', error);
@@ -153,8 +156,9 @@ const Login = () => {
             notifySuccess("OTP verified successfully");
             setIsOtpVerified(true);
 
+            const userId = auth.currentUser.uid;
             // Storing user ID in local storage
-            localStorage.setItem("userId", auth);
+            localStorage.setItem("userId", userId);
 
             navigate("/home");
             setIsOtpSent(false);
