@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate ,useLocation} from "react-router-dom";
 import { useAuth } from '../utilities/AuthContext';
 import {auth, db} from "../firebase.js"
 import {
@@ -9,7 +9,6 @@ import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import image from '.././assets/administration-block-iit-ropar-8176406.webp'
-import {editedUser , profilePicture} from './BecomeAMember'
 
 const toastOptions = {
     position: "bottom-right",
@@ -20,6 +19,8 @@ const toastOptions = {
   };
 
 const SignUp = () => {
+    const location = useLocation();
+    const { editedUser, profilePicture } = location.state || {};
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [isValidEmail, setIsValidEmail] = useState(true);
@@ -29,7 +30,7 @@ const SignUp = () => {
     const [isOtpSent, setIsOtpSent] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     // const [userRes, setUserRes] = useState(null);
-
+    console.log(editedUser);
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
@@ -103,6 +104,12 @@ const SignUp = () => {
         
         if(name === ""){
             errorMessage = "UserName is required.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+
+        if (!editedUser || editedUser['entryNo'] === '') {
+            errorMessage = "User is not a Member";
             toast.error(errorMessage, toastOptions);
             return;
         }
