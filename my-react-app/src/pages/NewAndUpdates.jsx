@@ -31,25 +31,25 @@ const newsItems = [
   {
     id: 1,
     image: "/News_images/news1.jpg",
-    heading: "News Heading 1",
+    heading: "IIT-Ropar researchers discover rare metal in Sutlej",
     description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste inventore est beatae, maxime autem nostrum accusamus illum amet, natus esse aliquid eveniet, voluptate tenetur ratione animi temporibus fuga dolore libero earum ullam praesentium similique? Eaque provident, enim magnam nemo corporis laboriosam quibusdam quis vel quia, ab veniam a sit. Consectetur?"
   },
   {
     id: 2,
     image: "/News_images/news2.jpg",
-    heading: "News Heading 2",
+    heading: "IIT Ropar director Rajeev Ahuja gets additional charge of IIT-G",
     description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste inventore est beatae, maxime autem nostrum accusamus illum amet, natus esse aliquid eveniet, voluptate tenetur ratione animi temporibus fuga dolore libero earum ullam praesentium similique? Eaque provident, enim magnam nemo corporis laboriosam quibusdam quis vel quia, ab veniam a sit. Consectetur?"
   },
   {
     id: 3,
     image: "/News_images/news3.webp",
-    heading: "News Heading 3",
+    heading: "DroneAcharya expands training reach with IIT Ropar, shares up",
     description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste inventore est beatae, maxime autem nostrum accusamus illum amet, natus esse aliquid eveniet, voluptate tenetur ratione animi temporibus fuga dolore libero earum ullam praesentium similique? Eaque provident, enim magnam nemo corporis laboriosam quibusdam quis vel quia, ab veniam a sit. Consectetur?"
   },
   {
     id: 4,
     image: "/News_images/news4.jpg",
-    heading: "News Heading 4",
+    heading: "Kashmiri Startup, Wildfloc Adventures, Secures Seed Funding from IIT Ropar with KAN’s Support",
     description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste inventore est beatae, maxime autem nostrum accusamus illum amet, natus esse aliquid eveniet, voluptate tenetur ratione animi temporibus fuga dolore libero earum ullam praesentium similique? Eaque provident, enim magnam nemo corporis laboriosam quibusdam quis vel quia, ab veniam a sit. Consectetur?"
   },
   {

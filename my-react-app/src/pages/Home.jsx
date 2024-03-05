@@ -2,7 +2,6 @@ import React from 'react'
 import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
-import Gallery from '../components/Gallery'
 
 const Home = () => {
     const slides = [

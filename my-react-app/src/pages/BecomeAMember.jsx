@@ -10,7 +10,22 @@ const BecomeAMember = () => {
   const [workExperiences, setWorkExperiences] = useState([]);
   const [educationDetails, setEducationDetails] = useState([]);
   const [profilePicture, setProfilePicture] = useState(null);
-
+  const [editedUser, setEditedUser] = useState({
+      name: '',
+      role: '',
+      phone: '',
+      contrycode: '',
+      entryNo: '',
+      country: '',
+      hostel: '',
+      degree: '',
+      department: '',
+      passingYear: '',
+      joiningYear: '',
+      work_exp: [{}], // Store work experience as an array
+      higherEducation: [{}] // Store work experience as an array
+  });
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsFormSubmitted(1);
@@ -19,11 +34,6 @@ const BecomeAMember = () => {
   const handleSubmit2 = (e) => {
     e.preventDefault();
     setIsFormSubmitted(2);
-  };
-
-  const handleSubmit3 = (e) => {
-    e.preventDefault();
-    setIsFormSubmitted(3);
   };
 
   const handleworking = (e) => {
@@ -57,6 +67,34 @@ const BecomeAMember = () => {
 
   const handleProfilePictureChange = (e) => {
     setProfilePicture(e.target.files[0]);
+  };
+
+
+  const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setEditedUser({
+          ...editedUser,
+          [name]: value,
+      });
+      console.log(editedUser)
+  };
+
+  const handleInputChangeWorkExp = (e, index) => {
+      const { name, value } = e.target;
+      const updatedWorkExp = [...editedUser.work_exp];
+      updatedWorkExp[index] = { ...updatedWorkExp[index], [name]: value };
+      setEditedUser({ ...editedUser, work_exp: updatedWorkExp });
+  };
+
+  const handleInputChangeHigherEdu = (e, index) => {
+      const { name, value } = e.target;
+      const updatedHigherEdu = [...editedUser.higherEducation];
+      updatedHigherEdu[index] = { ...updatedHigherEdu[index], [name]: value };
+      setEditedUser({ 
+          ...editedUser, 
+          higherEducation: updatedHigherEdu 
+      });
+      console.log(editedUser);
   };
 
   return (
@@ -107,15 +145,17 @@ const BecomeAMember = () => {
             </form>
             {ischeckbox === 2 ? (
               <div className='working-details'>
-                {educationDetails.map((edu, index) => (
+                {educationDetails.map((highEdu, index) => (
                   <div key={index} className='working-details-inside'>
                     <label>
                       Name Of Institute:
                       <br />
                       <input
                         type="text"
-                        name="Institute"
+                        name="institute"
                         placeholder='Ex. IIM Ahemdabad'
+                        value={highEdu.institute || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -124,8 +164,10 @@ const BecomeAMember = () => {
                       <br />
                       <input
                         type="text"
-                        name="Degree"
+                        name="degree"
                         placeholder='MBA'
+                        value={highEdu.degree || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -136,6 +178,8 @@ const BecomeAMember = () => {
                         type="text"
                         name="department"
                         placeholder='Marketing'
+                        value={highEdu.department || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -146,6 +190,8 @@ const BecomeAMember = () => {
                         type="text"
                         name="startYear"
                         placeholder='Year'
+                        value={highEdu.startYear || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -156,6 +202,8 @@ const BecomeAMember = () => {
                         type="text"
                         name="endYear"
                         placeholder='Year'
+                        value={highEdu.endYear || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -268,23 +316,49 @@ const BecomeAMember = () => {
                   <label>
                     Full Name:
                     <br/>
-                    <input type="text" name="fullName" className='text_input-member' placeholder='Your Name'/>
+                    <input 
+                      type="text" 
+                      name="name" 
+                      className='text_input-member' 
+                      placeholder='Your Name'
+                      value={editedUser.name}
+                      onChange={handleInputChange}
+                    />
                   </label>
                   <label>
                     Entry Number :
                     <br/>
-                    <input type="text" name="Entry_no" className='text_input-member' placeholder='Entry No.'/>
+                    <input 
+                    type="text" 
+                    className='text_input-member' 
+                    name="entryNo"
+                    placeholder="Entry Number"
+                    value={editedUser.entryNo}
+                    onChange={handleInputChange}
+                    
+                  />
                   </label>
                   <label>
                   Year of Joining:
                   <br/>
-                  <input type="text" name="Year_of_passing" className='text_input-member' placeholder='Enter Year'/>
+                  <input 
+                    className='text_input-member'
+                    type="year"
+                    name="joiningYear"
+                    value={editedUser.joiningYear}
+                    onChange={handleInputChange}
+                  />
                   </label>
 
                   <label>
                     Degree :
                     <br />
-                    <select id='course-degree' name='course-degree'>
+                    <select id='course-degree' 
+                      name="degree"
+                      value={editedUser.degree}
+                      onChange={handleInputChange}
+                      className='text_input-member'
+                    >
                       <option value="">Choose</option>
                       <option value='undergraduate'>Undergraduate (B.Tech/B.E./B.Sc.)</option>
                       <option value='masters'>Masters (M.Tech/M.Sc.)</option>
@@ -296,7 +370,7 @@ const BecomeAMember = () => {
                   <label>
                     Your Hostel:
                     <br/>
-                    <select name="hostel" className='text_input-member' >
+                    <select name="hostel" className='text_input-member' value ={editedUser.hostel} onChange = {handleInputChange} >
                       <option value="">Choose</option>
                       <option value="chenab">Chenab</option>
                       <option value="ravi">Ravi</option>
@@ -312,7 +386,11 @@ const BecomeAMember = () => {
                   <label>
                     Role:
                     <br/>
-                    <select name="Role" className='text_input-member'>
+                    <select name="role" 
+                      className='text_input-member'
+                      value ={editedUser.role} 
+                      onChange = {handleInputChange}
+                      >
                     <option value="">Choose</option>
                     <option value='alumni'>Alumni</option>
                     <option value='student'>Student</option>
@@ -323,23 +401,38 @@ const BecomeAMember = () => {
                   <label>
                     Your Phone/WhatsApp Numbers:
                     <br/>
-                    <select id='country-code' name='country-code'>
+                    <select id='country-code' name='countrycode' value={editedUser.contrycode} onChange={handleInputChange}>
                     <option value='+91'>+91</option>
                     <option value='+1'>+1</option>
                     </select>
-                    <input type="tel" name="phone" className='text_input-member' placeholder='Phone Number'/>
+                    <input type="tel" 
+                    name="phone" 
+                    className='text_input-member' 
+                    placeholder='Phone Number'
+                    value = {editedUser.contrycode}
+                    onChange={handleInputChange}
+                    />
                   </label>
                   
                   <label>
                     Year of Passing:
                     <br/>
-                    <input type="text" name="Year_of_passing" className='text_input-member' placeholder='Enter Year'/>
+                    <input type="text"
+                    className='text_input-member' 
+                    name="passingYear"
+                    value={editedUser.passingYear}
+                    onChange={handleInputChange}
+                    />
                   </label>
                   
                   <label>
                     Your Department at IIT Ropar:
                     <br/>
-                    <select name="department" className='text_input-member'>
+                    <select name="department"
+                    className='text_input-member'
+                    value = {editedUser.department}
+                    onChange={handleInputChange}
+                    >
                     <option value="">Choose</option>
                     <option value="CSE">Computer Science</option>
                     <option value="EE">Electrical</option>
@@ -361,7 +454,13 @@ const BecomeAMember = () => {
                   <label>
                     Current Country of Residence:
                     <br/>
-                    <input type="text" name="country" className='text_input-member' placeholder='Country'/>
+                    <input type="text" 
+                    name="country" 
+                    className='text_input-member' 
+                    placeholder='Country' 
+                    value={editedUser.country}
+                    onChange={handleInputChange}
+                    />
                   </label>
                 </div>
               </div>
