@@ -200,7 +200,7 @@ const Login = () => {
             {/* Link to navigate to the login page */}
             <p className="mt-4 text-gray-600 text-center text-[20px]">
                 Don not have an account?{" "}
-                <Link to="/" className="text-indigo-700 hover:underline">
+                <Link to="/SignUp" className="text-indigo-700 hover:underline">
                 Sign Up
                 </Link>
             </p>

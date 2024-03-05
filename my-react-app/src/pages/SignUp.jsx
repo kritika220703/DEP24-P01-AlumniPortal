@@ -42,7 +42,7 @@ const SignUp = () => {
         setEmail(newEmail);
     
         // Validate email format using a regular expression
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@iitrpr\.ac\.in$/;
         const isValid = emailRegex.test(newEmail);
         // const isValid = validator.isEmail(newEmail);
         setIsValidEmail(isValid);
@@ -70,9 +70,6 @@ const SignUp = () => {
             console.log(user);
 
             const docRef = await addDoc(collection(db, "Users"), {
-                name: username,
-                email: email,
-                // institute_name: '',
                 uid: user.uid,
             });
 
@@ -108,7 +105,7 @@ const SignUp = () => {
                     ); 
                     // console.log(profileURL);
                 }
-
+                editedUser['email']=email;
                 // Update the document with the new data
                 await updateDoc(docRef, editedUser);
 
