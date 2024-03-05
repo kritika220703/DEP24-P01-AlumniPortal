@@ -14,6 +14,8 @@ import { AuthProvider } from './utilities/AuthContext';
 import GivingBack from './pages/GivingBack';
 import NewAndUpdates from './pages/NewAndUpdates';
 import BecomeAMember from './pages/BecomeAMember';
+import  Captcha from './captcha.js';
+
 
 function App() {
   // <NavbarComponent/>
