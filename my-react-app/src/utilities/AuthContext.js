@@ -26,6 +26,9 @@ export function AuthProvider({children}) {
     }
 
     const logout = () => {
+        
+        // Removing user ID from local storage
+        localStorage.removeItem("userId");
         return signOut(auth).then(() => {
           navigate("/");
         });
