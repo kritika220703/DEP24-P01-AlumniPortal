@@ -152,6 +152,10 @@ const Login = () => {
             console.log("login done");
             notifySuccess("OTP verified successfully");
             setIsOtpVerified(true);
+
+            // Storing user ID in local storage
+            localStorage.setItem("userId", auth);
+
             navigate("/home");
             setIsOtpSent(false);
         }
