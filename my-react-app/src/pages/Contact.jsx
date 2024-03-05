@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import Captcha from 'react-captcha-code';
-import Captcha from '../captcha';
+import Captcha from '../components/captcha';
 
 const toastOptions = {
   position: "bottom-right",
@@ -21,8 +21,7 @@ const Contact = () => {
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-//   const [captcha, setCaptcha] = useState('');
-//   const [generatedCaptcha, setGeneratedCaptcha] = useState('');
+  const [verified, setVerified] = useState(false); // State to track captcha verification
 
   let errorMessage = "";
   const notifySuccess = (message) => {
@@ -31,6 +30,13 @@ const Contact = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+
+    // Check if captcha is verified
+    if (!verified) {
+      errorMessage = "Please verify the captcha.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
 
     //check if all fields are filled
     if(email === ""){
@@ -89,12 +95,18 @@ const Contact = () => {
       setFullName("");
       setMessage("");
       setPhone("");
+      setVerified(false);
 
   } catch(error) {
     // errorMessage = "Failed to create an account.";
     toast.error(error, toastOptions);
-  }
-  setIsLoading(false);
+    }
+    setIsLoading(false);
+
+    // Reload the page
+    setTimeout(() => {
+      window.location.reload();
+    }, 5000); // Reload after 3 seconds
 
     // Handle form submission
     console.log('Form submitted!');
@@ -187,16 +199,19 @@ const Contact = () => {
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full h-[100px] bg-gray-200 rounded-lg px-4 py-2 focus:bg-white transition-colors duration-300"
+                className="w-full h-[50px] bg-gray-200 rounded-lg px-4 py-2 focus:bg-white transition-colors duration-300"
               ></textarea>
             </div>
             <div className="mb-4">
-              <Captcha/>
+              <Captcha setVerified={setVerified} /> {/* Pass setVerified as prop */}
             </div>
             <div className='flex flex-row justify-center'>
               <button
                 type="submit"
-                className="bg-indigo-800 text-white py-2 px-8 rounded-lg hover:bg-white hover:text-indigo-800 border border-gray-300 transition-colors duration-300">
+                disabled={!verified} // Disable button if captcha is not verified
+                className="bg-indigo-800 text-white py-2 px-8 rounded-lg hover:bg-white 
+                hover:text-indigo-800 border border-gray-300 transition-colors duration-300"
+              >
                 Submit
               </button>
             </div>
