@@ -27,11 +27,11 @@ const NavLinks = () => {
         {
             name: "Community Events",
             path: "/CommunityEvents",
-            submenu: true,
-            sublinks: [
-                { name: "Events", path: "/pages/NewsAndUpdates" },
-                { name: "Reunion", path: "/pages/Gallery" },
-            ]
+            // submenu: true,
+            // sublinks: [
+            //     { name: "Events", path: "/pages/NewsAndUpdates" },
+            //     { name: "Reunion", path: "/pages/Gallery" },
+            // ]
         },
         {
             name: "Contact us",

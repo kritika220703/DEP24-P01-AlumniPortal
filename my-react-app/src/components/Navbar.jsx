@@ -1,13 +1,33 @@
-import React from 'react'
+import React, {useState} from 'react'
 import logo from "./../assets/logo.png"
 import {Link} from "react-router-dom"
 import NavLinks from "./NavLinks"
 import { useNavigate } from "react-router-dom";
 import { IoPersonCircle } from "react-icons/io5";
+import { FaSignOutAlt } from 'react-icons/fa';
+import { useAuth } from '../utilities/AuthContext.js'
+
 const Navbar = () => {
+  // const {logout} = useAuth();
   const[open , setOpen] = React.useState(false)
   const[toggle,setToggle] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem("userId") !== null;
+  });
   const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try {
+      // await logout();
+      // Removing user ID from local storage
+      localStorage.removeItem("userId");
+      navigate("/login");
+      // Additional logout actions if needed
+    } catch (error) {
+      console.error('Logout error:', error.message);
+    }
+  };
+
   return (
    <nav className='text-black font-normal'>
      <div className='flex items-center font-medium justify-around'>
@@ -27,35 +47,52 @@ const Navbar = () => {
 
        <ul className=' md:flex hidden  items-center gap-8 text-black-300 '>
         <NavLinks/>
-        <div className='w-[150px] h-9 rounded-lg flex flex-row border-2 border-blue-700 items-center justify-center'>
-  <div
-    className={`${
-      toggle
-        ? 'bg-white text-black transition-all duration-300'
-        : 'bg-blue-500 text-white transition-all duration-300'
-    } w-[75px] h-7 ml-1 flex items-center justify-center rounded-lg cursor-pointer`}
-    onClick={() => {
-      setToggle(!toggle);
-      navigate('/login');
-    }}
-  >
-    Login
-  </div>
-  <div
-    className={`${
-      !toggle
-        ? 'bg-white text-black transition-all duration-300'
-        : 'bg-blue-500 text-white transition-all duration-300'
-    } w-[100px] h-7 mr-2 flex items-center justify-center rounded-lg cursor-pointer`}
-    onClick={() => {
-      setToggle(!toggle);
-    
-      navigate('/signup');}}
-  >
-    Sign Up
-  </div>
-        </div>
-        <IoPersonCircle className='text-[30px]'/>
+        <>
+          {isLoggedIn ? (
+            <>
+              <IoPersonCircle 
+                className='text-[30px]'
+                onClick={() => {
+                  navigate('/profile');
+                }}
+              />
+              <FaSignOutAlt 
+              className='text-[30px]'
+              onClick={handleLogout}
+              />
+            </>
+          ) : (
+            <div className='w-[150px] h-9 rounded-lg flex flex-row border-2 border-blue-700 items-center justify-center'>
+              <div
+                className={`${
+                  toggle
+                    ? 'bg-white text-black transition-all duration-300'
+                    : 'bg-blue-500 text-white transition-all duration-300'
+                } w-[75px] h-7 ml-1 flex items-center justify-center rounded-lg cursor-pointer`}
+                onClick={() => {
+                  setToggle(!toggle);
+                  navigate('/login');
+                }}
+              >
+                Login
+              </div>
+
+              <div
+                className={`${
+                  !toggle
+                    ? 'bg-white text-black transition-all duration-300'
+                    : 'bg-blue-500 text-white transition-all duration-300'
+                } w-[100px] h-7 mr-2 flex items-center justify-center rounded-lg cursor-pointer`}
+                onClick={() => {
+                  setToggle(!toggle);
+                
+                  navigate('/signup')}}
+              >
+                Sign Up
+              </div>
+            </div>
+          )};
+        </>        
        </ul>
 
        {/* Mobile View */}
