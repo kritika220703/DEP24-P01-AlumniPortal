@@ -9,6 +9,7 @@ import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import image from '.././assets/administration-block-iit-ropar-8176406.webp'
+import {editedUser , profilePicture} from './BecomeAMember'
 
 const toastOptions = {
     position: "bottom-right",

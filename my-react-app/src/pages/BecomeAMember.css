@@ -63,8 +63,13 @@
   }
 
   .member-button{
+    align-items: center;
     display: flex;
-    justify-content: center;
+    flex-direction:column;
+  }
+
+  .error-message-mandatory-fields{
+    color:red;
   }
 
 .member-column1 input,

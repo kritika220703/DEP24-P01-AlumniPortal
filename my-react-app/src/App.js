@@ -23,7 +23,7 @@ function App() {
     <div className="App">
       <AuthProvider>
         <Routes>
-          <Route exact path="/" element={<SignUpPage />} />
+          <Route exact path="/" element={<Home />} />
           <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/profile" element={<Profile />} />
