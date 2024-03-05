@@ -3,27 +3,98 @@ import { Checkmark } from 'react-checkmark'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faCheckSquare  } from '@fortawesome/free-solid-svg-icons';
 import './BecomeAMember.css'; // Assuming you have a CSS file for this component
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL 
+} from "firebase/storage";
+import {storage} from "../firebase.js"
+
 
 const BecomeAMember = () => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(0);
   const [ischeckbox, setIsWorkingProfessional] = useState(0);
-  const [workExperiences, setWorkExperiences] = useState([]);
-  const [educationDetails, setEducationDetails] = useState([]);
   const [profilePicture, setProfilePicture] = useState(null);
-
+  const [errorMessage, setErrorMessage] = useState(0);
+  const [editedUser, setEditedUser] = useState({
+      name: '',
+      role: '',
+      phone: '',
+      contrycode: '',
+      entryNo: '',
+      country: '',
+      hostel: '',
+      degree: '',
+      department: '',
+      passingYear: '',
+      joiningYear: '',
+      work_exp: [{}], // Store work experience as an array
+      higherEducation: [{}], // Store work experience as an array
+      others: '',
+      profilepic: ''
+  });
+  
   const handleSubmit = (e) => {
     e.preventDefault();
+    const mandatoryFields = ['name', 'role', 'phone', 'contrycode', 'entryNo', 'country', 'hostel', 'degree', 'department', 'passingYear', 'joiningYear'];
+    const missingFields = mandatoryFields.filter(field => !editedUser[field]);
+
+    if (missingFields.length > 0) {
+      setErrorMessage(1);
+      return;
+    }
     setIsFormSubmitted(1);
+    setErrorMessage(0);
   };
 
   const handleSubmit2 = (e) => {
     e.preventDefault();
-    setIsFormSubmitted(2);
-  };
+    if (ischeckbox === 1) {
+      const isWorkExpValid = editedUser.work_exp.every((workExp) => {
+        return workExp.job_title && workExp.company && workExp.industry && workExp.startYear && workExp.endYear;
+      });
 
-  const handleSubmit3 = (e) => {
-    e.preventDefault();
-    setIsFormSubmitted(3);
+      if (!isWorkExpValid) {
+        // If any field is missing in work experience, set the error message
+        setErrorMessage(1);
+        return;
+      }
+    } 
+    else if (ischeckbox === 3) {
+      if (!editedUser.others) {
+        // If others section is selected but the field is missing, set the error message
+        setErrorMessage(1);
+        return;
+      }
+    }
+    else{
+      const isEduExpValid = editedUser.higherEducation.every((highEdu) => {
+        return highEdu.institute && highEdu.degree && highEdu.department && highEdu.startYear && highEdu.endYear;
+      });
+
+      if (!isEduExpValid) {
+        setErrorMessage(1);
+        return;
+      }
+    }
+
+    if (profilePicture) {
+      const storageRef = ref(storage,`/files/${profilePicture.name}`)
+      const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+   
+      uploadTask.on(
+          "state_changed",
+          (err) => console.log(err),
+          () => {
+              getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                  console.log(url);
+              });
+          }
+      ); 
+    }
+    setIsFormSubmitted(2);
+    setErrorMessage(0);
+
   };
 
   const handleworking = (e) => {
@@ -48,15 +119,57 @@ const BecomeAMember = () => {
   };
 
   const addWorkExperience = () => {
-    setWorkExperiences([...workExperiences, {}]);
+    setEditedUser({
+        ...editedUser,
+        work_exp: [...editedUser.work_exp, {}]
+    });
   };
 
   const addEducationDetail = () => {
-    setEducationDetails([...educationDetails, {}]);
+      // Add an empty work experience object to the array
+      setEditedUser({
+        ...editedUser,
+        higherEducation: [...editedUser.higherEducation, {}]
+    });
   };
 
   const handleProfilePictureChange = (e) => {
     setProfilePicture(e.target.files[0]);
+    const { name, value } = e.target;
+      setEditedUser({
+          ...editedUser,
+          [name]: e.target.files[0],
+      });
+    console.log(editedUser)
+    console.log(profilePicture);
+  };
+
+
+  const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setEditedUser({
+          ...editedUser,
+          [name]: value,
+      });
+      console.log(editedUser)
+  };
+
+  const handleInputChangeWorkExp = (e, index) => {
+      const { name, value } = e.target;
+      const updatedWorkExp = [...editedUser.work_exp];
+      updatedWorkExp[index] = { ...updatedWorkExp[index], [name]: value };
+      setEditedUser({ ...editedUser, work_exp: updatedWorkExp });
+  };
+
+  const handleInputChangeHigherEdu = (e, index) => {
+      const { name, value } = e.target;
+      const updatedHigherEdu = [...editedUser.higherEducation];
+      updatedHigherEdu[index] = { ...updatedHigherEdu[index], [name]: value };
+      setEditedUser({ 
+          ...editedUser, 
+          higherEducation: updatedHigherEdu 
+      });
+      console.log(editedUser);
   };
 
   return (
@@ -107,15 +220,17 @@ const BecomeAMember = () => {
             </form>
             {ischeckbox === 2 ? (
               <div className='working-details'>
-                {educationDetails.map((edu, index) => (
+                {editedUser.higherEducation.map((highEdu, index) => (
                   <div key={index} className='working-details-inside'>
                     <label>
                       Name Of Institute:
                       <br />
                       <input
                         type="text"
-                        name="Institute"
+                        name="institute"
                         placeholder='Ex. IIM Ahemdabad'
+                        value={highEdu.institute || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -124,8 +239,10 @@ const BecomeAMember = () => {
                       <br />
                       <input
                         type="text"
-                        name="Degree"
+                        name="degree"
                         placeholder='MBA'
+                        value={highEdu.degree || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -136,6 +253,8 @@ const BecomeAMember = () => {
                         type="text"
                         name="department"
                         placeholder='Marketing'
+                        value={highEdu.department || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -146,6 +265,8 @@ const BecomeAMember = () => {
                         type="text"
                         name="startYear"
                         placeholder='Year'
+                        value={highEdu.startYear || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -156,6 +277,8 @@ const BecomeAMember = () => {
                         type="text"
                         name="endYear"
                         placeholder='Year'
+                        value={highEdu.endYear || ''}
+                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
                       />
                     </label>
                     <br />
@@ -165,15 +288,17 @@ const BecomeAMember = () => {
               </div>
             ) : ischeckbox === 1 ? (
               <div className='working-details'>
-                {workExperiences.map((exp, index) => (
+                {editedUser.work_exp.map((workExp, index) => (
                   <div key={index} className='working-details-inside'>
                     <label>
                       Work title:
                       <br />
                       <input
                         type="text"
-                        name="workTitle"
-                        placeholder='Ex. Software Engineer'
+                        name="job_title"
+                        placeholder="Ex- Software Developer"
+                        value={workExp.job_title || ''}
+                        onChange={(e) => handleInputChangeWorkExp(e, index)}
                       />
                     </label>
                     <br />
@@ -182,8 +307,10 @@ const BecomeAMember = () => {
                       <br />
                       <input
                         type="text"
-                        name="companyName"
+                        name="company"
                         placeholder='Ex. Google'
+                        value={workExp.company || ''}
+                        onChange={(e) => handleInputChangeWorkExp(e, index)}
                       />
                     </label>
                     <br />
@@ -192,8 +319,10 @@ const BecomeAMember = () => {
                       <br />
                       <input
                         type="text"
-                        name="workIndustry"
+                        name="industry"
                         placeholder='Ex. E-commerce'
+                        value={workExp.industry || ''}
+                        onChange={(e) => handleInputChangeWorkExp(e, index)}
                       />
                     </label>
                     <br />
@@ -204,6 +333,8 @@ const BecomeAMember = () => {
                         type="text"
                         name="startYear"
                         placeholder='Year'
+                        value={workExp.startYear || ''}
+                        onChange={(e) => handleInputChangeWorkExp(e, index)}
                       />
                     </label>
                     <br />
@@ -214,6 +345,8 @@ const BecomeAMember = () => {
                         type="text"
                         name="endYear"
                         placeholder='Year'
+                        value={workExp.endYear || ''}
+                        onChange={(e) => handleInputChangeWorkExp(e, index)}
                       />
                     </label>
                     <br />
@@ -228,7 +361,10 @@ const BecomeAMember = () => {
                   <br />
                   <input
                     type="text"
-                    name="Others"
+                    name="others"
+                    className='text_input-member' 
+                    value = {editedUser.others}
+                    onChange={handleInputChange}
                   />
                 </label>
 
@@ -241,10 +377,11 @@ const BecomeAMember = () => {
 
           <form>
               <h2>Upload Profile Photo</h2>
-              <input type="file" accept="image/*" onChange={handleProfilePictureChange} />
+              <input name= "profilepic" type="file" accept="image/*" onChange={handleProfilePictureChange} />
             </form>
             <br/>
             <div className='member-button'>
+                {errorMessage==1 ? (<div className="error-message-mandatory-fields">Please fill in all mandatory fields.</div>) : <p></p>}
                 <button type="submit" className='submit-member' onClick={handleSubmit2} >Next Step</button>
             </div>
           </div>
@@ -266,25 +403,51 @@ const BecomeAMember = () => {
             <div className='member-form-inside '>
                 <div className='member-column1'> 
                   <label>
-                    Full Name:
+                    Full Name*
                     <br/>
-                    <input type="text" name="fullName" className='text_input-member' placeholder='Your Name'/>
+                    <input 
+                      type="text" 
+                      name="name" 
+                      className='text_input-member' 
+                      placeholder='Your Name'
+                      value={editedUser.name}
+                      onChange={handleInputChange}
+                    />
                   </label>
                   <label>
-                    Entry Number :
+                    Entry Number*
                     <br/>
-                    <input type="text" name="Entry_no" className='text_input-member' placeholder='Entry No.'/>
+                    <input 
+                    type="text" 
+                    className='text_input-member' 
+                    name="entryNo"
+                    placeholder="Entry Number"
+                    value={editedUser.entryNo}
+                    onChange={handleInputChange}
+                    
+                  />
                   </label>
                   <label>
-                  Year of Joining:
+                  Year of Joining*
                   <br/>
-                  <input type="text" name="Year_of_passing" className='text_input-member' placeholder='Enter Year'/>
+                  <input 
+                    className='text_input-member'
+                    type="year"
+                    name="joiningYear"
+                    value={editedUser.joiningYear}
+                    onChange={handleInputChange}
+                  />
                   </label>
 
                   <label>
-                    Degree :
+                    Degree*
                     <br />
-                    <select id='course-degree' name='course-degree'>
+                    <select id='course-degree' 
+                      name="degree"
+                      value={editedUser.degree}
+                      onChange={handleInputChange}
+                      className='text_input-member'
+                    >
                       <option value="">Choose</option>
                       <option value='undergraduate'>Undergraduate (B.Tech/B.E./B.Sc.)</option>
                       <option value='masters'>Masters (M.Tech/M.Sc.)</option>
@@ -294,9 +457,9 @@ const BecomeAMember = () => {
                     </select>
                   </label>
                   <label>
-                    Your Hostel:
+                    Your Hostel*
                     <br/>
-                    <select name="hostel" className='text_input-member' >
+                    <select name="hostel" className='text_input-member' value ={editedUser.hostel} onChange = {handleInputChange} >
                       <option value="">Choose</option>
                       <option value="chenab">Chenab</option>
                       <option value="ravi">Ravi</option>
@@ -310,9 +473,13 @@ const BecomeAMember = () => {
                 </div>
                 <div className='member-column2'>
                   <label>
-                    Role:
+                    Role*
                     <br/>
-                    <select name="Role" className='text_input-member'>
+                    <select name="role" 
+                      className='text_input-member'
+                      value ={editedUser.role} 
+                      onChange = {handleInputChange}
+                      >
                     <option value="">Choose</option>
                     <option value='alumni'>Alumni</option>
                     <option value='student'>Student</option>
@@ -321,25 +488,41 @@ const BecomeAMember = () => {
                   </label>
                 
                   <label>
-                    Your Phone/WhatsApp Numbers:
+                    Your Phone/WhatsApp Numbers*
                     <br/>
-                    <select id='country-code' name='country-code'>
+                    <select id='country-code' name='contrycode' value={editedUser.contrycode} onChange={handleInputChange}>
+                    <option value='0'></option>
                     <option value='+91'>+91</option>
                     <option value='+1'>+1</option>
                     </select>
-                    <input type="tel" name="phone" className='text_input-member' placeholder='Phone Number'/>
+                    <input type="tel" 
+                    name="phone" 
+                    className='text_input-member' 
+                    placeholder='Phone Number'
+                    value = {editedUser.phone}
+                    onChange={handleInputChange}
+                    />
                   </label>
                   
                   <label>
-                    Year of Passing:
+                    Year of Passing*
                     <br/>
-                    <input type="text" name="Year_of_passing" className='text_input-member' placeholder='Enter Year'/>
+                    <input type="text"
+                    className='text_input-member' 
+                    name="passingYear"
+                    value={editedUser.passingYear}
+                    onChange={handleInputChange}
+                    />
                   </label>
                   
                   <label>
-                    Your Department at IIT Ropar:
+                    Your Department at IIT Ropar*
                     <br/>
-                    <select name="department" className='text_input-member'>
+                    <select name="department"
+                    className='text_input-member'
+                    value = {editedUser.department}
+                    onChange={handleInputChange}
+                    >
                     <option value="">Choose</option>
                     <option value="CSE">Computer Science</option>
                     <option value="EE">Electrical</option>
@@ -359,14 +542,21 @@ const BecomeAMember = () => {
                   </select>
                   </label>
                   <label>
-                    Current Country of Residence:
+                    Current Country of Residence*
                     <br/>
-                    <input type="text" name="country" className='text_input-member' placeholder='Country'/>
+                    <input type="text" 
+                    name="country" 
+                    className='text_input-member' 
+                    placeholder='Country' 
+                    value={editedUser.country}
+                    onChange={handleInputChange}
+                    />
                   </label>
                 </div>
               </div>
               <br />
               <div className='member-button'>
+                {errorMessage==1 ? (<div className="error-message-mandatory-fields">Please fill in all mandatory fields.</div>) : <p></p>}
                 <button type="submit" className='submit-member' >Join The Network</button>
               </div>
             </form>

@@ -14,7 +14,7 @@ function BecomeMember() {
 
   return (
     <div className={`relative border-2 rounded-lg text-left p-4 transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`} style={{ height: '600px' }}>
-      <div className="absolute inset-0 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/images/About_IIT_Ropar_banner_d0c869852d.webp')", backgroundPosition: 'top' }}>
+      <div className="absolute inset-0 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/images/IIT_Front.webp')", backgroundPosition: 'top' }}>
         {/* <div className="bg-black opacity-50 absolute inset-0"></div> */}
       </div>
       <div className="relative z-10 p-8 text-gray-800">
