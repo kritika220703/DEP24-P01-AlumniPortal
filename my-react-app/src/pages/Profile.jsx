@@ -25,7 +25,7 @@ const Profile = () => {
     const [endDate, setEndDate] = useState(new Date());
     const [userData, setUserData] = useState(null);
     const [profilePicture, setProfilePicture] = useState(null);
-    let dp = "";
+    let dp = "/images/profile.jpeg";
     const [profileURL, setProfileURL] = useState(dp);
     const [editedUser, setEditedUser] = useState({
         name: '',
@@ -356,7 +356,8 @@ const Profile = () => {
                     <div className='flex flex-row justify-between auto-rows-fr'>
                         <div className='flex flex-col items-center justify-center'>
                             <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[270px]">
-                                <img src={`https://console.firebase.google.com/u/0/project/alumni-portal-df4f5/storage/alumni-portal-df4f5.appspot.com/${profileURL}`} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/>
+                                {/* <img src={`https://console.firebase.google.com/u/0/project/alumni-portal-df4f5/storage/alumni-portal-df4f5.appspot.com/${profileURL}`} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/> */}
+                                <img src={dp} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/>
                                 <h1 className="text-2xl font-bold text-gray-800 mb-1">{userData.name}</h1>
                                 <p className="text-gray-500">{userData.email}</p>
                             </div>

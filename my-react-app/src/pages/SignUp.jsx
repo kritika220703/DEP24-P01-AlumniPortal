@@ -5,7 +5,13 @@ import {auth, db} from "../firebase.js"
 import {
     createUserWithEmailAndPassword
 } from "firebase/auth";
-import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
+import {
+    ref,
+    uploadBytesResumable,
+    getDownloadURL 
+  } from "firebase/storage";
+import {storage} from "../firebase.js"
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import image from '.././assets/administration-block-iit-ropar-8176406.webp'
@@ -69,6 +75,48 @@ const SignUp = () => {
                 // institute_name: '',
                 uid: user.uid,
             });
+
+            const userId = user.uid;
+            const userDocRef = doc(db, 'users', userId);
+            const colRef = collection(db, 'Users');
+            const q = query(colRef, where('uid', '==', userId));
+
+            const querySnapshot = await getDocs(q);
+
+            // Check if any documents match the query
+            if (querySnapshot.size > 0) {
+                // Get the reference to the first matching document
+                const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
+            
+                if (profilePicture) {
+                    const storageRef = ref(storage,`/files/${editedUser['entryNo']}`)
+                    console.log("stor ref: ",storageRef);
+                    const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+                
+                    uploadTask.on(
+                        "state_changed",
+                        (err) => console.log(err),
+                        () => {
+                            console.log("innnn");
+                            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                                console.log("URL: ",url);
+                                editedUser['profileURL']=url;
+                                // setProfileURL(process.env.PROFILE_BASE_URL + url);
+                                // setEditedUser({ ...editedUser, profileURL: url });
+                            });
+                        }
+                    ); 
+                    // console.log(profileURL);
+                }
+
+                // Update the document with the new data
+                await updateDoc(docRef, editedUser);
+
+                console.log('Document successfully updated!');
+            } else {
+            console.log('No documents found for the given query.');
+            }
+
             console.log("auth.currentuser::   ",auth.currentUser);
             login(user);
 
@@ -111,6 +159,7 @@ const SignUp = () => {
         if (!editedUser || editedUser['entryNo'] === '') {
             errorMessage = "User is not a Member";
             toast.error(errorMessage, toastOptions);
+            navigate("/BecomeAMember");
             return;
         }
         
@@ -192,6 +241,11 @@ const SignUp = () => {
                 await signup(email, "666666", name);
                 console.log("signup done");
                 notifySuccess("OTP verified successfully");
+
+                const userId = auth.currentUser.uid;
+                // Storing user ID in local storage
+                localStorage.setItem("userId", userId);
+
                 navigate("/home");
                 setIsOtpSent(false);
             }

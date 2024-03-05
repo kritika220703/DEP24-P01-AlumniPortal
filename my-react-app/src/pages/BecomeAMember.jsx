@@ -32,7 +32,7 @@ const BecomeAMember = () => {
       work_exp: [{}], // Store work experience as an array
       higherEducation: [{}], // Store work experience as an array
       others: '',
-      profilepic: '',
+      profileURL: '',
       email: ''
   });
   const navigate = useNavigate(); 
@@ -121,21 +121,6 @@ const BecomeAMember = () => {
       }
     }
 
-    if (profilePicture) {
-      const storageRef = ref(storage,`/files/${profilePicture.name}`)
-      const uploadTask = uploadBytesResumable(storageRef, profilePicture);
-   
-      uploadTask.on(
-          "state_changed",
-          (err) => console.log(err),
-          () => {
-              getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                  console.log(url);
-                  editedUser['profilepic']=url;
-              });
-          }
-      ); 
-    }
     setIsFormSubmitted(2);
     setErrorMessage('');
 
