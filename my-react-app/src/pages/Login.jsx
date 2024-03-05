@@ -9,7 +9,7 @@ import { getDocs, collection, query, where, addDoc } from "firebase/firestore";
 import {
   signInWithEmailAndPassword
 } from "firebase/auth";
-import image from '.././assets/img5.jpg'
+import image from '.././assets/administration-block-iit-ropar-8176406.webp'
 
 const toastOptions = {
   position: "bottom-right",
@@ -101,16 +101,13 @@ const Login = () => {
             email: email,
         };
 
-        const response = await fetch(`http://localhost:3000/sendotp`, {
+        const response = await fetch(`http://localhost:3000/email/sendotp`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
               "Content-Type": "application/json",
           },
         });
-        // setUserRes(response.data);
-        localStorage.setItem('accessToken', response.data.accessToken);
-        localStorage.setItem('refreshToken', response.data.refreshToken);
 
         if(response.status !== 200) {
             errorMessage = "Failed to send OTP.";
@@ -137,7 +134,7 @@ const Login = () => {
             otp: otp,
         };
 
-        const response = await fetch(`http://localhost:3000/verifyotp`, {
+        const response = await fetch(`http://localhost:3000/email/verifyotp`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -155,6 +152,10 @@ const Login = () => {
             console.log("login done");
             notifySuccess("OTP verified successfully");
             setIsOtpVerified(true);
+
+            // Storing user ID in local storage
+            localStorage.setItem("userId", auth);
+
             navigate("/home");
             setIsOtpSent(false);
         }
@@ -170,7 +171,7 @@ const Login = () => {
       {!isOtpSent ? (
         <form
           className="flex justify-center items-center h-screen"
-          style={{ backgroundImage: `url(${image})`, opacity: '0.7', backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: `url(${image})`, opacity: '0.8', backgroundSize: 'cover', backgroundPosition: 'center' }}
           onSubmit={handleSubmit}
         >
           <div className='bg-white bg-transparent opacity-70 brightness-25 p-8 rounded-md shadow-md max-w-md w-full'>
@@ -203,7 +204,7 @@ const Login = () => {
         </form>
       ) : (
         <form onSubmit={handleOTPSubmit}>
-          <div className='mb-6 flex flex-col items-center justify-center gap-5 mx-auto h-screen bg-gray-200'>
+          <div className='mb-6 flex flex-col items-center justify-center gap-5 mx-auto h-screen w-full bg-gray-200'>
             <label
               htmlFor="otp"
               className="block text-gray-800 font-medium mb-2"

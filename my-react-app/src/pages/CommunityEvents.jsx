@@ -1,6 +1,8 @@
 import React from 'react'
 import Gallery from '../components/Gallery'
 import './CommunityEvents.css' // Assuming you have a CSS file for this component
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandshake } from '@fortawesome/free-solid-svg-icons';
 
 const CommunityEvents = () => {
   const renderReunionRow = (batch, year, date, title) => (
@@ -9,6 +11,7 @@ const CommunityEvents = () => {
       <td>{year}</td>
       <td>{date}</td>
       <td>{title}</td>
+      <td><button className='reunion-button'>Register</button></td>
     </tr>
   );
 
@@ -26,7 +29,7 @@ const CommunityEvents = () => {
   return (
     <div>
       <div className='community-events-heading'>
-        <h1>Community Events</h1>
+        <h1>  <FontAwesomeIcon icon={faHandshake } />  Community Events</h1>
       </div>
       <Gallery/>
 
@@ -35,11 +38,11 @@ const CommunityEvents = () => {
           <img src="/images/car1.jpg" alt="Donate Image" />
           <div className='note'>
             <h1>CLASS REUNIONS 2023-24</h1>
-            <p> The Office of Alumni Relations, Alumni Association and the Endowment Office at IIT Delhi have been organizing reunions for different batches over the years. The institute feels immense pride in welcoming back and hosting alumni again on the campus. Reunions for various batches have been planned in the year 2023-24 at IIT Delhi. We encourage alumni to attend these events and meet fellow batchmates.
-                <br/>The Reunions are typically held at New Delhi with an Institute Day at the IIT Delhi Campus. Batches plan the events over a 2-3 day period with fun engagement activities at Campus or Off-Site, plans are customized by each batch as per their preferences.
-                <br/>Some batches who could not celebrate their designated reunions during Covid impacted year(s) are also planning to organize their reunions this year. The batches are working on the programs and agenda and have also started taking registrations for attendees. We encourage Alumni from these batches, to contact their respective Point-of-Contacts (in case not already done) to attend and support these reunions.
-                <br/>Office Of Alumni Relations, IIT Delhi
-                <br/>Email : alumniaffairs@admin.iitd.ac.in
+            <p> The Office of Alumni Relations and Alumni Association at IIT Ropar have been organizing reunions for different batches over the years. The institute feels immense pride in welcoming back and hosting alumni again on the campus. Reunions for various batches have been planned in the year 2023-24 at IIT Ropar. We encourage alumni to attend these events and meet fellow batchmates.
+                <br/>The Reunions are typically held in Ropar with an Institute Day at the IIT Ropar Campus. Batches plan the events over a 2-3 day period with fun engagement activities at Campus or Off-Site, plans are customized by each batch as per their preferences.
+                <br/>Some batches who could not celebrate their designated reunions during Covid impacted year(s) are also planning to organize their reunions this year.
+                <br/>Office Of Alumni Association, IIT Ropar
+                <br/>Email : alumni@iitrpr.ac.in
             </p>
           </div>
         </div>
@@ -53,6 +56,7 @@ const CommunityEvents = () => {
               <th>Year</th>
               <th>Tentative Date & Period</th>
               <th>Title</th>
+              <th>Register </th>
             </tr>
           </thead>
           <tbody>
@@ -65,12 +69,12 @@ const CommunityEvents = () => {
          </div>
       <div className='past-reunion-heading'> <h1 >Past Reunions</h1> </div>
       <div className='past-reunions'>
-        {renderPastReunionCard("/images/download.jpg", "Past Reunion 1", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/images/download.jpg", "Past Reunion 2", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/images/download.jpg", "Past Reunion 3", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/images/download.jpg", "Past Reunion 4", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/images/download.jpg", "Past Reunion 5", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/images/download.jpg", "Past Reunion 6", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
+        {renderPastReunionCard("/reunion_images/image1.png", "Alumni Reunion 2023", "Date: 03/04/2023", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
+        {renderPastReunionCard("/reunion_images/image2.png", "Alumni Reunion 2024", "Date: 19/01/2024", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
+        {renderPastReunionCard("/reunion_images/image3.png", "Alumni Reunion 2016", "Date: 07/09/2016", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
+        {renderPastReunionCard("/reunion_images/image4.png", "Alumni Reunion 2023", "Date: 03/04/2023", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
+        {renderPastReunionCard("/images/iit_ropar_front.jpg", "Past Reunion 5", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
+        {renderPastReunionCard("/reunion_images/image5.png", "Past Reunion 6", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
       </div>
     </div>
   )

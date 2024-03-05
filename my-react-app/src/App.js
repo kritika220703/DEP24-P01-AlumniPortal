@@ -1,5 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
-
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useState } from 'react'; // Import useState hook if not already imported
 import Home from './pages/Home';
 import Donate from './pages/Donate';
 import Accordion from './pages/Accordion';
@@ -9,23 +9,24 @@ import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Contact from './pages/Contact';
 import CommunityEvents from './pages/CommunityEvents'
-import SignUpPage from './pages/SignUpPage';
-
 import { AuthProvider } from './utilities/AuthContext';
 import GivingBack from './pages/GivingBack';
 import NewAndUpdates from './pages/NewAndUpdates';
 import GiveToIITRopar from './pages/GiveToIITRopar';
+import PrivateRoute from './PrivateRoute';
+import BecomeAMember from './pages/BecomeAMember';
 
 function App() {
-  // <NavbarComponent/>
   return (
     <div className="App">
       <AuthProvider>
         <Routes>
-          <Route exact path="/" element={<SignUpPage />} />
+          <Route exact path="/" element={<Home />} />
           <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/login" element={<Login />} />
-          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path='/profile' element={<PrivateRoute/>}>
+            <Route exact path='/profile' element={<Profile/>}/>
+          </Route>
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/GivingBack" element={<GivingBack />} />
           <Route exact path="/Donate" element={<Donate />} />
@@ -34,6 +35,7 @@ function App() {
           <Route exact path="/givingBack" element={<GivingBack />} />
           <Route exact path="/News" element={<NewAndUpdates />} />
           <Route exact path="/givetoiitropar" element={<GiveToIITRopar />} />
+          <Route exact path="/BecomeAMember" element={<BecomeAMember />} />
           
         </Routes>
       </AuthProvider>

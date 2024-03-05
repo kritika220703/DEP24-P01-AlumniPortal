@@ -7,9 +7,9 @@ const NavLinks = () => {
             path: "/home",
             submenu: true,
             sublinks: [
-                { name: "News and Updates", path: "/New" },
+                { name: "News and Updates", path: "/News" },
                 // { name: "Gallery", path: "/pages/Gallery" },
-                { name: "Become a member", path: "/BecomeAMember" },
+                { name: "Become A member", path: "/BecomeAMember" },
                 // { name: "Counter", path: "/pages/Counter" },
                 { name: "Messages", path: "/Messages" },
             ]
@@ -20,6 +20,7 @@ const NavLinks = () => {
             sublinks: [
                 // { name: "Alumni Initiatives", path: "/" },
                 { name: "Donate", path: "/Donate" },
+                { name: "Give Back in Kind", path: "/givingback" },
             ],
             path: "/givingback",
         },

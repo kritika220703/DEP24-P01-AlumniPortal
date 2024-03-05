@@ -3,6 +3,7 @@ import logo from "./../assets/logo.png"
 import {Link} from "react-router-dom"
 import NavLinks from "./NavLinks"
 import { useNavigate } from "react-router-dom";
+import { IoPersonCircle } from "react-icons/io5";
 const Navbar = () => {
   const[open , setOpen] = React.useState(false)
   const[toggle,setToggle] = React.useState(false);
@@ -53,8 +54,8 @@ const Navbar = () => {
   >
     Sign Up
   </div>
-</div>
-
+        </div>
+        <IoPersonCircle className='text-[30px]'/>
        </ul>
 
        {/* Mobile View */}

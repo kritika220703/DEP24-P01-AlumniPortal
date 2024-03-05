@@ -1,5 +1,5 @@
 import React from 'react';
-import image from '.././assets/img5.jpg'
+import image from '.././assets/iit_ropar_front.jpg'
 import image1 from '.././assets/img4.jpg'
 import image2 from '.././assets/img6.jpg'
 import { motion } from "framer-motion";
@@ -20,8 +20,7 @@ const Donate = () => {
     backgroundImage: `url(${image})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    opacity: '0.7'
+    backgroundRepeat: 'no-repeat'
   }}
 >
 

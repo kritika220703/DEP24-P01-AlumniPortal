@@ -69,10 +69,12 @@
 
 .outer_form {
   padding: 50px;
+  padding-right: 200px;
+  padding-left:200px ;
 }
 
 .details_form {
-  border: 2px solid #6d6d6d; /* Add border to the form */
+  border: 2px solid #cdcdcd; /* Add border to the form */
   padding: 40px; /* Add padding inside the border */
   margin-top: 20px; /* Add space above the form */
   width: 100%; /* Make the form take full width */
@@ -95,9 +97,10 @@ select {
   padding: 5px;
   margin-top: 5px;
   border-radius: 5px;
-  border: 1px solid #ccc;
-  /* width: 100%; */
+  border: 1px solid #d4d3d3;
+  font-weight: 300;
 }
+
 
 .submit  {
   padding: 10px 20px;
@@ -112,8 +115,22 @@ select {
 
 .text_input {
   width: 100%;
+  background-color: #e0e0e0cb;
+  transition: background-color 0.3s ease;
+  transition: box-shadow 0.3s; /* Add transition effect */
+}
+
+.text_input:focus {
+  background-color: #fff;
+  border-color: #b3b3b3;
+  outline: none;
+}
+
+.text_input:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add box shadow on hover */
 }
 
 button:hover {
   background-color: #535353;
 }
+

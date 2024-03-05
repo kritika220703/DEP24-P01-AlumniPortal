@@ -50,8 +50,9 @@
     padding-right: 50px;
     padding-left: 50px; /* Add spacing between image and text */
     margin-top: 20px;
-    border: 1px solid #000; /* Black border */
+    border: 1px solid #b1b1b1; /* Black border */
     border-radius: 10px;
+    color: rgb(67, 67, 67);
 
   }
 
@@ -111,11 +112,11 @@ table {
   table {
     border-collapse: separate;
     border-spacing: 0;
-    border: 1px solid rgb(30 58 138);
+    border: 1px solid rgb(202, 201, 201);
   }
   
   th, td {
-    border: 1px solid rgb(30 58 138);
+    border: 1px solid rgb(202, 201, 201);
   }
   
   .past-reunions {
@@ -140,7 +141,7 @@ table {
 .card {
   width: calc(33.33% - 100px); /* 33.33% width for each card with spacing */
   margin-bottom: 20px;
-  border: 2px solid rgb(30 58 138); /* Border style */
+  border: 2px solid rgb(202, 201, 201); /* Border style */
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -178,5 +179,18 @@ table {
     margin-bottom: 10px;
     font-size: medium;
     text-align: center;
+  }
+
+  .reunion-button {
+    padding: 5px 10px;
+    background-color: rgb(30 58 138);; /* Blue color, you can change it */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .reunion-button:hover {
+    background-color: #00172f; /* Darker blue on hover */
   }
   
