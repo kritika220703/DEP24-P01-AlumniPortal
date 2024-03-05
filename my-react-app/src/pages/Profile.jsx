@@ -25,7 +25,7 @@ const Profile = () => {
     const [endDate, setEndDate] = useState(new Date());
     const [userData, setUserData] = useState(null);
     const [profilePicture, setProfilePicture] = useState(null);
-    let dp = "/images/profile.jpeg";
+    let dp = "";
     const [profileURL, setProfileURL] = useState(dp);
     const [editedUser, setEditedUser] = useState({
         name: '',
@@ -41,7 +41,7 @@ const Profile = () => {
         work_exp: [{}], // Store work experience as an array
         higherEducation: [{}], // Store work experience as an array
         profilepic: '',
-        profileURL: dp
+        profileURL: ''
     });
     
 
@@ -78,8 +78,8 @@ const Profile = () => {
                         setUserData(doc.data());
                         setProfileURL(doc.data.profileURL);
                         console.log("profile url",profileURL);
-                        console.log("after: ",userData);
-                      });
+                        // console.log("after: ",userData);
+                    });
                     } else {
                       console.log('No documents found for the given query.');
                     }
@@ -116,7 +116,7 @@ const Profile = () => {
             work_exp: userData?.work_exp || [{}],
             higherEducation: userData?.higherEducation || [{}],
             profilepic: userData?.profilePicture || '',
-            profileURL: userData.profileURL || dp
+            profileURL: userData.profileURL || ''
         });
     };
 
@@ -227,10 +227,11 @@ const Profile = () => {
                         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                             console.log("URL: ",url);
                             // setProfileURL(process.env.PROFILE_BASE_URL + url);
-                            setEditedUser({ ...editedUser, profileURL: profileURL });
+                            setEditedUser({ ...editedUser, profileURL: url });
                         });
                     }
                 ); 
+                console.log(profileURL);
             }
 
             // Update the document with the new data
@@ -255,8 +256,8 @@ const Profile = () => {
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                             console.log(url);
-                            setProfileURL(url);
-                            setEditedUser({ ...editedUser, profileURL: profileURL });
+                            // setProfileURL(url);
+                            setEditedUser({ ...editedUser, profileURL: url });
                         });
                     }
                 ); 
@@ -355,7 +356,7 @@ const Profile = () => {
                     <div className='flex flex-row justify-between auto-rows-fr'>
                         <div className='flex flex-col items-center justify-center'>
                             <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[270px]">
-                                <img src={profileURL} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/>
+                                <img src={`https://console.firebase.google.com/u/0/project/alumni-portal-df4f5/storage/alumni-portal-df4f5.appspot.com/${profileURL}`} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/>
                                 <h1 className="text-2xl font-bold text-gray-800 mb-1">{userData.name}</h1>
                                 <p className="text-gray-500">{userData.email}</p>
                             </div>
