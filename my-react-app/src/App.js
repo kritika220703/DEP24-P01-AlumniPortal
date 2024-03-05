@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-
+import { useState } from 'react'; // Import useState hook if not already imported
 import Home from './pages/Home';
 import Donate from './pages/Donate';
 import Profile from './pages/Profile';
@@ -11,22 +11,9 @@ import { AuthProvider } from './utilities/AuthContext';
 import GivingBack from './pages/GivingBack';
 import NewAndUpdates from './pages/NewAndUpdates';
 import BecomeAMember from './pages/BecomeAMember';
+import PrivateRoute from './PrivateRoute'
 
 function App() {
-  
-  // Assuming this function checks if the user is logged in
-  const isUserLoggedIn = () => {
-    return localStorage.getItem("userId") !== null;
-  };
-
-  const ProtectedRoute = (props) => {
-    return isUserLoggedIn() ? (
-      <Route {...props} />
-    ) : (
-      <Navigate to="/login" replace />
-    );
-  };
-
   return (
     <div className="App">
       <AuthProvider>
@@ -34,7 +21,9 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/login" element={<Login />} />
-          <ProtectedRoute exact path="/profile" element={<Profile />} />
+          <Route exact path='/profile' element={<PrivateRoute/>}>
+            <Route exact path='/profile' element={<Profile/>}/>
+          </Route>
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/GivingBack" element={<GivingBack />} />
           <Route exact path="/Donate" element={<Donate />} />
