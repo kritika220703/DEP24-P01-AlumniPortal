@@ -35,6 +35,7 @@ function Captcha({ setVerified }) {  // Receive setVerified as prop
         const myFunctions = () => {
             if (captcha === user.username) {
                 setVerified(true);
+                element.classList.remove("bg-white", "text-black");
                 element.classList.add("bg-green-500", "text-white");
                 element.innerHTML = "Captcha Verified";
                 element.disabled = true;
