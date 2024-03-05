@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Checkmark } from 'react-checkmark'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faCheckSquare  } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate  } from 'react-router-dom';
 import './BecomeAMember.css'; // Assuming you have a CSS file for this component
 import {
   ref,
   uploadBytesResumable,
   getDownloadURL 
 } from "firebase/storage";
-import {storage} from "../firebase.js"
-
+import {storage,db} from "../firebase.js"
+import {collection, query, where, getDocs } from "firebase/firestore";
 
 const BecomeAMember = () => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(0);
   const [ischeckbox, setIsWorkingProfessional] = useState(0);
   const [profilePicture, setProfilePicture] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
   const [editedUser, setEditedUser] = useState({
       name: '',
       role: '',
@@ -31,49 +32,91 @@ const BecomeAMember = () => {
       work_exp: [{}], // Store work experience as an array
       higherEducation: [{}], // Store work experience as an array
       others: '',
-      profilepic: ''
+      profilepic: '',
+      email: ''
   });
+  const navigate = useNavigate(); 
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const mandatoryFields = ['name', 'role', 'phone', 'contrycode', 'entryNo', 'country', 'hostel', 'degree', 'department', 'passingYear', 'joiningYear'];
     const missingFields = mandatoryFields.filter(field => !editedUser[field]);
 
     if (missingFields.length > 0) {
-      setErrorMessage(1);
+      setErrorMessage("Please fill in all mandatory fields.");
       return;
     }
+    if(!/^\d{4}[A-Za-z]{3}\d{4}$/.test(editedUser['entryNo'])){
+      setErrorMessage("Please enter a valid Entry Number.");
+      return;
+    }
+    if((editedUser['passingYear'].length !== 4 || isNaN(editedUser['passingYear']))){
+      setErrorMessage("Please enter a valid 4-digit year");
+      return;
+    }
+    if((editedUser['joiningYear'].length !== 4 || isNaN(editedUser['joiningYear']))){
+      setErrorMessage("Please enter a valid 4-digit year");
+      return;
+    }
+    if((editedUser['phone'].length !== 10 || isNaN(editedUser['phone']))){
+      setErrorMessage("Please enter a valid 10-digit phone number");
+      return;
+    }
+    const colRef = collection(db, 'Users');
+    const q = query(colRef, where('entryNo', '==', editedUser['entryNo'] ));
+      const snapshot = await getDocs(q);
+      console.log(snapshot);
+      console.log(snapshot.size);
+      if (snapshot.size > 0) {
+        setErrorMessage("User Already a member");
+        return;
+      }
     setIsFormSubmitted(1);
-    setErrorMessage(0);
+    setErrorMessage('');
   };
 
   const handleSubmit2 = (e) => {
     e.preventDefault();
     if (ischeckbox === 1) {
       const isWorkExpValid = editedUser.work_exp.every((workExp) => {
-        return workExp.job_title && workExp.company && workExp.industry && workExp.startYear && workExp.endYear;
+        return workExp &&workExp.job_title && workExp.company && workExp.industry && workExp.startYear && workExp.endYear;
       });
 
+      const isWorkYear = editedUser.work_exp.every((workExp) => {
+        return workExp && workExp.startYear.length===4 && workExp.endYear.length===4 && !isNaN(workExp.startYear) && !isNaN(workExp.endYear);
+      });
+      
       if (!isWorkExpValid) {
         // If any field is missing in work experience, set the error message
-        setErrorMessage(1);
+        setErrorMessage("Please fill in all mandatory fields.");
+        return;
+      }
+      if(!isWorkYear){
+        setErrorMessage("Please enter a valid 4-digit year");
         return;
       }
     } 
     else if (ischeckbox === 3) {
       if (!editedUser.others) {
         // If others section is selected but the field is missing, set the error message
-        setErrorMessage(1);
+        setErrorMessage("Please fill in all mandatory fields.");
         return;
       }
     }
     else{
       const isEduExpValid = editedUser.higherEducation.every((highEdu) => {
-        return highEdu.institute && highEdu.degree && highEdu.department && highEdu.startYear && highEdu.endYear;
+        return highEdu && highEdu.institute && highEdu.degree && highEdu.department && highEdu.startYear && highEdu.endYear;
+      });
+      const isEduYear = editedUser.higherEducation.every((highEdu) => {
+        return highEdu && highEdu.startYear.length===4 && highEdu.endYear.length===4 && !isNaN(highEdu.endYear) && !isNaN(highEdu.startYear);
       });
 
       if (!isEduExpValid) {
-        setErrorMessage(1);
+        setErrorMessage("Please fill in all mandatory fields.");
+        return;
+      }
+      if(!isEduYear){
+        setErrorMessage("Please enter a valid 4-digit year");
         return;
       }
     }
@@ -88,12 +131,13 @@ const BecomeAMember = () => {
           () => {
               getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                   console.log(url);
+                  editedUser['profilepic']=url;
               });
           }
       ); 
     }
     setIsFormSubmitted(2);
-    setErrorMessage(0);
+    setErrorMessage('');
 
   };
 
@@ -135,18 +179,18 @@ const BecomeAMember = () => {
 
   const handleProfilePictureChange = (e) => {
     setProfilePicture(e.target.files[0]);
-    const { name, value } = e.target;
-      setEditedUser({
-          ...editedUser,
-          [name]: e.target.files[0],
-      });
     console.log(editedUser)
-    console.log(profilePicture);
+  };
+
+  const handleSignUpClick = () => {
+    navigate('/SignUp', { state: { editedUser, profilePicture } });
   };
 
 
   const handleInputChange = (e) => {
+
       const { name, value } = e.target;
+
       setEditedUser({
           ...editedUser,
           [name]: value,
@@ -381,7 +425,7 @@ const BecomeAMember = () => {
             </form>
             <br/>
             <div className='member-button'>
-                {errorMessage==1 ? (<div className="error-message-mandatory-fields">Please fill in all mandatory fields.</div>) : <p></p>}
+                {errorMessage !=='' ? (<div className="error-message-mandatory-fields">{errorMessage}</div>) : <p></p>}
                 <button type="submit" className='submit-member' onClick={handleSubmit2} >Next Step</button>
             </div>
           </div>
@@ -392,7 +436,7 @@ const BecomeAMember = () => {
             <h1> Thank You Virat, for joining IIT Ropar Alumni Network </h1>
           </div>
           <div className='member-button'>
-                <button type="submit" className='submit-member' >SignUp</button>
+                <button type="submit" className='submit-member' onClick={handleSignUpClick}>SignUp</button>
           </div>
         </div>
         ) : (
@@ -556,7 +600,7 @@ const BecomeAMember = () => {
               </div>
               <br />
               <div className='member-button'>
-                {errorMessage==1 ? (<div className="error-message-mandatory-fields">Please fill in all mandatory fields.</div>) : <p></p>}
+                {errorMessage !=='' ? (<div className="error-message-mandatory-fields">{errorMessage}</div>) : <p></p>}
                 <button type="submit" className='submit-member' >Join The Network</button>
               </div>
             </form>

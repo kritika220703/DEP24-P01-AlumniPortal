@@ -81,6 +81,11 @@
   background-color: #dadada;
 }
 
+.custom-select .Select-control {
+  border: none;
+  border-bottom: 1px solid black;
+  background-color: #dadada;
+}
 
 .member-column1 input,
 .member-column1 select,
