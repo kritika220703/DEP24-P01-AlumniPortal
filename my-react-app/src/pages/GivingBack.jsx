@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandHoldingUsd } from '@fortawesome/free-solid-svg-icons';
 import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
+import Captcha from '../components/captcha';
 
 const toastOptions = {
   position: "bottom-right",
@@ -31,6 +32,8 @@ const GivingBack = () => {
   const [duration, setDuration] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [verified, setVerified] = useState(false); // State to track captcha verification
+
 
   let errorMessage = "";
   const notifySuccess = (message) => {
@@ -90,6 +93,12 @@ const GivingBack = () => {
 
     if(duration === ""){
       errorMessage = "Time taken to donate is required.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+
+    if (!verified) {
+      errorMessage = "Please verify the captcha.";
       toast.error(errorMessage, toastOptions);
       return;
     }
@@ -425,14 +434,26 @@ const GivingBack = () => {
                   Within a Week
               </label>
               <br />
-              {/* Add Captcha here */}
-              <button 
-                type="submit" 
-                className='submit'
-                onClick={handleSubmit}
-              >
+              <div className="mb-4">
+                <Captcha setVerified={setVerified} /> {/* Pass setVerified as prop */}
+              </div>
+              <div className='flex flex-row justify-center'>
+                <button
+                  type="submit"
+                  className='submit'
+                  onClick={handleSubmit}
+                  disabled={!verified} // Disable button if captcha is not verified
+                >
                 Submit
               </button>
+            </div>
+              {/* <button 
+                type="submit" 
+                
+                
+              >
+                Submit
+              </button> */}
             </form>
       </div>
       </div>

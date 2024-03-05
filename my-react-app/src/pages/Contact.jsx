@@ -31,13 +31,6 @@ const Contact = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
 
-    // Check if captcha is verified
-    if (!verified) {
-      errorMessage = "Please verify the captcha.";
-      toast.error(errorMessage, toastOptions);
-      return;
-    }
-
     //check if all fields are filled
     if(email === ""){
       errorMessage = "Email is required.";
@@ -59,6 +52,13 @@ const Contact = () => {
 
     if(message === ""){
       errorMessage = "Your message is required.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+
+    // Check if captcha is verified
+    if (!verified) {
+      errorMessage = "Please verify the captcha.";
       toast.error(errorMessage, toastOptions);
       return;
     }
