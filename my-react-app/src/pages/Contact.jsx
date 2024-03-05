@@ -22,6 +22,7 @@ const Contact = () => {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [verified, setVerified] = useState(false); // State to track captcha verification
+  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   let errorMessage = "";
   const notifySuccess = (message) => {
@@ -52,6 +53,17 @@ const Contact = () => {
 
     if(message === ""){
       errorMessage = "Your message is required.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+    if(!/^[a-zA-Z0-9._%+-]+@iitrpr\.ac\.in$/.test(email)){
+      errorMessage = "Enter a valid email";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+
+    if(phone.length!==10){
+      errorMessage = "Enter a valid Phone Number.";
       toast.error(errorMessage, toastOptions);
       return;
     }
