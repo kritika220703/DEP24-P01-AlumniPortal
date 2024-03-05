@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate  } from 'react-router-dom';
 
 function BecomeMember() {
+  const navigate = useNavigate(); 
   const [loaded, setLoaded] = useState(false);
+  const handlememberClick = () => {
+    navigate('/becomeamember');
+};
 
   useEffect(() => {
     // Simulate loading delay
@@ -20,7 +25,7 @@ function BecomeMember() {
       <div className="relative z-10 p-8 text-gray-800">
         <h2 className="text-4xl font-bold mb-6">Become A Member</h2>
         <p className="text-2xl font-semibold text-gray-700 mb-2">Register now and become a member of Alumni Association of IIT Ropar.</p>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={handlememberClick}>
           Register Now
         </button>
       </div>

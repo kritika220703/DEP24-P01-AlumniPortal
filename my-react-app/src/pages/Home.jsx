@@ -2,8 +2,14 @@ import React from 'react'
 import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
+import { useNavigate  } from 'react-router-dom';
 
 const Home = () => {
+    const navigate = useNavigate(); 
+
+    const handleNewsClick = () => {
+        navigate('/news');
+    };
     const slides = [
         {
             image: '/images/director.jpeg',
@@ -49,7 +55,7 @@ const Home = () => {
                         />
                     </div>
                     <div className="mt-4">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleNewsClick}>
                             Read More News
                         </button>
                     </div>
@@ -57,7 +63,7 @@ const Home = () => {
             </div>
             <div className="md:w-1/2 md:pl-4 mb-8 flex-grow">
                 <div className="bg-white border-2 rounded-lg text-left p-4 h-full">
-                    <h1 className="text-2xl font-bold mb-4 animate-bounce mt-2">Monthly Newsletters</h1>
+                    <h1 className="text-2xl font-bold mb-4 animate-bounce mt-2" >Monthly Newsletters</h1>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
                         <div className="relative bg-gray-200 rounded-lg overflow-hidden">
                             <img src="/images/download.jfif" alt="January 2024" className="object-cover w-full h-48" />
@@ -79,7 +85,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div className="mt-[60px]">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleNewsClick}>
                             Newsletter Archive
                         </button>
                     </div>
