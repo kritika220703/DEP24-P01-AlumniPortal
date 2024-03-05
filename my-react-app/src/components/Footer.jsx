@@ -36,10 +36,10 @@ const Footer = () => {
     <div className='text-gray-300 flex flex-col'>
         <div className='text-white text-[30px] mr-7'> <ion-icon name="link-outline"></ion-icon> Useful Links</div>
         <ul className=' flex flex-col py-3 gap-2 ml-3' >
-            <li className='hover:text-white '><Link to="/pages/NewsAndUpdates">News and Updates</Link></li>
-            <li className='hover:text-white'><Link to="/pages/Gallery">Gallery</Link></li>
-            <li className='hover:text-white'><Link to="/pages/BecomeAMember">Become a member</Link></li>
-            <li className='hover:text-white'><Link to="/pages/Messages">Messages</Link></li>
+            <li className='hover:text-white '><Link to="/New">News and Updates</Link></li>
+            <li className='hover:text-white'><Link to="/Donate">Donate</Link></li>
+            <li className='hover:text-white'><Link to="/BecomeAMember">Become a member</Link></li>
+            <li className='hover:text-white'><Link to="/givingback">Give Back</Link></li>
         </ul>
     </div>
 

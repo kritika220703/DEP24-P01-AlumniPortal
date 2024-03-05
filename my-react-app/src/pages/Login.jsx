@@ -173,7 +173,7 @@ const Login = () => {
           style={{ backgroundImage: `url(${image})`, opacity: '0.7', backgroundSize: 'cover', backgroundPosition: 'center' }}
           onSubmit={handleSubmit}
         >
-          <div className='bg-white p-8 rounded-md shadow-md max-w-md w-full'>
+          <div className='bg-white bg-transparent opacity-70 brightness-25 p-8 rounded-md shadow-md max-w-md w-full'>
             <h1 className="text-3xl font-bold mb-6">Login</h1>
 
             <input
@@ -182,7 +182,7 @@ const Login = () => {
               placeholder='Email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-900"
+              className="w-full px-4 py-2 mb-4 border-4 border-gray-500 rounded-md bg-white focus:outline-none focus:border-indigo-900 placeholder:text-gray-500 placeholder:text-[20px]"
             />
       
             <button
@@ -193,7 +193,7 @@ const Login = () => {
             </button>
 
             {/* Link to navigate to the login page */}
-            <p className="mt-4 text-gray-600 text-center">
+            <p className="mt-4 text-gray-600 text-center text-[20px]">
                 Don not have an account?{" "}
                 <Link to="/" className="text-indigo-700 hover:underline">
                 Sign Up

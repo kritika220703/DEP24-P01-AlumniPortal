@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Donate from './pages/Donate';
+import Accordion from './pages/Accordion';
 // import ContactUs from './pages/ContactUs';
 import Profile from './pages/Profile';
 import SignUp from './pages/SignUp'
@@ -33,6 +34,7 @@ function App() {
           <Route exact path="/givingBack" element={<GivingBack />} />
           <Route exact path="/News" element={<NewAndUpdates />} />
           <Route exact path="/givetoiitropar" element={<GiveToIITRopar />} />
+          
         </Routes>
       </AuthProvider>
     </div>

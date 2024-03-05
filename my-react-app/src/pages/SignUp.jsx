@@ -198,7 +198,7 @@ const SignUp = () => {
         {/* <div>SignUp</div> */}
         {!isOtpSent ? (
             <form onSubmit={handleSubmit} className="flex justify-center items-center h-screen " style={{ backgroundImage: `url(${image})`, opacity: '0.7', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                <div className='bg-white p-8 rounded-md shadow-md max-w-md w-full'>
+                <div className='bg-white p-8 rounded-md shadow-md max-w-md w-full bg-transparent opacity-70 brightness-25'>
                     <h1 className="text-3xl font-bold mb-6">Sign Up</h1>
 
                     <input
@@ -207,7 +207,7 @@ const SignUp = () => {
                         placeholder='UserName'
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-900"
+                        className="w-full px-4 py-2 mb-4  border-4 border-gray-500 rounded-md focus:outline-none focus:border-indigo-900"
                     />
                     <input
                         type="email"
@@ -216,7 +216,7 @@ const SignUp = () => {
                         value={email}
                         // onChange={(e) => setEmail(e.target.value)}
                         onChange={handleEmailChange}
-                        className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-900"
+                        className="w-full px-4 py-2 mb-4 border-4 border-gray-500 rounded-md focus:outline-none focus:border-indigo-900"
                     />
                     {!isValidEmail && <p style={{ color: 'red' }}>Please enter a valid email address.</p>}
                     
@@ -226,7 +226,7 @@ const SignUp = () => {
                     </button>
 
                     {/* Link to navigate to the login page */}
-                    <p className="mt-4 text-gray-600 text-center">
+                    <p className="mt-4 text-gray-600 text-center text-[20px]">
                         Already have an account?{" "}
                         <Link to="/login" className="text-indigo-700 hover:underline">
                         Log In

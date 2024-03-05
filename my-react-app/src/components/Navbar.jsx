@@ -64,7 +64,8 @@ const Navbar = () => {
        </ul>
 
      </div>
-     <hr className="border-t border-blue-700 my-0.5" />
+     <div className='w-full h-2 bg-blue-800'></div>
+     {/* <hr className="border-t border-blue-700 my-0.5" /> */}
    </nav>
   )
 }

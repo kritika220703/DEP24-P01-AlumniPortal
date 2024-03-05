@@ -4,6 +4,7 @@ import image from '.././assets/img4.jpg'
 import { useState } from 'react';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 // import Captcha from 'react-captcha-code';
 
 const toastOptions = {
@@ -210,7 +211,7 @@ const Contact = () => {
             Donate today.
           </p>
           <button className='bg-indigo-800 w-[80px] mt-10 h-[50px] rounded-xl cursor-pointer text-white ml-[300px] '>
-            <a href='./Donate' >Donate</a>
+           Donate
           </button>
         </div>
       </div>
