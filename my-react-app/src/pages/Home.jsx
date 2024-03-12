@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import StateContext from '../StateContext.js';
 import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
@@ -6,6 +7,11 @@ import { useNavigate  } from 'react-router-dom';
 
 const Home = () => {
     const navigate = useNavigate(); 
+    // const { isAdmin, setIsAdmin } = useContext(StateContext);
+    
+    const isAdmin = localStorage.getItem("isAdmin");
+    console.log(isAdmin);
+    // console.log(isAdmin);
 
     const handleNewsClick = () => {
         navigate('/news');
