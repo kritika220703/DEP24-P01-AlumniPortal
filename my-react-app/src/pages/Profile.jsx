@@ -18,6 +18,7 @@ import {
     getDownloadURL 
   } from "firebase/storage";
 import {storage} from "../firebase.js"
+import DataList from '../components/DataList.jsx';
 
 const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -44,6 +45,8 @@ const Profile = () => {
         profileURL: ''
     });
     
+    const isAdmin = localStorage.getItem("isAdmin");
+    console.log(isAdmin);
 
     // const user = {
     //     name: 'John Doe',
@@ -779,34 +782,43 @@ const Profile = () => {
     };
 
     return (
+        
         <div className="container mx-auto mt-0 p-6 w-full flex items-center min-h-[800px] bg-blue-800"
-        style={{
-            backgroundImage: `url("/images/car1.jpg")`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            opacity: '0.9'
-          }}
-        >
+            style={{
+                backgroundImage: `url("/images/car1.jpg")`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                opacity: '0.9'
+            }}
+            >
             <div className="w-[100%] max-w-[10000px] h-full mx-auto mt-0 p-6 bg-none rounded-md overflow-hidden shadow-md flex flex-col">
-                {isEditing ? renderEditProfileForm() : renderProfileDetails()}
+            
+                {isAdmin ? (
+                    <>
+                        <DataList/>
+                    </>
+                ) : (
+                    
+                    <>
+                
+                        {isEditing ? renderEditProfileForm() : renderProfileDetails()};
 
-                {!isEditing && (
-                    <div className="p-2 flex justify-center">
-                        <button
-                            className="bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold"
-                            onClick={handleEditClick}
-                            disabled={isEditing}
-                        >
-                            Edit Profile
-                        </button>
-                    </div>
+                        {!isEditing && (
+                            <div className="p-2 flex justify-center">
+                                <button
+                                    className="bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold"
+                                    onClick={handleEditClick}
+                                    disabled={isEditing}
+                                >
+                                    Edit Profile
+                                </button>
+                            </div>
+                        )};
+
+                    </>
+
                 )}
-
-
-                {/* <Stack direction="row" spacing={2} className="ml-auto">
-                    <Avatar {...stringAvatar(userData.name)} sx={{ width: 80, height: 80 }} />
-                </Stack> */}
 
             </div>
         </div>
