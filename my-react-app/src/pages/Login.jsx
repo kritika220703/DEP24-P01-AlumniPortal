@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import StateContext from '../StateContext.js';
 import { FiCheckCircle } from 'react-icons/fi';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,6 +10,7 @@ import { getDocs, collection, query, where, addDoc } from "firebase/firestore";
 import {
   signInWithEmailAndPassword
 } from "firebase/auth";
+import DropDown from "../components/RoleDropDown.jsx"
 import image from '.././assets/administration-block-iit-ropar-8176406.webp'
 
 const toastOptions = {
@@ -28,6 +30,8 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   // const [userRes, setUserRes] = useState(null);
 
+  const { isAdmin, setIsAdmin } = useContext(StateContext);
+ 
   let errorMessage = "";
   const notifySuccess = (message) => {
       toast.success(message, toastOptions);
@@ -37,8 +41,16 @@ const Login = () => {
   const {login} = useAuth();
   // console.log("user:", auth);
 
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleOptionSelect = (e) => {
+    setSelectedOption(e.target.value);
+  };
+  const roleOptions = ['Alumni', 'Admin'];
+
   const handleLogin = async (email, password) => {
     try {
+      
       console.log("hello");
       const user = await signInWithEmailAndPassword(
           auth,
@@ -71,11 +83,60 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(selectedOption);
+    if(selectedOption === "Admin"){
+      
+      const colRef = collection(db, 'admin');
+      console.log(colRef);
+      const q = query(colRef, where('email', '==', email));
+
+      try {
+        const snapshot = await getDocs(q);
+      
+        if (snapshot.size == 0) {
+          // Documents satisfying query does not exist
+
+            const colRef1 = collection(db, 'Users');
+            console.log(colRef1);
+            const q1 = query(colRef1, where('email', '==', email));
+
+            try {
+              const snapshot1 = await getDocs(q1);
+            
+              if (snapshot1.size > 0) {
+                // Documents satisfying the query exist
+                  errorMessage = "Entered email is waiting for Admin's approval.";
+                  toast.error(errorMessage, toastOptions);
+                  return;
+                }
+        
+                console.log("snap:  ", snapshot1);
+          
+              } catch (error) {
+                console.error('Error getting documents:', error);
+            }
+          
+            errorMessage = "Invalid Email ID for Admin. Please use different email ID.";
+            toast.error(errorMessage, toastOptions);
+            return;
+          }
+  
+          console.log("snap:  ", snapshot);
+    
+        } catch (error) {
+          console.error('Error getting admin documents:', error);
+      }
+
+      // if( email !== "2021csb1184@iitrpr.ac.in"){
+      //   toast.error("Invalid Email ID for Admin.", toastOptions);
+      //   return;
+      // }
+    }
     
     if(email === ""){
-        errorMessage = "Email is required.";
-        toast.error(errorMessage, toastOptions);
-        return;
+      errorMessage = "Email is required.";
+      toast.error(errorMessage, toastOptions);
+      return;
     }
 
     const colRef = collection(db, 'Users');
@@ -159,7 +220,13 @@ const Login = () => {
             const userId = auth.currentUser.uid;
             // Storing user ID in local storage
             localStorage.setItem("userId", userId);
-
+            localStorage.setItem("isAdmin", false);
+            if(selectedOption === "Admin"){
+              // if(email === "2021csb1184@iitrpr.ac.in"){
+                setIsAdmin(true);
+                localStorage.setItem("isAdmin", true);
+              // }
+            }
             navigate("/home");
             setIsOtpSent(false);
         }
@@ -180,6 +247,21 @@ const Login = () => {
         >
           <div className='bg-white bg-transparent opacity-70 brightness-25 p-8 rounded-md shadow-md max-w-md w-full'>
             <h1 className="text-3xl font-bold mb-6">Login</h1>
+            
+            <div>
+              {/* <h1>Select Role:</h1> */}
+              <select
+                name="role"
+                value={selectedOption}
+                onChange={handleOptionSelect}
+                className="w-full px-4 py-2 mr-2 border-4 border-gray-500 rounded-md focus:outline-none focus:border-indigo-900 mb-2"
+              >
+                <option value="">Select an option</option>
+                <option value="Alumni">Alumni</option>
+                <option value="Admin">Admin</option>
+              </select>
+              {/* <DropDown selectedOption={selectedOption} onOptionSelect={handleOptionSelect}/> */}
+            </div>
 
             <input
               type="email"

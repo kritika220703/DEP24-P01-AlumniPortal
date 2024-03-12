@@ -120,6 +120,25 @@ const verifyOTPmail = async(req, res) => {
     }
 };
 
+const sendSignUpAsAdminEmail = async (req, res) => {
+    try {
+        console.log("in send admin mail api")
+        const Email = req.body.email;
+        const messageSubject = `New  User trying to Sign Up as Admin`;
+        const messageBody= `Details:\n\nEmail : ${Email}\n\n`;
+
+        await sendEmail("2021csb1184@iitrpr.ac.in", messageSubject, messageBody);
+
+        console.log("sign up admin mail sent");
+        
+        res.status(200).send("signup admin mail Sent");
+
+        // res.status(200).status(200);
+    } catch(error) {
+        res.status(400).send(error.message);
+    }
+};
+
 const sendContactUsmail = async (req, res) => {
     try {
         console.log("in send contact us api")
@@ -190,5 +209,6 @@ module.exports = {
     sendOTPmail,
     verifyOTPmail,
     sendContactUsmail,
-    sendGivingBackInKindmail
+    sendGivingBackInKindmail,
+    sendSignUpAsAdminEmail
 };

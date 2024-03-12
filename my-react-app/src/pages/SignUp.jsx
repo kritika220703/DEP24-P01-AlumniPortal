@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import StateContext from '../StateContext.js';
 import { Link, useNavigate ,useLocation} from "react-router-dom";
 import { useAuth } from '../utilities/AuthContext';
 import {auth, db} from "../firebase.js"
@@ -10,7 +11,7 @@ import {
     ref,
     uploadBytesResumable,
     getDownloadURL 
-  } from "firebase/storage";
+} from "firebase/storage";
 import {storage} from "../firebase.js"
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,7 +23,7 @@ const toastOptions = {
     pauseOnHover: true,
     draggable: true,
     theme: "dark",
-  };
+};
 
 const SignUp = () => {
     const location = useLocation();
@@ -35,14 +36,23 @@ const SignUp = () => {
     const [otp, setOtp] = useState("");
     const [isOtpSent, setIsOtpSent] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { isAdmin, setIsAdmin } = useContext(StateContext);
     // const [userRes, setUserRes] = useState(null);
+
+    const [selectedOption, setSelectedOption] = useState("");
+
+    const handleOptionSelect = (e) => {
+        setSelectedOption(e.target.value);
+    };
+
     console.log(editedUser);
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
     
         // Validate email format using a regular expression
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@iitrpr\.ac\.in$/;
+        // const emailRegex = /^[a-zA-Z0-9._%+-]+@iitrpr\.ac\.in$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         const isValid = emailRegex.test(newEmail);
         // const isValid = validator.isEmail(newEmail);
         setIsValidEmail(isValid);
@@ -58,7 +68,7 @@ const SignUp = () => {
 
     const signup = async (email, password, username) => {
         try {
-            console.log("hello");
+            console.log("hello  ", email);
             const result = await createUserWithEmailAndPassword(
                 auth,
                 email,
@@ -71,6 +81,8 @@ const SignUp = () => {
 
             const docRef = await addDoc(collection(db, "Users"), {
                 uid: user.uid,
+                email: email, 
+                name: name,
             });
 
             const userId = user.uid;
@@ -81,7 +93,7 @@ const SignUp = () => {
             const querySnapshot = await getDocs(q);
 
             // Check if any documents match the query
-            if (querySnapshot.size > 0) {
+            if (selectedOption==="Alumni" && querySnapshot.size > 0) {
                 // Get the reference to the first matching document
                 const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
             
@@ -140,12 +152,22 @@ const SignUp = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if(selectedOption === "Admin"){
+
+        }
         
         if(email === ""){
             errorMessage = "Email is required.";
             toast.error(errorMessage, toastOptions);
             return;
         }
+
+        // if(email === "2021csb1184@iitrpr.ac.in"){
+        //     errorMessage = "Email already is required.";
+        //     toast.error(errorMessage, toastOptions);
+        //     return;
+        // }
         
         if(name === ""){
             errorMessage = "UserName is required.";
@@ -153,7 +175,7 @@ const SignUp = () => {
             return;
         }
 
-        if (!editedUser || editedUser['entryNo'] === '') {
+        if (selectedOption==="Alumni" && (!editedUser || editedUser['entryNo'] === '')) {
             errorMessage = "User is not a Member";
             toast.error(errorMessage, toastOptions);
             navigate("/BecomeAMember");
@@ -241,9 +263,45 @@ const SignUp = () => {
 
                 const userId = auth.currentUser.uid;
                 // Storing user ID in local storage
-                localStorage.setItem("userId", userId);
+                if(selectedOption === "Alumni"){
+                    localStorage.setItem("userId", userId);
+                }
+                
+                localStorage.setItem("isAdmin", false);
 
-                navigate("/home");
+                if(selectedOption === "Admin"){
+                    console.log("in dens admin mail frontend")
+                    const data = {
+                        email: email,
+                    };
+        
+                    const response = await fetch(`http://localhost:3000/email/signUpAsAdmin`, {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    });
+                    console.log(response.status);
+
+                    if(response.status !== 200) {
+                        errorMessage = "Failed to send Admin mail.";
+                        toast.error(errorMessage, toastOptions);
+                        navigate("/signup");
+                        return;
+                    }
+                }
+                // if(email === "2021csb1184@iitrpr.ac.in"){
+                //     setIsAdmin(true);
+                // }
+                if(selectedOption === "Alumni"){
+                    navigate("/home");
+                }
+                else{
+                    notifySuccess("Email sent to Admin for approval.")
+                    navigate("/login");
+                }
+                
                 setIsOtpSent(false);
             }
         } catch {
@@ -260,6 +318,21 @@ const SignUp = () => {
             <form onSubmit={handleSubmit} className="flex justify-center items-center h-screen " style={{ backgroundImage: `url(${image})`, opacity: '0.7', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 <div className='bg-white p-8 rounded-md shadow-md max-w-md w-full bg-transparent opacity-70 brightness-25'>
                     <h1 className="text-3xl font-bold mb-6">Sign Up</h1>
+
+                    <div>
+                        {/* <h1>Select Role:</h1> */}
+                        <select
+                            name="role"
+                            value={selectedOption}
+                            onChange={handleOptionSelect}
+                            className="w-full px-4 py-2 mr-2 border-4 border-gray-500 rounded-md focus:outline-none focus:border-indigo-900 mb-2"
+                        >
+                            <option value="">Select an option</option>
+                            <option value="Alumni">Alumni</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        {/* <DropDown selectedOption={selectedOption} onOptionSelect={handleOptionSelect}/> */}
+                    </div>
 
                     <input
                         type="text"

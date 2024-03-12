@@ -21,6 +21,7 @@ const Navbar = () => {
       // await logout();
       // Removing user ID from local storage
       localStorage.removeItem("userId");
+      localStorage.removeItem("isAdmin");
       navigate("/login");
       // Additional logout actions if needed
     } catch (error) {

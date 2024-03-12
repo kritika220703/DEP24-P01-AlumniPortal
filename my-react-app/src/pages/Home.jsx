@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react'
+import StateContext from '../StateContext.js';
 import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
@@ -8,6 +9,11 @@ import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
 
 const Home = () => {
     const navigate = useNavigate(); 
+    // const { isAdmin, setIsAdmin } = useContext(StateContext);
+    
+    const isAdmin = localStorage.getItem("isAdmin");
+    console.log(isAdmin);
+    // console.log(isAdmin);
     const [slides, setSlides] = useState([]);
 
     useEffect(() => {
