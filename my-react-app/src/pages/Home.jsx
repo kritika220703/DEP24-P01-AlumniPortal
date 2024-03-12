@@ -1,36 +1,59 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
 import { useNavigate  } from 'react-router-dom';
+import {db} from "../firebase.js";
+import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
 
 const Home = () => {
     const navigate = useNavigate(); 
+    const [slides, setSlides] = useState([]);
+
+    useEffect(() => {
+        const fetchProfessorMessages = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'professorMessages'));
+                const data = snapshot.docs.map((doc) => ({
+                    image: doc.data().ImageUrl,
+                    heading: doc.data().Heading,
+                    body: doc.data().Description,
+                    author: doc.data().Author,
+                  }));
+                setSlides(data);
+                console.log(data);
+            } catch (error) {
+                console.error('Error fetching professor messages:', error);
+            }
+        };
+
+        fetchProfessorMessages();
+    }, []);
 
     const handleNewsClick = () => {
         navigate('/news');
     };
-    const slides = [
-        {
-            image: '/images/director.jpeg',
-            heading: 'Message from Prof. Rajeev Ahuja',
-            body: 'The Institute is committed to create an ambience for nurturing innovation, creativity and excellence within its students. We, at IIT Ropar, strongly support interdisciplinary research and development for the benefit of Industry and Society.\n\nWe emphasise on developing all round leadership skills. We are proud to say that the Institute is ideally placed to exploit the synergy within the engineering and science departments at the Institute. In doing so, we believe the Institute will continue to create unique and novel programmes to make significant contributions to Science and Technology as a domain. We are confident that all our efforts will grow into significant epitomes of achievements in the larger academic parlance. Hopefully, our labors in all the major areas of science and technology will produce fruitful results in academic innovation, top-tier journal publications, citations and technology developments.',
-            author: 'Author 1',
-        },
-        {
-            image: '/images/puneet_sir.jpeg',
-            heading: 'Message from Dr. Puneet Goyal',
-            body: 'The Institute is committed to create an ambience for nurturing innovation, creativity and excellence within its students. We, at IIT Ropar, strongly support interdisciplinary research and development for the benefit of Industry and Society.\n\nWe emphasise on developing all round leadership skills. We are proud to say that the Institute is ideally placed to exploit the synergy within the engineering and science departments at the Institute. In doing so, we believe the Institute will continue to create unique and novel programmes to make significant contributions to Science and Technology as a domain. We are confident that all our efforts will grow into significant epitomes of achievements in the larger academic parlance. Hopefully, our labors in all the major areas of science and technology will produce fruitful results in academic innovation, top-tier journal publications, citations and technology developments.',
-            author: 'Author 2',
-        },
-        {
-            image: '/images/Sudarshan_sir.jpg',
-            heading: 'Message from Dr. Sudarshan Iyenger',
-            body: 'The Institute is committed to create an ambience for nurturing innovation, creativity and excellence within its students. We, at IIT Ropar, strongly support interdisciplinary research and development for the benefit of Industry and Society.\n\nWe emphasise on developing all round leadership skills. We are proud to say that the Institute is ideally placed to exploit the synergy within the engineering and science departments at the Institute. In doing so, we believe the Institute will continue to create unique and novel programmes to make significant contributions to Science and Technology as a domain. We are confident that all our efforts will grow into significant epitomes of achievements in the larger academic parlance. Hopefully, our labors in all the major areas of science and technology will produce fruitful results in academic innovation, top-tier journal publications, citations and technology developments.',
-            author: 'Author 3',
-        },
-        // Add more slide objects as needed
-    ];
+    // const slides = [
+    //     {
+    //         image: '/images/director.jpeg',
+    //         heading: 'Message from Prof. Rajeev Ahuja',
+    //         body: 'The Institute is committed to create an ambience for nurturing innovation, creativity and excellence within its students. We, at IIT Ropar, strongly support interdisciplinary research and development for the benefit of Industry and Society.\n\nWe emphasise on developing all round leadership skills. We are proud to say that the Institute is ideally placed to exploit the synergy within the engineering and science departments at the Institute. In doing so, we believe the Institute will continue to create unique and novel programmes to make significant contributions to Science and Technology as a domain. We are confident that all our efforts will grow into significant epitomes of achievements in the larger academic parlance. Hopefully, our labors in all the major areas of science and technology will produce fruitful results in academic innovation, top-tier journal publications, citations and technology developments.',
+    //         author: 'Author 1',
+    //     },
+    //     {
+    //         image: '/images/puneet_sir.jpeg',
+    //         heading: 'Message from Dr. Puneet Goyal',
+    //         body: 'The Institute is committed to create an ambience for nurturing innovation, creativity and excellence within its students. We, at IIT Ropar, strongly support interdisciplinary research and development for the benefit of Industry and Society.\n\nWe emphasise on developing all round leadership skills. We are proud to say that the Institute is ideally placed to exploit the synergy within the engineering and science departments at the Institute. In doing so, we believe the Institute will continue to create unique and novel programmes to make significant contributions to Science and Technology as a domain. We are confident that all our efforts will grow into significant epitomes of achievements in the larger academic parlance. Hopefully, our labors in all the major areas of science and technology will produce fruitful results in academic innovation, top-tier journal publications, citations and technology developments.',
+    //         author: 'Author 2',
+    //     },
+    //     {
+    //         image: '/images/Sudarshan_sir.jpg',
+    //         heading: 'Message from Dr. Sudarshan Iyenger',
+    //         body: 'The Institute is committed to create an ambience for nurturing innovation, creativity and excellence within its students. We, at IIT Ropar, strongly support interdisciplinary research and development for the benefit of Industry and Society.\n\nWe emphasise on developing all round leadership skills. We are proud to say that the Institute is ideally placed to exploit the synergy within the engineering and science departments at the Institute. In doing so, we believe the Institute will continue to create unique and novel programmes to make significant contributions to Science and Technology as a domain. We are confident that all our efforts will grow into significant epitomes of achievements in the larger academic parlance. Hopefully, our labors in all the major areas of science and technology will produce fruitful results in academic innovation, top-tier journal publications, citations and technology developments.',
+    //         author: 'Author 3',
+    //     },
+    //     // Add more slide objects as needed
+    // ];
     
   return (
     <div className='ml-8 mr-8 mt-4'>

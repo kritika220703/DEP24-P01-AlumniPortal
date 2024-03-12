@@ -15,6 +15,7 @@ import NewAndUpdates from './pages/NewAndUpdates';
 import GiveToIITRopar from './pages/GiveToIITRopar';
 import PrivateRoute from './PrivateRoute';
 import BecomeAMember from './pages/BecomeAMember';
+import ProfMessageAdmin from './pages/ProfMessageAdmin';
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
           <Route exact path="/News" element={<NewAndUpdates />} />
           <Route exact path="/givetoiitropar" element={<GiveToIITRopar />} />
           <Route exact path="/BecomeAMember" element={<BecomeAMember />} />
-          
+          <Route exact path="/ProfMessageAdmin" element={<ProfMessageAdmin />} />
         </Routes>
       </AuthProvider>
     </div>
