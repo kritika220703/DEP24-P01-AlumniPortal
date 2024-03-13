@@ -83,7 +83,7 @@ const SignUp = () => {
             const docRef = await addDoc(collection(db, "Users"), {
                 uid: user.uid,
                 email: email, 
-                name: name
+                name: name,
             });
 
             const userId = user.uid;
