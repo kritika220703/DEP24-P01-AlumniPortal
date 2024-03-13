@@ -63,13 +63,9 @@ const Navbar = () => {
               />
             </>
           ) : (
-            <div className='w-[150px] h-9 rounded-lg flex flex-row border-2 border-blue-700 items-center justify-center'>
+            // < className='w-[150px] h-9 rounded-lg flex flex-row border-2 border-blue-700 items-center justify-center'>
               <div
-                className={`${
-                  toggle
-                    ? 'bg-white text-black transition-all duration-300'
-                    : 'bg-blue-500 text-white transition-all duration-300'
-                } w-[75px] h-7 ml-1 flex items-center justify-center rounded-lg cursor-pointer`}
+                className={` w-[80px] h-10 ml-1 flex items-center text-[21px] justify-center rounded-lg cursor-pointer bg-blue-500 text-white`}
                 onClick={() => {
                   setToggle(!toggle);
                   navigate('/login');
@@ -78,21 +74,8 @@ const Navbar = () => {
                 Login
               </div>
 
-              <div
-                className={`${
-                  !toggle
-                    ? 'bg-white text-black transition-all duration-300'
-                    : 'bg-blue-500 text-white transition-all duration-300'
-                } w-[100px] h-7 mr-2 flex items-center justify-center rounded-lg cursor-pointer`}
-                onClick={() => {
-                  setToggle(!toggle);
-                
-                  navigate('/signup')}}
-              >
-                Sign Up
-              </div>
-            </div>
-          )};
+              
+          )}
         </>        
        </ul>
 

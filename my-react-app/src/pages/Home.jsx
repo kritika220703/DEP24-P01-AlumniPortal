@@ -1,14 +1,54 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import StateContext from '../StateContext.js';
 import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
 import { useNavigate  } from 'react-router-dom';
+import image1 from '.././assets/image1.jpeg'
+import image4 from '.././assets/image4.jpg'
+import image3 from '.././assets/image2.jpg'
+import {motion} from 'framer-motion'
 
 const Home = () => {
     const navigate = useNavigate(); 
     // const { isAdmin, setIsAdmin } = useContext(StateContext);
+    const Slides = [
+        {
+          url:image1,
+        },
+        {
+            url:image3,
+        },
+        {
+            url:image4,
+        },
+      ];
+
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [nextIndex, setNextIndex] = useState(1);
+      const prevSlide = () => {
+        const newIndex = currentIndex === 0 ? Slides.length - 1 : currentIndex - 1;
+        setCurrentIndex(newIndex);
+        setNextIndex(newIndex === 0 ? Slides.length - 1 : newIndex - 1);
+      };
     
+      const nextSlide = () => {
+        const newIndex = currentIndex === Slides.length - 1 ? 0 : currentIndex + 1;
+        setCurrentIndex(newIndex);
+        setNextIndex(newIndex === Slides.length - 1 ? 0 : newIndex + 1);
+      };
+    
+      const goToSlide = (slideIndex) => {
+        setCurrentIndex(slideIndex);
+        setNextIndex(slideIndex === Slides.length - 1 ? 0 : slideIndex + 1);
+      };
+    
+      useEffect(() => {
+        const interval = setInterval(() => {
+          nextSlide();
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [currentIndex]);
     const isAdmin = localStorage.getItem("isAdmin");
     console.log(isAdmin);
     // console.log(isAdmin);
@@ -40,9 +80,62 @@ const Home = () => {
     
   return (
     <div className='ml-8 mr-8 mt-4'>
-        <div className="">
-            <BecomeMember /> {/* Rendering the BecomeMember component */}
+        <div className=' h-screen w-full m-auto py-16 px-4 group overflow-hidden'>
+    <motion.div
+      style={{ backgroundImage: `url(${Slides[currentIndex].url})` }}
+      className='absolute top-[100px] left-0 w-full h-full bg-cover bg-center z-0'
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className='relative flex flex-col mt-[120px] justify-end items-center'>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className='text-[70px] text-white font-semibold mb-4'
+        >
+          Welcome to Alumni Relations
+        </motion.h1>
+        <div className='flex justify-center items-center'>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1 }}
+            className='text-[25px]  text-white mb-8 w-full whitespace-nowrap'
+          >
+           Register now and become a member of Alumni Association of IIT Ropar.
+          </motion.p>
         </div>
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1.5 }}
+          className='bg-transparent border-blue-900 border-[4px] rounded-full text-white text-[27px] font-bold py-2 px-3'
+          onClick={() => {  navigate('/BecomeAMember')}}
+        >
+          Register Now
+        </motion.button>
+        
+        
+      </div>
+    </motion.div>
+    <div className='flex top-4 justify-center py-2 z-10'>
+      {Slides.map((slide, slideIndex) => (
+        <div
+          key={slideIndex}
+          onClick={() => goToSlide(slideIndex)}
+          className={`text-2xl cursor-pointer ${currentIndex === slideIndex ? 'text-blue-500' : 'text-gray-500'}`}
+        >
+          &bull;
+        </div>
+      ))}
+    </div>
+        </div>
+        {/* <div className="">
+            <BecomeMember /> 
+        </div> */}
         <hr className="border-gray-300 my-8" />
         <div className="flex flex-col md:flex-row">
             <div className="md:w-1/2 md:pr-4 mb-8 flex-grow">

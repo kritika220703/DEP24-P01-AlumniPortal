@@ -11,8 +11,8 @@ import {
   signInWithEmailAndPassword
 } from "firebase/auth";
 import DropDown from "../components/RoleDropDown.jsx"
-import image from '.././assets/administration-block-iit-ropar-8176406.webp'
-
+import image from '.././assets/img7.jpg'
+import {motion} from 'framer-motion'
 const toastOptions = {
   position: "bottom-right",
   autoClose: 8000,
@@ -242,50 +242,71 @@ const Login = () => {
       {!isOtpSent ? (
         <form
           className="flex justify-center items-center h-screen"
-          style={{ backgroundImage: `url(${image})`, opacity: '0.8', backgroundSize: 'cover', backgroundPosition: 'center' }}
           onSubmit={handleSubmit}
         >
-          <div className='bg-white bg-transparent opacity-70 brightness-25 p-8 rounded-md shadow-md max-w-md w-full'>
-            <h1 className="text-3xl font-bold mb-6">Login</h1>
-            
-            <div>
-              {/* <h1>Select Role:</h1> */}
-              <select
-                name="role"
-                value={selectedOption}
-                onChange={handleOptionSelect}
-                className="w-full px-4 py-2 mr-2 border-4 border-gray-500 rounded-md focus:outline-none focus:border-indigo-900 mb-2"
-              >
-                <option value="">Select an option</option>
-                <option value="Alumni">Alumni</option>
-                <option value="Admin">Admin</option>
-              </select>
-              {/* <DropDown selectedOption={selectedOption} onOptionSelect={handleOptionSelect}/> */}
-            </div>
-
-            <input
-              type="email"
-              name='email'
-              placeholder='Email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 mb-4 border-4 border-gray-500 rounded-md bg-white focus:outline-none focus:border-indigo-900 placeholder:text-gray-500 placeholder:text-[20px]"
-            />
-      
-            <button
-              type="submit"
-              className='w-full px-4 py-2 bg-indigo-800 text-white rounded-md hover:bg-indigo-900 focus:outline-none'
+          <div className='flex flex-row items-center justify-center w-[950px] h-[480px] bg-white  shadow-lg rounded-2xl mt-0'>
+          <div
+            className="relative bg-cover bg-center h-[480px] w-[500px] rounded-2xl flex items-center justify-center"
+            style={{ backgroundImage: `url(${image})` }}
             >
-              Login
-            </button>
+            <div className="text-center text-white">
+                <motion.h1
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-4xl font-bold mb-4"
+                >
+                IIT Ropar Alumni Association
+                </motion.h1>
+                <motion.p
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="text-lg"
+                >
+                Sign up or log in to stay connected with your community
+                </motion.p>
+            </div>
+          </div>
+          <div className="bg-white bg-transparent opacity-70 brightness-25 p-8 rounded-r-2xl shadow-md max-w-md w-full h-[480px]">
+      <h1 className="text-3xl font-bold mb-6 text-center text-blue-800 mt-8">Login</h1>
+      
+      <div className="mb-4">
+        <select
+          name="role"
+          value={selectedOption}
+          onChange={handleOptionSelect}
+          className="w-full px-4 py-2 border-2 border-blue-800 rounded-md focus:outline-none focus:border-indigo-900 mb-2"
+        >
+          <option value="">Select an option</option>
+          <option value="Alumni">Alumni</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
 
-            {/* Link to navigate to the login page */}
-            <p className="mt-4 text-gray-600 text-center text-[20px]">
-                Don not have an account?{" "}
-                <Link to="/SignUp" className="text-indigo-700 hover:underline">
-                Sign Up
-                </Link>
-            </p>
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full px-4 py-2 mb-4 border-2 border-blue-800 rounded-md bg-white focus:outline-none focus:border-indigo-900"
+      />
+
+      <button
+        type="submit"
+        className="w-full px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 focus:outline-none"
+      >
+        Login
+      </button>
+
+      <p className="mt-4 text-gray-600 text-center text-lg">
+          Don't have an account?{" "}
+          <Link to="/SignUp" className="text-blue-800 hover:underline">
+          Sign Up
+          </Link>
+      </p>
+    </div>
           </div>
         </form>
       ) : (
