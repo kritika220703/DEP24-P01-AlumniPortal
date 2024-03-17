@@ -15,7 +15,7 @@ import {
 import {storage} from "../firebase.js"
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import image from '.././assets/img7.jpg'
+import image from '.././assets/Spiraliitropar.jpg'
 import {motion} from 'framer-motion'
 
 const toastOptions = {
@@ -268,7 +268,7 @@ const SignUp = () => {
                     localStorage.setItem("userId", userId);
                 }
                 
-                localStorage.setItem("isAdmin", false);
+                localStorage.setItem("isAdmin", "false");
 
                 if(selectedOption === "Admin"){
                     console.log("in dens admin mail frontend")
@@ -322,7 +322,7 @@ const SignUp = () => {
             className="relative bg-cover bg-center h-[480px] w-[500px] rounded-2xl flex items-center justify-center"
             style={{ backgroundImage: `url(${image})` }}
             >
-            <div className="text-center text-white">
+            <div className="text-center text-white px-2">
                 <motion.h1
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}

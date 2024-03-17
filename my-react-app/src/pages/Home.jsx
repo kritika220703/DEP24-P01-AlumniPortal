@@ -6,12 +6,13 @@ import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
 import { useNavigate  } from 'react-router-dom';
-import image1 from '.././assets/image1.jpeg'
+import image1 from '.././assets/IIT_Front.webp'
 import image4 from '.././assets/image4.jpg'
-import image3 from '.././assets/image2.jpg'
+import image3 from '.././assets/1597330094171_LRM_EXPORT_20191204_205026.jpg'
 import {motion} from 'framer-motion'
 import {db} from "../firebase.js";
 import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
+import ProfMessageAdmin from './ProfMessageAdmin.jsx';
 
 
 const Home = () => {
@@ -54,6 +55,7 @@ const Home = () => {
         }, 3000);
         return () => clearInterval(interval);
     }, [currentIndex]);
+
     const isAdmin = localStorage.getItem("isAdmin");
     console.log(isAdmin);
     // console.log(isAdmin);
@@ -184,6 +186,20 @@ const Home = () => {
                             Read More News
                         </button>
                     </div>
+                    <div>
+                      {isAdmin==="true" ? (
+                        <div className="flex mt-4">
+                          <button 
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
+                            onClick={() => navigate("/newsadmin")}
+                          >
+                            Edit News
+                          </button>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
                 </div>
             </div>
             <div className="md:w-1/2 md:pl-4 mb-8 flex-grow">
@@ -221,8 +237,21 @@ const Home = () => {
         {/* <Gallery/> */}
         {/* <hr className="border-gray-300 my-8" /> */}
         <div className='container mx-auto py-8 '>
-            <TextSlider slides={slides} interval={5000} />
+          <TextSlider slides={slides} interval={5000} />
+          {isAdmin==="true" ? (
+            <div className="flex justify-center mt-4">
+              <button 
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
+                onClick={() => navigate("/ProfMessageAdmin")}
+              >
+                Edit Professor Messages
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
+
 
         
     </div>

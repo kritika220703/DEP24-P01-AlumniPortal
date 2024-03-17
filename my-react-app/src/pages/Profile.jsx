@@ -794,7 +794,7 @@ const Profile = () => {
             >
             <div className="w-[100%] max-w-[10000px] h-full mx-auto mt-0 p-6 bg-none rounded-md overflow-hidden shadow-md flex flex-col">
             
-                {isAdmin ? (
+                {isAdmin==="true" ? (
                     <>
                         <DataList/>
                     </>

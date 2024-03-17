@@ -11,7 +11,7 @@ import {
   signInWithEmailAndPassword
 } from "firebase/auth";
 import DropDown from "../components/RoleDropDown.jsx"
-import image from '.././assets/img7.jpg'
+import image from '.././assets/Spiraliitropar.jpg'
 import {motion} from 'framer-motion'
 const toastOptions = {
   position: "bottom-right",
@@ -224,7 +224,7 @@ const Login = () => {
             if(selectedOption === "Admin"){
               // if(email === "2021csb1184@iitrpr.ac.in"){
                 setIsAdmin(true);
-                localStorage.setItem("isAdmin", true);
+                localStorage.setItem("isAdmin", "true");
               // }
             }
             navigate("/home");
@@ -249,7 +249,7 @@ const Login = () => {
             className="relative bg-cover bg-center h-[480px] w-[500px] rounded-2xl flex items-center justify-center"
             style={{ backgroundImage: `url(${image})` }}
             >
-            <div className="text-center text-white">
+            <div className="text-center text-white  px-2">
                 <motion.h1
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
