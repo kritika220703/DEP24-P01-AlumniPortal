@@ -239,115 +239,116 @@ const Login = () => {
 
   return (
     <>
-      {!isOtpSent ? (
-        <form
-          className="flex justify-center items-center h-screen"
-          onSubmit={handleSubmit}
-        >
-          <div className='flex flex-row items-center justify-center w-[950px] h-[480px] bg-white  shadow-lg rounded-2xl mt-0'>
+      <form
+        className="flex justify-center items-center h-screen"
+        onSubmit={handleSubmit}
+      >
+        <div className='flex flex-row items-center justify-center w-[950px] h-[480px] bg-white  shadow-lg rounded-2xl mt-0'>
           <div
             className="relative bg-cover bg-center h-[480px] w-[500px] rounded-2xl flex items-center justify-center"
             style={{ backgroundImage: `url(${image})` }}
-            >
+          >
             <div className="text-center text-white  px-2">
-                <motion.h1
+              <motion.h1
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 className="text-4xl font-bold mb-4"
-                >
+              >
                 IIT Ropar Alumni Association
-                </motion.h1>
-                <motion.p
+              </motion.h1>
+              <motion.p
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.3 }}
                 className="text-lg"
-                >
+              >
                 Sign up or log in to stay connected with your community
-                </motion.p>
+              </motion.p>
             </div>
           </div>
           <div className="bg-white bg-transparent opacity-70 brightness-25 p-8 rounded-r-2xl shadow-md max-w-md w-full h-[480px]">
-      <h1 className="text-3xl font-bold mb-6 text-center text-blue-800 mt-8">Login</h1>
-      
-      <div className="mb-4">
-        <select
-          name="role"
-          value={selectedOption}
-          onChange={handleOptionSelect}
-          className="w-full px-4 py-2 border-2 border-blue-800 rounded-md focus:outline-none focus:border-indigo-900 mb-2"
-        >
-          <option value="">Select an option</option>
-          <option value="Alumni">Alumni</option>
-          <option value="Admin">Admin</option>
-        </select>
-      </div>
-
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full px-4 py-2 mb-4 border-2 border-blue-800 rounded-md bg-white focus:outline-none focus:border-indigo-900"
-      />
-
-      <button
-        type="submit"
-        className="w-full px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 focus:outline-none"
-      >
-        Login
-      </button>
-
-      <p className="mt-4 text-gray-600 text-center text-lg">
-          Don't have an account?{" "}
-          <Link to="/SignUp" className="text-blue-800 hover:underline">
-          Sign Up
-          </Link>
-      </p>
-    </div>
-          </div>
-        </form>
-      ) : (
-        <form onSubmit={handleOTPSubmit}>
-          <div className='mb-6 flex flex-col items-center justify-center gap-5 mx-auto h-screen w-full bg-gray-200'>
-            <label
-              htmlFor="otp"
-              className="block text-gray-800 font-medium mb-2"
-            >
-              Enter OTP:
-            </label>
-
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="otp"
-                placeholder="OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className='px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 mr-2'
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-700 focus:outline-none transition duration-300"
+            <h1 className="text-3xl font-bold mb-6 text-center text-blue-800 mt-8">Login</h1>
+  
+            <div className="mb-4">
+              <select
+                name="role"
+                value={selectedOption}
+                onChange={handleOptionSelect}
+                className="w-full px-4 py-2 border-2 border-blue-800 rounded-md focus:outline-none focus:border-indigo-900 mb-2"
               >
-                Verify OTP
-              </button>
+                <option value="">Select an option</option>
+                <option value="Alumni">Alumni</option>
+                <option value="Admin">Admin</option>
+              </select>
             </div>
-
-            {isOtpVerified && (
-              <div className="text-indigo-500 mt-2">
-                <FiCheckCircle size={24} />
-                <span className="ml-2">OTP Verified!</span>
+  
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 mb-4 border-2 border-blue-800 rounded-md bg-white focus:outline-none focus:border-indigo-900"
+            />
+  
+            <button
+              type="submit"
+              className="w-full px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 focus:outline-none"
+            >
+              Login
+            </button>
+  
+            <p className="mt-4 text-gray-600 text-center text-lg">
+              Don't have an account?{" "}
+              <Link to="/SignUp" className="text-blue-800 hover:underline">
+                Sign Up
+              </Link>
+            </p>
+  
+            {isOtpSent && (
+              <div className='mb-6 flex flex-col items-center justify-center gap-5'>
+                <label
+                  htmlFor="otp"
+                  className="block text-gray-800 font-medium mb-2"
+                >
+                  Enter OTP:
+                </label>
+  
+                <div className="flex items-center">
+                  <input
+                    type="text"
+                    name="otp"
+                    placeholder="OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className='px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 mr-2'
+                  />
+                  <button
+                    type="submit"
+                    // type="button" // Change type to "button"
+                    onClick={handleOTPSubmit} // Call handleVerifyOTP function on click
+                    className="px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none transition duration-300"
+                  >
+                    Verify OTP
+                  </button>
+                </div>
+  
+                {isOtpVerified && (
+                  <div className="text-indigo-500 mt-2">
+                    <FiCheckCircle size={24} />
+                    <span className="ml-2">OTP Verified!</span>
+                  </div>
+                )}
               </div>
             )}
           </div>
-        </form>
-      )}
-      <ToastContainer/>
+        </div>
+      </form>
+      <ToastContainer />
     </>
   );
+  
 };
 
 export default Login;
