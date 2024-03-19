@@ -70,44 +70,44 @@ const NewsletterCard = ({ image, heading, drivelink}) => {
 //   },
 // ];
 
-const newsletterItems = [
-  {
-    id: 1,
-    image: "/images/images.jpg",
-    heading: "Feburary 2024",
-    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%20Volume%2012%2C%20Issue%20III%2C%20August%202023.pdf"
-  },
-  {
-    id: 2,
-    image: "/images/car1.jpg",
-    heading: "January 2024",
-    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Newsletter-1_compressed.pdf"
-  },
-  {
-    id: 3,
-    image: "/images/IIT_Front.webp",
-    heading: "December 2023",
-    driveLink: "https://www.iitrpr.ac.in/sites/default/files/IIT%20Ropar%20January%20Newsletter%202023.pdf"
-  },
-  {
-    id: 4,
-    image: "/images/download.jpg",
-    heading: "November 2023",
-    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%20-%20Volume%2011%20-%20Issue%203%2C%20Nov%202022-compressed.pdf"
-  },
-  {
-    id: 5,
-    image: "/images/car1.jpg",
-    heading: "October 2023",
-    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%20Volume%2011%2C%20Issue%202%2C%20July%202022.pdf"
-  },
-  {
-    id: 6,
-    image: "/images/images.jpg",
-    heading: "September 2023",
-    driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%2C%20Volume%2011%20Issue%201%20April%202022.pdf"
-  },
-];
+// const newsletterItems = [
+//   {
+//     id: 1,
+//     image: "/images/images.jpg",
+//     heading: "Feburary 2024",
+//     driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%20Volume%2012%2C%20Issue%20III%2C%20August%202023.pdf"
+//   },
+//   {
+//     id: 2,
+//     image: "/images/car1.jpg",
+//     heading: "January 2024",
+//     driveLink: "https://www.iitrpr.ac.in/sites/default/files/Newsletter-1_compressed.pdf"
+//   },
+//   {
+//     id: 3,
+//     image: "/images/IIT_Front.webp",
+//     heading: "December 2023",
+//     driveLink: "https://www.iitrpr.ac.in/sites/default/files/IIT%20Ropar%20January%20Newsletter%202023.pdf"
+//   },
+//   {
+//     id: 4,
+//     image: "/images/download.jpg",
+//     heading: "November 2023",
+//     driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%20-%20Volume%2011%20-%20Issue%203%2C%20Nov%202022-compressed.pdf"
+//   },
+//   {
+//     id: 5,
+//     image: "/images/car1.jpg",
+//     heading: "October 2023",
+//     driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%20Volume%2011%2C%20Issue%202%2C%20July%202022.pdf"
+//   },
+//   {
+//     id: 6,
+//     image: "/images/images.jpg",
+//     heading: "September 2023",
+//     driveLink: "https://www.iitrpr.ac.in/sites/default/files/Prajwalam%2C%20Volume%2011%20Issue%201%20April%202022.pdf"
+//   },
+// ];
 
 const NewAndUpdates = () => {
 
@@ -116,6 +116,8 @@ const NewAndUpdates = () => {
   const [newsItems, setNewsItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentDeck2, setCurrentDeck2] = useState(0);
+  const [newsletterItems, setNewsletterItems] = useState([]);
+  const [loadingNewsletter, setLoadingNewsletter] = useState(true);
 
   useEffect(() => {
     const fetchNewsItems = async () => {
@@ -133,10 +135,28 @@ const NewAndUpdates = () => {
     };
     fetchNewsItems();
   }, []);
-  const totalDecks = Math.ceil(newsItems.length / cardsPerPage);
-  if (loading) {
+
+  useEffect(() => {
+    const fetchNewsletterItems = async () => {
+      const q = query(collection(db, 'Newsletters'), orderBy('id', 'desc'));
+      const querySnapshot = await getDocs(q);
+      const fetchedNewsletterItems = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        image: doc.data().ImageUrl,
+        heading: doc.data().MonthYear,
+        driveLink: doc.data().PdfUrl,
+      }));
+      setNewsletterItems(fetchedNewsletterItems);
+      setLoadingNewsletter(false);
+    };
+    fetchNewsletterItems();
+  }, []);
+
+  if (loadingNewsletter || loading) {
     return <p>Loading...</p>;
   }
+  console.log(newsletterItems);
+  const totalDecks = Math.ceil(newsItems.length / cardsPerPage);
 
   const handleNextDeck = () => {
     setCurrentDeck((prevDeck) => Math.min(prevDeck + 1, totalDecks - 1));

@@ -97,6 +97,82 @@ function NewsAndUpdatesAdmin() {
 
   };
 
+  const handleAddNewsletter = async () => {
+    if (!newsletterHeading || !newsletterpdf ) {
+      alert('Please fill in all fields');
+      return;
+    }
+  
+    const storageRefPdf = ref(storage,`/newsletter/${newsletterpdf.name}`)
+    const uploadTaskPdf = uploadBytesResumable(storageRefPdf, newsletterpdf);
+    uploadTaskPdf.on(
+        "state_changed",
+        (snapshot) => {
+        },
+        (error) => {
+            console.log("Error uploading PDF file:", error);
+        },
+        async () => {
+            try {
+              const pdfUrl = await getDownloadURL(uploadTaskPdf.snapshot.ref);
+              console.log("PDF URL: ", pdfUrl);
+  
+              const storageRefImage = ref(storage,`/newsletter/${newsletterImage.name}`)
+              const uploadTaskImage = uploadBytesResumable(storageRefImage, newsletterImage);
+              uploadTaskImage.on(
+                  "state_changed",
+                  (snapshot) => {
+                      
+                  },
+                  (error) => {
+                      console.log("Error uploading image file:", error);
+                  },
+                  async () => {
+                      try {
+                        const imageUrl = await getDownloadURL(uploadTaskImage.snapshot.ref);
+                        console.log("Image URL: ", imageUrl);
+                        const querySnapshot = await getDocs(
+                            query(collection(db, 'NewsUpdates'), where('Heading', '==', newsletterHeading))
+                        );
+                        if (!querySnapshot.empty) {
+                          const docRef = querySnapshot.docs[0].ref;
+                          await updateDoc(docRef, {
+                            PdfUrl: pdfUrl,
+                            ImageUrl: imageUrl
+                          });
+                        }
+                        else {
+                          await addDoc(collection(db, 'Newsletters'), {
+                            id: Date.now(),
+                            MonthYear: newsletterHeading,
+                            PdfUrl: pdfUrl,
+                            ImageUrl: imageUrl
+                          });
+                        }
+                        toast.success("Newsletter Updated Successfully", toastOptions);
+                        setnewsletterHeading('');
+                        setNewsletterpdf(null);
+                        setNewsletterImage(null);
+                        window.location.reload();
+  
+                      } catch (error) {
+                        console.log("Error getting image download URL or saving data:", error);
+                      }
+                  }
+              );
+            } catch (error) {
+                console.log("Error getting PDF download URL:", error);
+            }
+        }
+    );
+    // toast.success("Newsletter Updated Successfully", toastOptions);
+    // setnewsletterHeading('');
+    // setNewsletterpdf(null);
+    // setNewsletterImage(null);
+    // window.location.reload();
+  };
+  
+
   return (
     <div className="news-admin">
         <div className='news-updates-heading-admin'>
@@ -133,19 +209,19 @@ function NewsAndUpdatesAdmin() {
             Newsletter Month/Year:
             <input
               type="text"
-              value={newsHeading}
+              value={newsletterHeading}
               onChange={(e) => setnewsletterHeading(e.target.value)}
             />
           </label>
           <label>
             NewsLetter Pdf:
-            <input name= "profilepic" type="file" accept="image/*" onChange={handleNewsletterChange} />
+            <input name="profilepic" type="file" accept="application/pdf" onChange={handleNewsletterChange} />
           </label>
           <label>
-            News Image:
-            <input name= "profilepic" type="file" accept="image/*" onChange={handleNewsChange} />
+            NewsLetter Image:
+            <input name= "profilepic" type="file" accept="image/*" onChange={handleNewsletterimageChange} />
           </label>
-          <button onClick={handleAddNews}>Add News</button>
+          <button onClick={handleAddNewsletter}>Add News</button>
         </div>
       </div>
     </div>

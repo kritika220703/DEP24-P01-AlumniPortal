@@ -28,20 +28,19 @@
   .news-admin {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
 }
 
 .news-update{
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  margin: 20px;
+
 }
 
 .news-input-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     max-width: 1000px;
     margin: 20px;
     padding: 20px;
