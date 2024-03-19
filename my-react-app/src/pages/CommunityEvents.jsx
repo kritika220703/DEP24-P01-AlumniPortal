@@ -1,14 +1,55 @@
-import React from 'react'
+import React, {useContext, useState, useEffect}  from 'react'
 import Gallery from '../components/Gallery'
 import './CommunityEvents.css' // Assuming you have a CSS file for this component
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandshake } from '@fortawesome/free-solid-svg-icons';
+import {db} from "../firebase.js";
+import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
 
 const CommunityEvents = () => {
-  const renderReunionRow = (batch, year, date, title) => (
+  const [plannedReunions, setPlannedReunions] = useState([]);
+  const [pastReunions, setPastReunions] = useState([]);
+
+  useEffect(() => {
+    const fetchPlannedReunions = async () => {
+      try {
+        const plannedReunionData = [];
+        const snapshot = await getDocs(collection(db, 'plannedReunions'));
+
+        snapshot.forEach(doc => {
+          const reunion = doc.data();
+          plannedReunionData.push(reunion);
+        });
+
+        setPlannedReunions(plannedReunionData);
+      } catch (error) {
+        console.error('Error fetching planned reunion data: ', error);
+      }
+    };
+
+    const fetchPastReunions = async () => {
+      try {
+        const pastReunionData = [];
+        const snapshot = await getDocs(collection(db, 'pastReunions'));
+
+        snapshot.forEach(doc => {
+          const reunion = doc.data();
+          pastReunionData.push(reunion);
+        });
+
+        setPastReunions(pastReunionData);
+      } catch (error) {
+        console.error('Error fetching past reunion data: ', error);
+      }
+    };
+
+    fetchPlannedReunions();
+    fetchPastReunions();
+  }, []);
+
+  const renderPlannedReunionRow = (batch, year, date, title) => (
     <tr key={batch}>
       <td>{batch}</td>
-      <td>{year}</td>
       <td>{date}</td>
       <td>{title}</td>
       <td><button className='reunion-button'>Register</button></td>
@@ -53,28 +94,29 @@ const CommunityEvents = () => {
           <thead>
             <tr>
               <th>Batch</th>
-              <th>Year</th>
-              <th>Tentative Date & Period</th>
+              <th>Date</th>
               <th>Title</th>
               <th>Register </th>
             </tr>
           </thead>
           <tbody>
-            {renderReunionRow("Batch 1", "2024", "Tentative Date", "Title 1")}
-            {renderReunionRow("Batch 2", "2024", "Tentative Date", "Title 2")}
-            {renderReunionRow("Batch 3", "2024", "Tentative Date", "Title 3")}
-            {/* Add more rows as needed */}
+            {plannedReunions.map(reunion => (
+              renderPlannedReunionRow(reunion.batch, reunion.year, reunion.date, reunion.title)
+            ))}
           </tbody>
         </table>
          </div>
       <div className='past-reunion-heading'> <h1 >Past Reunions</h1> </div>
       <div className='past-reunions'>
-        {renderPastReunionCard("/reunion_images/image1.png", "Alumni Reunion 2023", "Date: 03/04/2023", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
+        {pastReunions.map(reunion => (
+          renderPastReunionCard(reunion.image, reunion.title, reunion.date, reunion.description)
+        ))}
+        {/* {renderPastReunionCard("/reunion_images/image1.png", "Alumni Reunion 2023", "Date: 03/04/2023", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
         {renderPastReunionCard("/reunion_images/image2.png", "Alumni Reunion 2024", "Date: 19/01/2024", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
         {renderPastReunionCard("/reunion_images/image3.png", "Alumni Reunion 2016", "Date: 07/09/2016", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
         {renderPastReunionCard("/reunion_images/image4.png", "Alumni Reunion 2023", "Date: 03/04/2023", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
         {renderPastReunionCard("/images/iit_ropar_front.jpg", "Past Reunion 5", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/reunion_images/image5.png", "Past Reunion 6", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
+        {renderPastReunionCard("/reunion_images/image5.png", "Past Reunion 6", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")} */}
       </div>
     </div>
   )

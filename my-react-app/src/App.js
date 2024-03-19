@@ -17,6 +17,7 @@ import PrivateRoute from './PrivateRoute';
 import BecomeAMember from './pages/BecomeAMember';
 import NewsAndUpdatesAdmin from './pages/NewsAndUpdatesAdmin';
 import ProfMessageAdmin from './pages/ProfMessageAdmin';
+import CommunityEventsAdmin from './pages/CommunityEventsAdmin';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route exact path="/BecomeAMember" element={<BecomeAMember />} />
           <Route exact path="/newsadmin" element={<NewsAndUpdatesAdmin />} />
           <Route exact path="/ProfMessageAdmin" element={<ProfMessageAdmin />} />
+          <Route exact path="/CommunityEventsAdmin" element={<CommunityEventsAdmin/>} />
         </Routes>
       </AuthProvider>
     </div>
