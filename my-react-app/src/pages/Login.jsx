@@ -87,7 +87,8 @@ const Login = () => {
     if(selectedOption === "Admin"){
       
       const colRef = collection(db, 'admin');
-      console.log(colRef);
+      console.log("admin::  ",colRef);
+      console.log("email: ", email)
       const q = query(colRef, where('email', '==', email));
 
       try {
