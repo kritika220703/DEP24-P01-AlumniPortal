@@ -79,7 +79,7 @@ const Profile = () => {
                       snapshot.forEach((doc) => {
                         console.log(doc.id, '=>', doc.data());
                         setUserData(doc.data());
-                        setProfileURL(doc.data.profileURL);
+                        setProfileURL(userData['profileURL']);
                         console.log("profile url",profileURL);
                         // console.log("after: ",userData);
                     });
@@ -194,6 +194,7 @@ const Profile = () => {
 
     const handleProfilePictureChange = (e) => {
         setProfilePicture(e.target.files[0]);
+        // setProfileURL(e.target.files[0]);
         // const { name, value } = e.target;
         //   setEditedUser({
         //       ...editedUser,
@@ -214,57 +215,47 @@ const Profile = () => {
 
             // Check if any documents match the query
             if (querySnapshot.size > 0) {
-            // Get the reference to the first matching document
-            const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
-            
-            if (profilePicture) {
-                const storageRef = ref(storage,`/files/${userData.entryNo}`)
-                console.log("stor ref: ",storageRef);
-                const uploadTask = uploadBytesResumable(storageRef, profilePicture);
-             
-                uploadTask.on(
-                    "state_changed",
-                    (err) => console.log(err),
-                    () => {
-                        console.log("innnn");
-                        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                            console.log("URL: ",url);
-                            // setProfileURL(process.env.PROFILE_BASE_URL + url);
-                            setEditedUser({ ...editedUser, profileURL: url });
-                        });
-                    }
-                ); 
-                console.log(profileURL);
-            }
+                // Get the reference to the first matching document
+                const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
+                
+                if (profilePicture) {
+                    const storageRef = ref(storage,`/files/${userData.entryNo}`)
+                    console.log("stor ref: ",storageRef);
+                    const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+                
+                    uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {},
+                        (err) => console.log(err),
+                        async () => {
+                            console.log("innnn");
+                            const url = await getDownloadURL(uploadTask.snapshot.ref);
+                            console.log("URL: ", url);
+                            
+                            // Update the profileURL in the editedUser object
+                            const updatedEditedUser = { ...editedUser, profileURL: url };
+
+                            // Update the document with the updatedEditedUser data
+                            await updateDoc(docRef, updatedEditedUser);
+                        }
+                    ); 
+                    console.log(profileURL);
+                }
 
             // Update the document with the new data
-            await updateDoc(docRef, editedUser);
+            
 
             // Fetch updated data after saving changes
-            const updatedSnapshot = await getDoc(docRef);
+            // const updatedSnapshot = await getDoc(docRef);
 
-            if (updatedSnapshot.exists()) {
-                // Update the userData state with the new data
-                setUserData(updatedSnapshot.data());
-            }
+            // if (updatedSnapshot.exists()) {
+            //     // Update the userData state with the new data
+            //     setUserData(updatedSnapshot.data());
+            // }
 
-            if (profilePicture) {
-                const storageRef = ref(storage,`/files/${userData.entryNo}`);
-                console.log("full: ",storageRef);
-                const uploadTask = uploadBytesResumable(storageRef, profilePicture);
-             
-                uploadTask.on(
-                    "state_changed",
-                    (err) => console.log(err),
-                    () => {
-                        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                            console.log(url);
-                            // setProfileURL(url);
-                            setEditedUser({ ...editedUser, profileURL: url });
-                        });
-                    }
-                ); 
-            }
+            // if (profilePicture) {
+                
+            // }
 
             console.log('Document successfully updated!');
             } else {
@@ -360,7 +351,7 @@ const Profile = () => {
                         <div className='flex flex-col items-center justify-center'>
                             <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[270px]">
                                 {/* <img src={`https://console.firebase.google.com/u/0/project/alumni-portal-df4f5/storage/alumni-portal-df4f5.appspot.com/${profileURL}`} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/> */}
-                                <img src={dp} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/>
+                                <img src={profileURL} className="rounded-full w-36 h-36 mx-auto mb-2" alt={dp}/>
                                 <h1 className="text-2xl font-bold text-gray-800 mb-1">{userData.name}</h1>
                                 <p className="text-gray-500">{userData.email}</p>
                             </div>
@@ -517,16 +508,7 @@ const Profile = () => {
                             />
                         </div>
 
-                        <div className="mb-1">
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email id"
-                                value={editedUser.email}
-                                onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                            />
-                        </div>
+                        
 
                         <div className="mb-1">
                             <input

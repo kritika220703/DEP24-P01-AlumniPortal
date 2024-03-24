@@ -55,9 +55,9 @@ const PdfKindDownloadComponent = () => {
       <button 
         onClick={downloadAsPdf}
         className='bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold'
-    >
-        Download PDF
-    </button>
+      >
+          Download PDF
+      </button>
     </div>
   );
 };
