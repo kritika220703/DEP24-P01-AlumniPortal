@@ -6,11 +6,13 @@ import { faHandshake } from '@fortawesome/free-solid-svg-icons';
 import {db} from "../firebase.js";
 import { addDoc, collection, query, where, getDocs , getDoc, doc, updateDoc} from "firebase/firestore";
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { useNavigate  } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import 'primereact/resources/themes/mdc-light-deeppurple/theme.css';
 
 const CommunityEvents = () => {
+  const navigate = useNavigate(); 
   const [plannedReunions, setPlannedReunions] = useState([]);
   const [pastReunions, setPastReunions] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -19,6 +21,7 @@ const CommunityEvents = () => {
   const [title, settitle] = useState('');
   const toast = useRef(null);
   const [userData, setUserData] = useState(null);
+  const isAdmin = localStorage.getItem("isAdmin");
   
   useEffect(() => {
     const fetchPlannedReunions = async () => {
@@ -180,18 +183,40 @@ const CommunityEvents = () => {
             ))}
           </tbody>
         </table>
-         </div>
+      </div>
+      <div>
+          {isAdmin==="true" ? (
+            <div className="flex flex-row mb-2 justify-center">
+              <button 
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-8 "
+                onClick={() => navigate("/CommunityEventsAdmin")}
+              >
+                Edit Planned Reunions
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
       <div className='past-reunion-heading'> <h1 >Past Reunions</h1> </div>
       <div className='past-reunions'>
         {pastReunions.map(reunion => (
           renderPastReunionCard(reunion.imageUrl, reunion.title, reunion.date, reunion.description)
         ))}
-        {/* {renderPastReunionCard("/reunion_images/image1.png", "Alumni Reunion 2023", "Date: 03/04/2023", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/reunion_images/image2.png", "Alumni Reunion 2024", "Date: 19/01/2024", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/reunion_images/image3.png", "Alumni Reunion 2016", "Date: 07/09/2016", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/reunion_images/image4.png", "Alumni Reunion 2023", "Date: 03/04/2023", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/images/iit_ropar_front.jpg", "Past Reunion 5", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")}
-        {renderPastReunionCard("/reunion_images/image5.png", "Past Reunion 6", "Date", "Lorem ipsum dolor sit amet consectetur adipisicing elit. At, perspiciatis perferendis quod rerum voluptatum officia, quos expedita in, inventore omnis veritatis hic? Necessitatibus harum quas eius esse, minus rerum aperiam laudantium repudiandae consectetur .")} */}
+      </div>
+      <div>
+        {isAdmin==="true" ? (
+          <div className="flex flex-row mb-2 justify-center">
+            <button 
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-8 "
+              onClick={() => navigate("/CommunityEventsAdmin")}
+            >
+              Edit Past Reunions
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   )

@@ -3,7 +3,7 @@ import './CommunityEventsAdmin.css'; // Import the CSS file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandshake } from '@fortawesome/free-solid-svg-icons';
 import { db } from "../firebase.js";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs,query,where } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
 import { storage } from "../firebase.js";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
@@ -55,7 +55,10 @@ function CommunityEventsAdmin() {
         fetchPlannedReunions();
         fetchPastReunions();
     }, []);
-
+    let errorMessage = "";
+    const notifySuccess = (message) => {
+        toast.success(message, toastOptions);
+    };
     const handleImageChange = (e) => {
         setImage(e.target.files[0]);
     };
@@ -91,6 +94,42 @@ function CommunityEventsAdmin() {
 
                         const collectionName = reunionType === 'planned' ? 'plannedReunions' : 'pastReunions';
                         await addDoc(collection(db, collectionName), reunionData);
+                        try {
+                            const usersCollection = collection(db, 'Users');
+                            const q = query(usersCollection, where('joiningYear', '==', batch));
+                            const usersSnapshot = await getDocs(q);
+                            const emails = usersSnapshot.docs.map(doc => doc.data().email);
+                            const names = usersSnapshot.docs.map(doc => doc.data().name);
+                            console.log('Emails:', emails);
+                            try {
+                                const data = {
+                                  emails: emails,
+                                  names : names,
+                                  Batch: batch
+                                };
+                          
+                                console.log("calling api")
+                                const response = await fetch(`http://localhost:3000/email/invite`, {
+                                  method: "POST",
+                                  body: JSON.stringify(data),
+                                  headers: {
+                                    "Content-Type": "application/json",
+                                  },
+                                });
+                                console.log(response)
+                                if(response.status !== 200) {
+                                  errorMessage = "Failed to send Contact Us mail.";
+                                  toast.error(errorMessage, toastOptions);
+                                  return;
+                                } else {
+                                  notifySuccess("Invite Mails Sent to Alumnis");
+                                }
+                            } catch(error) {
+                              toast.error(error, toastOptions);
+                              }
+                        } catch (error) {
+                            console.error('Error fetching emails: ', error);
+                        }
                         toast.success("Reunion Added Successfully", toastOptions);
                     } catch (error) {
                         console.log("Error getting download URL or saving data:", error);

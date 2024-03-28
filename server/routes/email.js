@@ -6,7 +6,8 @@ const {
     verifyOTPmail,
     sendContactUsmail,
     sendGivingBackInKindmail,
-    sendSignUpAsAdminEmail
+    sendSignUpAsAdminEmail,
+    sendReunionAlertmail
 } = require('../controllers/emailController.js');
 
 router.post('/sendotp', sendOTPmail);
@@ -14,6 +15,7 @@ router.post('/verifyotp', verifyOTPmail);
 router.post('/contactUs', sendContactUsmail);
 router.post('/signUpAsAdmin', sendSignUpAsAdminEmail);
 router.post('/givingBackInKind', sendGivingBackInKindmail);
+router.post('/invite', sendReunionAlertmail);
 
 module.exports = {
     routes: router

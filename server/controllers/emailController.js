@@ -205,10 +205,40 @@ const sendGivingBackInKindmail = async (req, res) => {
     }
 };
 
+const sendReunionAlertmail = async (req, res) => {
+    try {
+        console.log("in send contact us api");
+        const Emails = req.body.emails;
+        const Names = req.body.names;
+        const Batch = req.body.Batch;
+        const messageSubject = `Invitation For a Reunion Of batch ${Batch}\n`;
+
+        for (let i = 0; i < Emails.length; i++) {
+            const messageBody = `Dear ${Names[i]}\n
+                            You Are Invited to the Reunion of batch ${Batch}.\n
+                            Thank You.\n
+                            Regards,\n
+                            Alumni Cell, IIT Ropar \n`;
+
+            await sendEmail(Emails[i], messageSubject, messageBody);
+
+            console.log(`Invite mail sent to ${Emails[i]}`);
+        }
+        
+        res.status(200).send("Invite mails Sent");
+
+    } catch(error) {
+        res.status(400).send(error.message);
+    }
+};
+
+
 module.exports = {
     sendOTPmail,
     verifyOTPmail,
     sendContactUsmail,
     sendGivingBackInKindmail,
-    sendSignUpAsAdminEmail
+    sendSignUpAsAdminEmail,
+    sendReunionAlertmail
 };
+
