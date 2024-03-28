@@ -694,42 +694,47 @@ const Profile = () => {
     const renderEditProfileForm = () => {
         return (
             <>
-                
-                <div className="text-center mb-4 flex items-center justify-center">
-                    <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md">Edit Profile</h1>
-                    {/* Use the UserIcon component */}
-                    {/* <UserIcon className="h-8 w-8 text-blue-500" /> */}
+                <div className='w-full mt-0 h-[50px] bg-gray-200 flex flex-row items-center justify-center text-[25px] font-bold'>
+                    Edit Profile
                 </div>
 
-                <div className="p-10 flex flex-col bg-slate-200 bg-opacity-60 rounded-md mx-10 mt-2 mb-3 md:flex-row md:space-x-8 md:justify-between">
+                {/* <div className="text-center mb-4 flex items-center justify-center">
+                    <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md">Edit Profile</h1>
+                   
+                </div> */}
+
+                {/* <div className="p-10 flex flex-col bg-slate-200 bg-opacity-60 rounded-md mx-10 mt-2 mb-3 md:flex-row md:space-x-8 md:justify-between"> */}
                     
                     <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
 
-                        <div className="flex flex-row justify-center mb-2">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Basic Details</h3>
-                        </div>
-                        <form>
-                            <h2>Upload Profile Photo</h2>
-                            <input 
-                                name= "profilepic" 
-                                type="file" 
-                                accept="image/*" 
-                                onChange={handleProfilePictureChange} 
-                            />
-                        </form>
-                        <div className="mb-1">
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Name"
-                                value={editedUser.name}
-                                onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                            />
+                        <div className="flex flex-row justify-center mb-2 mt-3">
+                            <h3 className="text-3xl font-bold text-gray-800 mb-1">Basic Details</h3>
                         </div>
 
+                        <div className='ml-[150px]  flex flex-row mt-4'>
+                            <form>
+                                <h2 className='ml-[20px]'>Upload Profile Photo</h2>
+                                <input 
+                                    name= "profilepic" 
+                                    type="file" 
+                                    accept="image/*" 
+                                    onChange={handleProfilePictureChange} 
+                                    className='border border-gray-500 ml-[20px] w-[400px]'
+                                />
+                            </form>
+                            <div className="mb-1">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Name"
+                                    value={editedUser.name}
+                                    onChange={handleInputChange}
+                                    className="w-[450px] px-4 py-2 mb-4 text-[20px] font-normal border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 ml-[200px] mt-5"
+                                />
+                            </div>
+                        </div>
                         
-
+                        <div className='ml-[150px]  flex flex-row '>
                         <div className="mb-1">
                             <input
                                 type="text"
@@ -737,7 +742,7 @@ const Profile = () => {
                                 placeholder="Entry Number"
                                 value={editedUser.entryNo}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[400px] ml-[20px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[20px]"
                             />
                         </div>
 
@@ -748,10 +753,12 @@ const Profile = () => {
                                 placeholder="Degree"
                                 value={editedUser.degree}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto"
+                                className="w-[450px] ml-[200px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px]"
                             />
                         </div>
+                        </div>
 
+                        <div className='ml-[150px]  flex flex-row '>
                         <div className="mb-1">
                             <input
                                 type="text"
@@ -759,7 +766,7 @@ const Profile = () => {
                                 placeholder="Department"
                                 value={editedUser.department}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto"
+                                className="w-[400px] ml-[20px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px]"
                             />
                         </div>
 
@@ -769,11 +776,12 @@ const Profile = () => {
                                 name="passingYear"
                                 value={editedUser.passingYear}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[450px] ml-[200px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[20px]"
                             >
                                 <option value="">Select Year of Passing</option>
                                 {renderYearOptions()}
                             </select>
+                        </div>
                         </div>
 
                         <div className="mb-1">
@@ -783,19 +791,19 @@ const Profile = () => {
                                 placeholder="LinkedIN URL"
                                 value={editedUser.linkedin}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[400px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px] ml-[170px]"
                             />
                         </div>
 
-                        <div className="flex flex-row justify-center mb-2">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Contact Information</h3>
+                        <div className="flex flex-row justify-center mb-2 mt-3">
+                            <h3 className="text-3xl font-bold text-gray-800 mb-1 ml-[100px]">Contact Information</h3>
                         </div>
-                        <div className="flex flex-row mb-1">
+                        <div className="flex flex-row mb-1 ml-[170px]">
                             <select
                                 name="countryCode"
                                 value={editedUser.countryCode}
                                 onChange={handleInputChange}
-                                className="w-1/4 px-4 py-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-1/1.5 px-4 py-2 mr-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                             >
                                 <option value="">Country Code</option>
                                 {countryCodeOptions.map(option => (
@@ -810,46 +818,48 @@ const Profile = () => {
                                 placeholder="Phone No."
                                 value={editedUser.phone}
                                 onChange={handleInputChange}
-                                className="w-3/4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[400px] px-4 py-2 border border-gray-500 font-normal text-[20px] rounded-md focus:outline-none focus:border-indigo-500"
                             />
                         </div>
 
-                        <div className="mb-1">
+                        <div className="mb-1 mt-3 ">
                             <input
                                 type="text"
                                 name="address"
                                 placeholder="Address"
                                 value={editedUser.address}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[700px] h-[100px] px-4 py-2 ml-[170px] mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[15px] "
                             />
                         </div>
 
                     </div>
                     
+                    <div className='flex flex-row'>
                     <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
 
                         <div className="flex flex-row justify-center mb-2">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Higher Education</h3>
+                            <h3 className="  text-gray-800 mb-1 ml-[100px] font-bold text-[30px]">Higher Education</h3>
                         </div>
                         {editedUser.higherEducation.map((highEdu, index) => (
-                            <div key={index} className="mb-4 border border-gray-300 bg-slate-100 bg-opacity-0.8 rounded-md p-4">
+                            <div key={index} className="mb-4   bg-opacity-0.8 rounded-md p-4">
+                                
                                 <input
                                     type="text"
                                     name="institute"
                                     placeholder="Name of Institute"
                                     value={highEdu.institute || ''}
                                     onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    className="w-[400px] ml-[170px] px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                                 />
-                                <div className="flex flex-row mb-2 space-x-4">
+                                <div className="flex flex-row mb-2 space-x-4 mt-3">
                                     <input
                                         type="text"
                                         name="startYear"
                                         placeholder='Start Year'
                                         value={highEdu.startYear || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[200px] ml-[170px] px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                                     />
                                     <input
                                         type="text"
@@ -857,16 +867,17 @@ const Profile = () => {
                                         placeholder='Start Year'
                                         value={highEdu.endYear || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[200px] px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                                     />
                                 </div>
+                               
 
-                                <div className='flex flex-row space-x-1'>
+                                <div className='flex flex-row space-x-1 ml-[170px]'>
                                     <select
                                         name="course"
                                         value={highEdu.course || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-1/3 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-1/1.5 px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                                     >
                                         <option value="">Course</option>
                                         {courseOptions.map((option, i) => (
@@ -879,7 +890,7 @@ const Profile = () => {
                                         name="specialization"
                                         value={highEdu.specialization || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-2/3 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[450px] px-4 py-2 mb-2 border border-gray-500  rounded-md focus:outline-none focus:border-indigo-500"
                                     >
                                         <option value="">Specialization</option>
                                         {specializationOptions.map((option, i) => (
@@ -892,7 +903,7 @@ const Profile = () => {
                                 
                                 <button
                                     onClick={() => handleRemoveHighEdu(index)}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                    className="px-4 py-2 ml-[170px] mt-3 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
                                 >
                                     Remove
                                 </button>
@@ -902,7 +913,7 @@ const Profile = () => {
                             {/* Button to add new work experience */}
                             <button 
                                 onClick={handleAddHighEdu}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                className="px-4 py-2 ml-[50px] bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
                             >
                                 Add Higher Education
                             </button>
@@ -912,17 +923,17 @@ const Profile = () => {
 
                     <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
                         <div className="flex flex-row justify-center mb-2">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Work Experience</h3>
+                            <h3 className="text-[35px] font-bold text-gray-800 mb-1 ml-[130px] ">Work Experience</h3>
                         </div>
                         {editedUser.work_exp.map((workExp, index) => (
-                            <div key={index} className="mb-4 border border-gray-300 bg-slate-100 bg-opacity-0.8 rounded-md p-4">
+                            <div key={index} className="mb-4 ml-[170px] bg-opacity-0.8 rounded-md p-4">
                                 <input
                                     type="text"
                                     name="job_title"
                                     placeholder="Job Title"
                                     value={workExp.job_title || ''}
                                     onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    className="w-[450px] border-gray-500 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                 />
                                 <input
                                     type="text"
@@ -930,16 +941,16 @@ const Profile = () => {
                                     placeholder="Company"
                                     value={workExp.company || ''}
                                     onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    className="w-[450px] border-gray-500  px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500 mt-3"
                                 />
-                                <div className="flex flex-row mb-2 space-x-4">
+                                <div className="flex flex-row mb-2 space-x-4 mt-3">
                                     <input
                                         type="text"
                                         name="startYear"
                                         placeholder='Start Year'
                                         value={workExp.startYear || ''}
                                         onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[200px]  border-gray-500  px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                     />
                                     <input
                                         type="text"
@@ -947,12 +958,12 @@ const Profile = () => {
                                         placeholder='Start Year'
                                         value={workExp.endYear || ''}
                                         onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[200px] border-gray-500  px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                     />
                                 </div>
                                 <button
                                     onClick={() => handleRemoveWorkExp(index)}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200 mt-3"
                                 >
                                     Remove
                                 </button>
@@ -962,14 +973,16 @@ const Profile = () => {
                             {/* Button to add new work experience */}
                             <button 
                                 onClick={handleAddWorkExp}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200 ml-[50px]"
                             >
                                 Add Work Experience
                             </button>
                         </div>
                     </div>
+                    </div>
 
-                </div>
+                {/* </div> */}
+
                 <div className="mb-4 p-1 flex justify-center">
                     <button
                         className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-semibold"
