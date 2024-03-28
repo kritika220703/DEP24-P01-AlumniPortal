@@ -10,6 +10,12 @@ import { MdEvent } from 'react-icons/md';
 import { UserIcon } from '@heroicons/react/solid';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { MdOutlinePhone } from "react-icons/md";
+import { AiOutlineLinkedin } from "react-icons/ai";
+import { IoLocationOutline } from "react-icons/io5";
+import { MdOutlineEmail } from "react-icons/md";
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { AiOutlineNumber, AiOutlineMail, AiOutlinePhone, AiFillLinkedin, AiOutlineHome  } from 'react-icons/ai';
 import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
 import {
@@ -19,8 +25,36 @@ import {
   } from "firebase/storage";
 import {storage} from "../firebase.js"
 import DataList from '../components/DataList.jsx';
+import image from '../assets/profile_bck.png'
+
+const Section = ({ title, children }) => {
+    const controls = useAnimation();
+    const { ref, inView } = useInView();
+  
+    useEffect(() => {
+      if (inView) {
+        controls.start({ y: 0, opacity: 1 });
+      } else {
+        controls.start({ y: 50, opacity: 0 });
+      }
+    }, [controls, inView]);
+  
+    return (
+      <motion.div
+        ref={ref}
+        className="ml-[230px] mt-5"
+        initial={{ y: 50, opacity: 0 }}
+        animate={controls}
+        transition={{ duration: 0.5 }}
+      >
+        <p className="font-bold text-[35px]">{title}</p>
+        {children}
+      </motion.div>
+    );
+  };
 
 const Profile = () => {
+  
     const [isEditing, setIsEditing] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -79,7 +113,7 @@ const Profile = () => {
                       snapshot.forEach((doc) => {
                         console.log(doc.id, '=>', doc.data());
                         setUserData(doc.data());
-                        setProfileURL(doc.data.profileURL);
+                        setProfileURL(userData['profileURL']);
                         console.log("profile url",profileURL);
                         // console.log("after: ",userData);
                     });
@@ -194,6 +228,7 @@ const Profile = () => {
 
     const handleProfilePictureChange = (e) => {
         setProfilePicture(e.target.files[0]);
+        // setProfileURL(e.target.files[0]);
         // const { name, value } = e.target;
         //   setEditedUser({
         //       ...editedUser,
@@ -214,57 +249,47 @@ const Profile = () => {
 
             // Check if any documents match the query
             if (querySnapshot.size > 0) {
-            // Get the reference to the first matching document
-            const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
-            
-            if (profilePicture) {
-                const storageRef = ref(storage,`/files/${userData.entryNo}`)
-                console.log("stor ref: ",storageRef);
-                const uploadTask = uploadBytesResumable(storageRef, profilePicture);
-             
-                uploadTask.on(
-                    "state_changed",
-                    (err) => console.log(err),
-                    () => {
-                        console.log("innnn");
-                        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                            console.log("URL: ",url);
-                            // setProfileURL(process.env.PROFILE_BASE_URL + url);
-                            setEditedUser({ ...editedUser, profileURL: url });
-                        });
-                    }
-                ); 
-                console.log(profileURL);
-            }
+                // Get the reference to the first matching document
+                const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
+                
+                if (profilePicture) {
+                    const storageRef = ref(storage,`/files/${userData.entryNo}`)
+                    console.log("stor ref: ",storageRef);
+                    const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+                
+                    uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {},
+                        (err) => console.log(err),
+                        async () => {
+                            console.log("innnn");
+                            const url = await getDownloadURL(uploadTask.snapshot.ref);
+                            console.log("URL: ", url);
+                            
+                            // Update the profileURL in the editedUser object
+                            const updatedEditedUser = { ...editedUser, profileURL: url };
+
+                            // Update the document with the updatedEditedUser data
+                            await updateDoc(docRef, updatedEditedUser);
+                        }
+                    ); 
+                    console.log(profileURL);
+                }
 
             // Update the document with the new data
-            await updateDoc(docRef, editedUser);
+            
 
             // Fetch updated data after saving changes
-            const updatedSnapshot = await getDoc(docRef);
+            // const updatedSnapshot = await getDoc(docRef);
 
-            if (updatedSnapshot.exists()) {
-                // Update the userData state with the new data
-                setUserData(updatedSnapshot.data());
-            }
+            // if (updatedSnapshot.exists()) {
+            //     // Update the userData state with the new data
+            //     setUserData(updatedSnapshot.data());
+            // }
 
-            if (profilePicture) {
-                const storageRef = ref(storage,`/files/${userData.entryNo}`);
-                console.log("full: ",storageRef);
-                const uploadTask = uploadBytesResumable(storageRef, profilePicture);
-             
-                uploadTask.on(
-                    "state_changed",
-                    (err) => console.log(err),
-                    () => {
-                        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                            console.log(url);
-                            // setProfileURL(url);
-                            setEditedUser({ ...editedUser, profileURL: url });
-                        });
-                    }
-                ); 
-            }
+            // if (profilePicture) {
+                
+            // }
 
             console.log('Document successfully updated!');
             } else {
@@ -348,88 +373,69 @@ const Profile = () => {
 
     const renderProfileDetails = () => {
         return (
-            <div className="p-6 mt-0">
-                <div className="text-center mb-4 flex items-center justify-center">
-                    <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md w-[200px]">Profile</h1>
-                    {/* Use the UserIcon component */}
-                    {/* <UserIcon className="h-8 w-8 text-blue-500" /> */}
-                </div>
-
+            <div>
                 {userData ? (
-                    <div className='flex flex-row justify-between auto-rows-fr'>
-                        <div className='flex flex-col items-center justify-center'>
-                            <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[270px]">
-                                {/* <img src={`https://console.firebase.google.com/u/0/project/alumni-portal-df4f5/storage/alumni-portal-df4f5.appspot.com/${profileURL}`} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/> */}
-                                <img src={dp} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/>
-                                <h1 className="text-2xl font-bold text-gray-800 mb-1">{userData.name}</h1>
-                                <p className="text-gray-500">{userData.email}</p>
-                            </div>
-                            <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[300px]">
-                                <h3 className='text-2xl font-bold text-gray-800 mb-4'>Contact Details</h3>
-                                <div className="flex items-center mb-2">
-                                    <AiOutlineMail className="text-gray-500 mr-2" />
-                                    <p className="text-gray-500">{userData.email}</p>
-                                </div>
-                                <div className="flex items-center mb-2">
-                                    <AiOutlinePhone className="text-gray-500 mr-2" />
-                                    <p className="text-gray-500">{userData.phone}</p>
-                                </div>
-                                <div className="flex items-center mb-2">
-                                    <AiFillLinkedin className="text-gray-500 mr-2" />
-                                    <p className="text-gray-500">{userData.linkedin}</p>
-                                </div>
-                                <div className="flex items-center">
-                                    <AiOutlineHome className="text-gray-500 mr-2" />
-                                    <p className="text-gray-500">{userData.address}</p>
-                                </div>
-                            </div>
+                    <>
+                      <div className='relative w-full h-[300px] mt-0'>
+                      <div
+                          className='absolute inset-0 bg-cover bg-center'
+                          style={{ backgroundImage: `url(${image})` }}
+                      ></div>
+                      <div className='absolute w-[200px] h-[200px] bg-white rounded-full border-4 border-white top-[300px] left-[300px] transform -translate-x-1/2 -translate-y-1/2'></div>
+                      <div className='absolute w-[180px] h-[180px] bg-gray-300 rounded-full top-[300px] left-[300px] transform -translate-x-1/2 -translate-y-1/2 overflow-hidden border border-black'>
+                          <img
+                         src={profileURL}
+                          alt='Photo'
+                          className='object-cover w-full h-full'
+                          />
+                      </div>
+                      </div>
+
+                      <div className='flex flex-col gap-2 mt-[100px] ml-[230px]'>
+                        <p className='font-bold text-[28px]'>{userData.name}</p>
+                        <div className='flex flex-row gap-[35px]'>
+                        <p className='font-semibold text-[20px] flex flex-row gap-2'><MdOutlineEmail className='mt-1.5'/>{userData.email}</p>
+                        <p className='font-semibold text-[20px] flex flex-row gap-2'><MdOutlinePhone className='mt-1.5'/>{userData.phone}</p>
                         </div>
-                        
-                        <div className='flex flex-col items-center justify-center'>
-                            <div className='flex flex-col border-l border-r border-gray-300 bg-slate-100 w-[600px] p-8 mb-4 rounded-md overflow-hidden shadow-md'>
-                                <h2 className="text-2xl font-bold text-gray-800 mb-6">Basic Details</h2>
-                                <div className="mb-5">
-                                    <p className="text-gray-600 flex flex-row">
-                                        <FaEnvelope className="text-lg text-gray-400 mr-4" />
-                                        <strong className='mr-3'>Email Id:</strong> {userData.email}
-                                    </p>
-                                </div>
+                        <div className='flex flex-row gap-[35px]'>
+                        <p className='font-semibold text-[20px] flex flex-row gap-2'><AiOutlineLinkedin className='mt-1.5'/>{userData.linkedin}</p>
+                        <p className='font-semibold text-[20px] flex flex-row gap-2'><IoLocationOutline className='mt-1.5'/>{userData.address}</p>
+                        </div>
+                      </div>
 
-                                <div className="mb-4">
-                                    <p className="text-gray-600 flex flex-row">
-                                        <AiOutlineNumber className="text-lg text-gray-400 mr-4" />
-                                        <strong className='mr-3'>Entry Number:</strong> {userData.entryNo}
-                                    </p>
-                                </div>
-
-                                <div className="mb-4">
-                                    <p className="text-gray-600 flex flex-row">
-                                        <SchoolIcon className="text-lg text-gray-400 mr-4" />
-                                        <strong className='mr-3'>Degree:</strong> {userData.degree}
-                                    </p>
-                                </div>
-
-                                <div className="mb-4">
-                                    <p className="text-gray-600 flex flex-row">
-                                        <IoIosBusiness className="text-lg text-gray-400 mr-4" />
-                                        <strong className='mr-3'>Department:</strong> {userData.department}
-                                    </p>
-                                </div>
-
-                                <div className="mb-4">
-                                    <p className="text-gray-600 flex flex-row">
-                                        <MdEvent className="text-lg text-gray-400 mr-4" />
-                                        <strong className='mr-3'>Year of Passing:</strong> {userData.passingYear}
-                                    </p>
-                                </div>
+                      <div className='flex items-center justify-center border-2 border-gray-200 w-[1300px] h-0 ml-[120px] mt-8'></div>
+                      {/* <div className='ml-[230px] mt-5'>
+                        <p className='font-bold text-[35px]'>Basic Details</p>
+                        <div className='flex flex-row gap-[50px]'>
+                            <div className='flex flex-row gap-2 text-[21px] ml-[30px]'>
+                                <p className='font-semibold'>Entry Number:</p>
+                                <p className='font-normal'>{userData.entryNo}</p>
                             </div>
+                            <div className='flex flex-row gap-2 text-[21px] ml-[30px]'>
+                                    <p className='font-semibold'>Degree:</p>
+                                    <p className='font-normal'>{userData.degree}</p>
+                            </div>
+                       </div>
+                       <div className='flex flex-row gap-[160px]'>
+                            <div className='flex flex-row gap-2 text-[21px] ml-[30px]'>
+                                    <p className='font-semibold'>Department:</p>
+                                    <p className='font-normal'>{userData.department}</p>
+                            </div>
+                            <div className='flex flex-row gap-2 text-[21px] ml-[30px]'>
+                                    <p className='font-semibold'>Passing Year:</p>
+                                    <p className='font-normal'>{userData.passingYear}</p>
+                            </div>
+                       </div>
+                      </div>
 
-                            <div className='flex flex-col border-l border-r border-gray-300 bg-slate-100 w-[600px] p-8 rounded-md overflow-hidden shadow-md'>
-                                <h2 className="text-2xl font-bold text-gray-800 mb-6">Higher Education</h2>
-                                {Array.isArray(userData.higherEducation) && userData.higherEducation.length > 0 ? (
+                      <div className='flex items-center justify-center border-2 border-gray-200 w-[1300px] h-0 ml-[120px] mt-8'></div>
+
+                      <div  className='ml-[230px]'>
+                        <p className='font-bold text-[35px] mt-5 mb-3'>Higher Education</p>
+                        {Array.isArray(userData.higherEducation) && userData.higherEducation.length > 0 ? (
                                     <ul className="list-disc pl-4">
                                         {userData.higherEducation.map((highEdu, index) => (
-                                            <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between">
+                                            <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between mr-[170px]">
                                                 <div>
                                                     <h3 className="text-lg font-semibold">{highEdu.course}</h3>
                                                     <h4 className="text-sm text-gray-500">{highEdu.specialization}</h4>
@@ -446,17 +452,16 @@ const Profile = () => {
                                 ) : (
                                     <p>No higher Education available</p>
                                 )}
-                            </div>
+                      </div>
 
-                        </div>
-                        
-                        
-                        <div className='flex flex-col w-[400px] p-8 bg-slate-100 rounded-md overflow-hidden shadow-md '>
-                            <h3 className="text-2xl font-bold text-gray-800 mb-2">Work Experience</h3>
-                            {Array.isArray(userData.work_exp) && userData.work_exp.length > 0 ? (
+                      <div className='flex items-center justify-center border-2 border-gray-200 w-[1300px] h-0 ml-[120px] mt-8'></div>
+
+                      <div  className='ml-[230px]'>
+                        <p className='font-bold text-[35px] mt-5 mb-3'>Work Exprience</p>
+                        {Array.isArray(userData.work_exp) && userData.work_exp.length > 0 ? (
                                 <ul className="list-disc pl-4">
                                     {userData.work_exp.map((workExp, index) => (
-                                        <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between">
+                                        <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between mr-[170px]">
                                             <div>
                                                 <h4 className="text-lg font-semibold">{workExp.job_title}</h4>
                                                 <p className="text-sm text-gray-500">{workExp.company}</p>
@@ -470,64 +475,266 @@ const Profile = () => {
                             ) : (
                                 <p>No work experience available</p>
                             )}
-                        </div>
-                    </div>
-                        
-                ) : (
-                    <p>Loading user data...</p>
-                )}
+                      </div> */}
+
+<Section title="Basic Details">
+        <div className="flex flex-row gap-[50px]">
+          <div className="flex flex-row gap-2 text-[21px] ml-[30px]">
+            <p className="font-semibold">Entry Number:</p>
+            <p className="font-normal">{userData.entryNo}</p>
+          </div>
+          <div className="flex flex-row gap-2 text-[21px] ml-[30px]">
+            <p className="font-semibold">Degree:</p>
+            <p className="font-normal">{userData.degree}</p>
+          </div>
+        </div>
+        <div className="flex flex-row gap-[160px]">
+          <div className="flex flex-row gap-2 text-[21px] ml-[30px]">
+            <p className="font-semibold">Department:</p>
+            <p className="font-normal">{userData.department}</p>
+          </div>
+          <div className="flex flex-row gap-2 text-[21px] ml-[30px]">
+            <p className="font-semibold">Passing Year:</p>
+            <p className="font-normal">{userData.passingYear}</p>
+          </div>
+        </div>
+      </Section>
+
+      <div className="flex items-center justify-center border-2 border-gray-200 w-[1300px] h-0 ml-[120px] mt-8"></div>
+
+      <Section title="Higher Education">
+        {Array.isArray(userData.higherEducation) && userData.higherEducation.length > 0 ? (
+          <ul className="list-disc pl-4">
+            {userData.higherEducation.map((highEdu, index) => (
+              <li
+                key={index}
+                className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between mr-[170px]"
+              >
+                <div>
+                  <h3 className="text-lg font-semibold">{highEdu.course}</h3>
+                  <h4 className="text-sm text-gray-500">{highEdu.specialization}</h4>
+                  <p className="text-sm text-gray-500">{highEdu.institute}</p>
+                </div>
+                <div className="flex flex-row justify-center items-center">
+                  <h5>
+                    {highEdu.startYear}-{highEdu.endYear}
+                  </h5>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No higher Education available</p>
+        )}
+      </Section>
+
+      <div className="flex items-center justify-center border-2 border-gray-200 w-[1300px] h-0 ml-[120px] mt-8"></div>
+
+      <Section title="Work Experience">
+        {Array.isArray(userData.work_exp) && userData.work_exp.length > 0 ? (
+          <ul className="list-disc pl-4">
+            {userData.work_exp.map((workExp, index) => (
+              <li
+                key={index}
+                className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between mr-[170px]"
+              >
+                <div>
+                  <h4 className="text-lg font-semibold">{workExp.job_title}</h4>
+                  <p className="text-sm text-gray-500">{workExp.company}</p>
+                </div>
+                <div className="flex flex-col justify-center items-end">
+                  <p className="text-sm text-gray-500">{workExp.duration}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No work experience available</p>
+        )}
+      </Section>
+                    </>
+                ): (
+                            <p>Loading user data...</p>
+                        )}
+              
+
             </div>
+            // <div className="p-6 mt-0">
+            //     <div className="text-center mb-4 flex items-center justify-center">
+            //         <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md w-[200px]">Profile</h1>
+            //         {/* Use the UserIcon component */}
+            //         {/* <UserIcon className="h-8 w-8 text-blue-500" /> */}
+            //     </div>
+
+            //     {userData ? (
+            //         <div className='flex flex-row justify-between auto-rows-fr'>
+            //             <div className='flex flex-col items-center justify-center'>
+            //                 <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[270px]">
+            //                     {/* <img src={`https://console.firebase.google.com/u/0/project/alumni-portal-df4f5/storage/alumni-portal-df4f5.appspot.com/${profileURL}`} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/> */}
+            //                     <img src={profileURL} className="rounded-full w-36 h-36 mx-auto mb-2" alt={dp}/>
+            //                     <h1 className="text-2xl font-bold text-gray-800 mb-1">{userData.name}</h1>
+            //                     <p className="text-gray-500">{userData.email}</p>
+            //                 </div>
+            //                 <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[300px]">
+            //                     <h3 className='text-2xl font-bold text-gray-800 mb-4'>Contact Details</h3>
+            //                     <div className="flex items-center mb-2">
+            //                         <AiOutlineMail className="text-gray-500 mr-2" />
+            //                         <p className="text-gray-500">{userData.email}</p>
+            //                     </div>
+            //                     <div className="flex items-center mb-2">
+            //                         <AiOutlinePhone className="text-gray-500 mr-2" />
+            //                         <p className="text-gray-500">{userData.phone}</p>
+            //                     </div>
+            //                     <div className="flex items-center mb-2">
+            //                         <AiFillLinkedin className="text-gray-500 mr-2" />
+            //                         <p className="text-gray-500">{userData.linkedin}</p>
+            //                     </div>
+            //                     <div className="flex items-center">
+            //                         <AiOutlineHome className="text-gray-500 mr-2" />
+            //                         <p className="text-gray-500">{userData.address}</p>
+            //                     </div>
+            //                 </div>
+            //             </div>
+                        
+            //             <div className='flex flex-col items-center justify-center'>
+            //                 <div className='flex flex-col border-l border-r border-gray-300 bg-slate-100 w-[600px] p-8 mb-4 rounded-md overflow-hidden shadow-md'>
+            //                     <h2 className="text-2xl font-bold text-gray-800 mb-6">Basic Details</h2>
+            //                     <div className="mb-5">
+            //                         <p className="text-gray-600 flex flex-row">
+            //                             <FaEnvelope className="text-lg text-gray-400 mr-4" />
+            //                             <strong className='mr-3'>Email Id:</strong> {userData.email}
+            //                         </p>
+            //                     </div>
+
+            //                     <div className="mb-4">
+            //                         <p className="text-gray-600 flex flex-row">
+            //                             <AiOutlineNumber className="text-lg text-gray-400 mr-4" />
+            //                             <strong className='mr-3'>Entry Number:</strong> {userData.entryNo}
+            //                         </p>
+            //                     </div>
+
+            //                     <div className="mb-4">
+            //                         <p className="text-gray-600 flex flex-row">
+            //                             <SchoolIcon className="text-lg text-gray-400 mr-4" />
+            //                             <strong className='mr-3'>Degree:</strong> {userData.degree}
+            //                         </p>
+            //                     </div>
+
+            //                     <div className="mb-4">
+            //                         <p className="text-gray-600 flex flex-row">
+            //                             <IoIosBusiness className="text-lg text-gray-400 mr-4" />
+            //                             <strong className='mr-3'>Department:</strong> {userData.department}
+            //                         </p>
+            //                     </div>
+
+            //                     <div className="mb-4">
+            //                         <p className="text-gray-600 flex flex-row">
+            //                             <MdEvent className="text-lg text-gray-400 mr-4" />
+            //                             <strong className='mr-3'>Year of Passing:</strong> {userData.passingYear}
+            //                         </p>
+            //                     </div>
+            //                 </div>
+
+            //                 <div className='flex flex-col border-l border-r border-gray-300 bg-slate-100 w-[600px] p-8 rounded-md overflow-hidden shadow-md'>
+            //                     <h2 className="text-2xl font-bold text-gray-800 mb-6">Higher Education</h2>
+            //                     {Array.isArray(userData.higherEducation) && userData.higherEducation.length > 0 ? (
+            //                         <ul className="list-disc pl-4">
+            //                             {userData.higherEducation.map((highEdu, index) => (
+            //                                 <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between">
+            //                                     <div>
+            //                                         <h3 className="text-lg font-semibold">{highEdu.course}</h3>
+            //                                         <h4 className="text-sm text-gray-500">{highEdu.specialization}</h4>
+            //                                         <p className="text-sm text-gray-500">{highEdu.institute}</p>
+            //                                     </div>
+            //                                     <div className="flex flex-row justify-center items-center">
+            //                                         <h5>
+            //                                             {highEdu.startYear}-{highEdu.endYear}
+            //                                         </h5>
+            //                                     </div>                                                
+            //                                 </li>
+            //                             ))}
+            //                         </ul>
+            //                     ) : (
+            //                         <p>No higher Education available</p>
+            //                     )}
+            //                 </div>
+
+            //             </div>
+                        
+                        
+            //             <div className='flex flex-col w-[400px] p-8 bg-slate-100 rounded-md overflow-hidden shadow-md '>
+            //                 <h3 className="text-2xl font-bold text-gray-800 mb-2">Work Experience</h3>
+            //                 {Array.isArray(userData.work_exp) && userData.work_exp.length > 0 ? (
+            //                     <ul className="list-disc pl-4">
+            //                         {userData.work_exp.map((workExp, index) => (
+            //                             <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between">
+            //                                 <div>
+            //                                     <h4 className="text-lg font-semibold">{workExp.job_title}</h4>
+            //                                     <p className="text-sm text-gray-500">{workExp.company}</p>
+            //                                 </div>
+            //                                 <div className="flex flex-col justify-center items-end">
+            //                                     <p className="text-sm text-gray-500">{workExp.duration}</p>
+            //                                 </div>
+            //                             </li>
+            //                         ))}
+            //                     </ul>
+            //                 ) : (
+            //                     <p>No work experience available</p>
+            //                 )}
+            //             </div>
+            //         </div>
+                        
+            //     ) : (
+            //         <p>Loading user data...</p>
+            //     )}
+            // </div>
         );
     };
 
     const renderEditProfileForm = () => {
         return (
             <>
-                
-                <div className="text-center mb-4 flex items-center justify-center">
-                    <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md">Edit Profile</h1>
-                    {/* Use the UserIcon component */}
-                    {/* <UserIcon className="h-8 w-8 text-blue-500" /> */}
+                <div className='w-full mt-0 h-[50px] bg-gray-200 flex flex-row items-center justify-center text-[25px] font-bold'>
+                    Edit Profile
                 </div>
 
-                <div className="p-10 flex flex-col bg-slate-200 bg-opacity-60 rounded-md mx-10 mt-2 mb-3 md:flex-row md:space-x-8 md:justify-between">
+                {/* <div className="text-center mb-4 flex items-center justify-center">
+                    <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md">Edit Profile</h1>
+                   
+                </div> */}
+
+                {/* <div className="p-10 flex flex-col bg-slate-200 bg-opacity-60 rounded-md mx-10 mt-2 mb-3 md:flex-row md:space-x-8 md:justify-between"> */}
                     
                     <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
 
-                        <div className="flex flex-row justify-center mb-2">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Basic Details</h3>
-                        </div>
-                        <form>
-                            <h2>Upload Profile Photo</h2>
-                            <input 
-                                name= "profilepic" 
-                                type="file" 
-                                accept="image/*" 
-                                onChange={handleProfilePictureChange} 
-                            />
-                        </form>
-                        <div className="mb-1">
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Name"
-                                value={editedUser.name}
-                                onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                            />
+                        <div className="flex flex-row justify-center mb-2 mt-3">
+                            <h3 className="text-3xl font-bold text-gray-800 mb-1">Basic Details</h3>
                         </div>
 
-                        <div className="mb-1">
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email id"
-                                value={editedUser.email}
-                                onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                            />
+                        <div className='ml-[150px]  flex flex-row mt-4'>
+                            <form>
+                                <h2 className='ml-[20px]'>Upload Profile Photo</h2>
+                                <input 
+                                    name= "profilepic" 
+                                    type="file" 
+                                    accept="image/*" 
+                                    onChange={handleProfilePictureChange} 
+                                    className='border border-gray-500 ml-[20px] w-[400px]'
+                                />
+                            </form>
+                            <div className="mb-1">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Name"
+                                    value={editedUser.name}
+                                    onChange={handleInputChange}
+                                    className="w-[450px] px-4 py-2 mb-4 text-[20px] font-normal border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 ml-[200px] mt-5"
+                                />
+                            </div>
                         </div>
-
+                        
+                        <div className='ml-[150px]  flex flex-row '>
                         <div className="mb-1">
                             <input
                                 type="text"
@@ -535,7 +742,7 @@ const Profile = () => {
                                 placeholder="Entry Number"
                                 value={editedUser.entryNo}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[400px] ml-[20px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[20px]"
                             />
                         </div>
 
@@ -546,10 +753,12 @@ const Profile = () => {
                                 placeholder="Degree"
                                 value={editedUser.degree}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto"
+                                className="w-[450px] ml-[200px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px]"
                             />
                         </div>
+                        </div>
 
+                        <div className='ml-[150px]  flex flex-row '>
                         <div className="mb-1">
                             <input
                                 type="text"
@@ -557,7 +766,7 @@ const Profile = () => {
                                 placeholder="Department"
                                 value={editedUser.department}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto"
+                                className="w-[400px] ml-[20px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px]"
                             />
                         </div>
 
@@ -567,11 +776,12 @@ const Profile = () => {
                                 name="passingYear"
                                 value={editedUser.passingYear}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[450px] ml-[200px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[20px]"
                             >
                                 <option value="">Select Year of Passing</option>
                                 {renderYearOptions()}
                             </select>
+                        </div>
                         </div>
 
                         <div className="mb-1">
@@ -581,19 +791,19 @@ const Profile = () => {
                                 placeholder="LinkedIN URL"
                                 value={editedUser.linkedin}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[400px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px] ml-[170px]"
                             />
                         </div>
 
-                        <div className="flex flex-row justify-center mb-2">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Contact Information</h3>
+                        <div className="flex flex-row justify-center mb-2 mt-3">
+                            <h3 className="text-3xl font-bold text-gray-800 mb-1 ml-[100px]">Contact Information</h3>
                         </div>
-                        <div className="flex flex-row mb-1">
+                        <div className="flex flex-row mb-1 ml-[170px]">
                             <select
                                 name="countryCode"
                                 value={editedUser.countryCode}
                                 onChange={handleInputChange}
-                                className="w-1/4 px-4 py-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-1/1.5 px-4 py-2 mr-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                             >
                                 <option value="">Country Code</option>
                                 {countryCodeOptions.map(option => (
@@ -608,46 +818,48 @@ const Profile = () => {
                                 placeholder="Phone No."
                                 value={editedUser.phone}
                                 onChange={handleInputChange}
-                                className="w-3/4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[400px] px-4 py-2 border border-gray-500 font-normal text-[20px] rounded-md focus:outline-none focus:border-indigo-500"
                             />
                         </div>
 
-                        <div className="mb-1">
+                        <div className="mb-1 mt-3 ">
                             <input
                                 type="text"
                                 name="address"
                                 placeholder="Address"
                                 value={editedUser.address}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[700px] h-[100px] px-4 py-2 ml-[170px] mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[15px] "
                             />
                         </div>
 
                     </div>
                     
+                    <div className='flex flex-row'>
                     <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
 
                         <div className="flex flex-row justify-center mb-2">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Higher Education</h3>
+                            <h3 className="  text-gray-800 mb-1 ml-[100px] font-bold text-[30px]">Higher Education</h3>
                         </div>
                         {editedUser.higherEducation.map((highEdu, index) => (
-                            <div key={index} className="mb-4 border border-gray-300 bg-slate-100 bg-opacity-0.8 rounded-md p-4">
+                            <div key={index} className="mb-4   bg-opacity-0.8 rounded-md p-4">
+                                
                                 <input
                                     type="text"
                                     name="institute"
                                     placeholder="Name of Institute"
                                     value={highEdu.institute || ''}
                                     onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    className="w-[400px] ml-[170px] px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                                 />
-                                <div className="flex flex-row mb-2 space-x-4">
+                                <div className="flex flex-row mb-2 space-x-4 mt-3">
                                     <input
                                         type="text"
                                         name="startYear"
                                         placeholder='Start Year'
                                         value={highEdu.startYear || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[200px] ml-[170px] px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                                     />
                                     <input
                                         type="text"
@@ -655,16 +867,17 @@ const Profile = () => {
                                         placeholder='Start Year'
                                         value={highEdu.endYear || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[200px] px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                                     />
                                 </div>
+                               
 
-                                <div className='flex flex-row space-x-1'>
+                                <div className='flex flex-row space-x-1 ml-[170px]'>
                                     <select
                                         name="course"
                                         value={highEdu.course || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-1/3 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-1/1.5 px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                                     >
                                         <option value="">Course</option>
                                         {courseOptions.map((option, i) => (
@@ -677,7 +890,7 @@ const Profile = () => {
                                         name="specialization"
                                         value={highEdu.specialization || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-2/3 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[450px] px-4 py-2 mb-2 border border-gray-500  rounded-md focus:outline-none focus:border-indigo-500"
                                     >
                                         <option value="">Specialization</option>
                                         {specializationOptions.map((option, i) => (
@@ -690,7 +903,7 @@ const Profile = () => {
                                 
                                 <button
                                     onClick={() => handleRemoveHighEdu(index)}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                    className="px-4 py-2 ml-[170px] mt-3 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
                                 >
                                     Remove
                                 </button>
@@ -700,7 +913,7 @@ const Profile = () => {
                             {/* Button to add new work experience */}
                             <button 
                                 onClick={handleAddHighEdu}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                className="px-4 py-2 ml-[50px] bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
                             >
                                 Add Higher Education
                             </button>
@@ -710,17 +923,17 @@ const Profile = () => {
 
                     <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
                         <div className="flex flex-row justify-center mb-2">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-1">Work Experience</h3>
+                            <h3 className="text-[35px] font-bold text-gray-800 mb-1 ml-[130px] ">Work Experience</h3>
                         </div>
                         {editedUser.work_exp.map((workExp, index) => (
-                            <div key={index} className="mb-4 border border-gray-300 bg-slate-100 bg-opacity-0.8 rounded-md p-4">
+                            <div key={index} className="mb-4 ml-[170px] bg-opacity-0.8 rounded-md p-4">
                                 <input
                                     type="text"
                                     name="job_title"
                                     placeholder="Job Title"
                                     value={workExp.job_title || ''}
                                     onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    className="w-[450px] border-gray-500 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                 />
                                 <input
                                     type="text"
@@ -728,16 +941,16 @@ const Profile = () => {
                                     placeholder="Company"
                                     value={workExp.company || ''}
                                     onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                    className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                    className="w-[450px] border-gray-500  px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500 mt-3"
                                 />
-                                <div className="flex flex-row mb-2 space-x-4">
+                                <div className="flex flex-row mb-2 space-x-4 mt-3">
                                     <input
                                         type="text"
                                         name="startYear"
                                         placeholder='Start Year'
                                         value={workExp.startYear || ''}
                                         onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[200px]  border-gray-500  px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                     />
                                     <input
                                         type="text"
@@ -745,12 +958,12 @@ const Profile = () => {
                                         placeholder='Start Year'
                                         value={workExp.endYear || ''}
                                         onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                        className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        className="w-[200px] border-gray-500  px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
                                     />
                                 </div>
                                 <button
                                     onClick={() => handleRemoveWorkExp(index)}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200 mt-3"
                                 >
                                     Remove
                                 </button>
@@ -760,14 +973,16 @@ const Profile = () => {
                             {/* Button to add new work experience */}
                             <button 
                                 onClick={handleAddWorkExp}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200 ml-[50px]"
                             >
                                 Add Work Experience
                             </button>
                         </div>
                     </div>
+                    </div>
 
-                </div>
+                {/* </div> */}
+
                 <div className="mb-4 p-1 flex justify-center">
                     <button
                         className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-semibold"
@@ -783,16 +998,9 @@ const Profile = () => {
 
     return (
         
-        <div className="container mx-auto mt-0 p-6 w-full flex items-center min-h-[800px] bg-blue-800"
-            style={{
-                backgroundImage: `url("/images/car1.jpg")`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                opacity: '0.9'
-            }}
-            >
-            <div className="w-[100%] max-w-[10000px] h-full mx-auto mt-0 p-6 bg-none rounded-md overflow-hidden shadow-md flex flex-col">
+       
+            <div >
+            {/* <div className="w-[100%] max-w-[10000px] h-full mx-auto mt-0 p-6 bg-none rounded-md overflow-hidden shadow-md flex flex-col"> */}
             
                 {isAdmin==="true" ? (
                     <>
@@ -821,7 +1029,7 @@ const Profile = () => {
                 )}
 
             </div>
-        </div>
+       
     );
 }
 
