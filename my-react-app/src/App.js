@@ -18,6 +18,7 @@ import BecomeAMember from './pages/BecomeAMember';
 import NewsAndUpdatesAdmin from './pages/NewsAndUpdatesAdmin';
 import ProfMessageAdmin from './pages/ProfMessageAdmin';
 import CommunityEventsAdmin from './pages/CommunityEventsAdmin';
+import SmartID from './pages/SmartID';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route exact path="/newsadmin" element={<NewsAndUpdatesAdmin />} />
           <Route exact path="/ProfMessageAdmin" element={<ProfMessageAdmin />} />
           <Route exact path="/CommunityEventsAdmin" element={<CommunityEventsAdmin/>} />
+          <Route exact path="/SmartID" element={<SmartID/>} />
         </Routes>
       </AuthProvider>
     </div>
