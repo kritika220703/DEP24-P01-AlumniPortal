@@ -81,15 +81,6 @@ const Profile = () => {
     
     const isAdmin = localStorage.getItem("isAdmin");
     console.log(isAdmin);
-
-    // const user = {
-    //     name: 'John Doe',
-    //     email: 'john.doe@example.com',
-    //     phone: '+1234567890',
-    //     institute: 'Example Institute', // Add institute name
-    //     // Add more fields as needed
-    // };
-
     useEffect(() => {
         console.log('Updated userData:', userData);
     }, [userData]);
@@ -109,13 +100,12 @@ const Profile = () => {
                     const snapshot = await getDocs(q);
                   
                     if (snapshot.size > 0) {
-                      // Documents satisfying the query exist
+                      // Documents satisfying the query exis
                       snapshot.forEach((doc) => {
                         console.log(doc.id, '=>', doc.data());
                         setUserData(doc.data());
-                        setProfileURL(userData['profileURL']);
+                        setProfileURL(doc.data()['profileURL']);
                         console.log("profile url",profileURL);
-                        // console.log("after: ",userData);
                     });
                     } else {
                       console.log('No documents found for the given query.');
@@ -156,14 +146,6 @@ const Profile = () => {
             profileURL: userData.profileURL || ''
         });
     };
-
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setEditedUser({
-    //         ...editedUser,
-    //         [name]: value,
-    //     });
-    // };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -228,13 +210,6 @@ const Profile = () => {
 
     const handleProfilePictureChange = (e) => {
         setProfilePicture(e.target.files[0]);
-        // setProfileURL(e.target.files[0]);
-        // const { name, value } = e.target;
-        //   setEditedUser({
-        //       ...editedUser,
-        //       [name]: e.target.files[0],
-        //   });
-        // console.log(editedUser)
         console.log(profilePicture);
     };
 
@@ -271,32 +246,21 @@ const Profile = () => {
 
                             // Update the document with the updatedEditedUser data
                             await updateDoc(docRef, updatedEditedUser);
+                            setUserData(updatedEditedUser);
                         }
                     ); 
                     console.log(profileURL);
                 }
-
-            // Update the document with the new data
-            
-
-            // Fetch updated data after saving changes
-            // const updatedSnapshot = await getDoc(docRef);
-
-            // if (updatedSnapshot.exists()) {
-            //     // Update the userData state with the new data
-            //     setUserData(updatedSnapshot.data());
-            // }
-
-            // if (profilePicture) {
-                
-            // }
+                else{
+                    console.log(editedUser);
+                    await updateDoc(docRef, editedUser);
+                    setUserData(editedUser);
+                }
 
             console.log('Document successfully updated!');
             } else {
             console.log('No documents found for the given query.');
             }
-            // Update the Firestore document with the edited user details
-            // await updateDoc(userDocRef, editedUser);
 
             setIsEditing(false);
         } catch (error) {
@@ -477,7 +441,7 @@ const Profile = () => {
                             )}
                       </div> */}
 
-<Section title="Basic Details">
+    <Section title="Basic Details">
         <div className="flex flex-row gap-[50px]">
           <div className="flex flex-row gap-2 text-[21px] ml-[30px]">
             <p className="font-semibold">Entry Number:</p>

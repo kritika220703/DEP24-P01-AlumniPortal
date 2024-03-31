@@ -128,7 +128,7 @@ const UserListComponent = () => {
   
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto px-8">
       <div className='flex justify-center'>
         <h2 className="text-3xl text-white border bg-indigo-700 p-3 w-[200px] rounded-lg mx-auto text-center font-bold mb-8">Alumni List</h2>
       </div>

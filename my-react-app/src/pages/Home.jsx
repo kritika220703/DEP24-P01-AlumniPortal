@@ -18,6 +18,9 @@ import ProfMessageAdmin from './ProfMessageAdmin.jsx';
 const Home = () => {
     const navigate = useNavigate(); 
     // const { isAdmin, setIsAdmin } = useContext(StateContext);
+    const [isLoggedIn, setIsLoggedIn] = useState(() => {
+      return localStorage.getItem("userId") !== null;
+    });
     const Slides = [
         {
           url:image1,
@@ -32,6 +35,7 @@ const Home = () => {
 
       const [currentIndex, setCurrentIndex] = useState(0);
       const [nextIndex, setNextIndex] = useState(1);
+
       const prevSlide = () => {
         const newIndex = currentIndex === 0 ? Slides.length - 1 : currentIndex - 1;
         setCurrentIndex(newIndex);
@@ -118,36 +122,50 @@ const Home = () => {
       exit={{ opacity: 0 }}
     >
       <div className='relative flex flex-col mt-[120px] justify-end items-center'>
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className='text-[70px] text-white font-semibold mb-4'
-        >
-          Welcome to Alumni Relations
-        </motion.h1>
-        <div className='flex justify-center items-center'>
-          <motion.p
+      {isLoggedIn ? (
+        <>
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1 }}
-            className='text-[25px]  text-white mb-8 w-full whitespace-nowrap'
+            transition={{ duration: 1, delay: 0.5 }}
+            className='text-[70px] text-white font-semibold mb-4 mt-10'
           >
-           Register now and become a member of Alumni Association of IIT Ropar.
-          </motion.p>
-        </div>
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.5 }}
-          className='bg-transparent border-blue-900 border-[4px] rounded-full text-white text-[27px] font-bold py-2 px-3'
-          onClick={() => {  navigate('/BecomeAMember')}}
-        >
-          Register Now
-        </motion.button>
-        
-        
-      </div>
+            Welcome to Alumni Relations
+          </motion.h1>
+        </>
+      ) : 
+      <>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className='text-[70px] text-white font-semibold mb-4'
+          >
+            Welcome to Alumni Relations
+          </motion.h1>
+          <div className='flex justify-center items-center'>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1 }}
+              className='text-[25px]  text-white mb-8 w-full whitespace-nowrap'
+            >
+              Register now and become a member of Alumni Association of IIT Ropar.
+            </motion.p>
+          </div>
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.5 }}
+            className='bg-transparent border-blue-900 border-[4px] rounded-full text-white text-[27px] font-bold py-2 px-3'
+            onClick={() => { navigate('/BecomeAMember') }}
+          >
+            Register Now
+          </motion.button>
+        </>
+      }
+    </div>
+
     </motion.div>
     <div className='flex top-4 justify-center py-2 z-10'>
       {Slides.map((slide, slideIndex) => (
