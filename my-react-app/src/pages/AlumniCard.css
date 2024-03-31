@@ -1,0 +1,44 @@
+.alumni-card {
+    display: flex;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  
+  .college-logo {
+    flex: 0 0 auto;
+    padding: 15px;
+    background-color: #f3f4f6;
+  }
+  
+  .alumni-content {
+    flex: 1;
+  }
+  
+  .alumni-details {
+    padding: 15px;
+  }
+  
+  .profile-photo img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  h3 {
+    margin-top: 0;
+  }
+  
+  .degree,
+  .department,
+  .passing-year,
+  .contact {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+  }
+  
