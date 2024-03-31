@@ -50,11 +50,11 @@ const PdfDownloadComponent = () => {
   };
 
   return (
-    <div className='flex flex-row justify-center mt-2'>
+    <div className='flex flex-row justify-center mt-5'>
       {/* <h2>Data Download</h2> */}
       <button 
         onClick={downloadAsPdf}
-        className='bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold'
+        className='bg-blue-900 text-white mb-4 px-6 py-3 rounded-lg text-lg font-semibold'
     >
         Download PDF
     </button>

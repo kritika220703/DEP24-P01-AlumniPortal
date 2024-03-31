@@ -41,10 +41,10 @@ const PlannedReunionsListDownload = () => {
       };
 
     return (
-        <div className='flex flex-row justify-center mt-2'>
+        <div className='flex flex-row justify-center mt-5'>
             <button 
                 onClick={downloadAsPdf}
-                className='bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold'
+                className='bg-blue-900 mb-4 text-white px-6 py-3 rounded-lg text-lg font-semibold'
             >
                 Download PDF
             </button>
