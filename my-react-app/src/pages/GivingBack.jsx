@@ -24,15 +24,42 @@ const GivingBack = () => {
   const [yearOfPassing, setYearOfPassing] = useState("");
   const [phone, setphone] = useState("");
   const [department, setDepartment] = useState("");
-  const [hostel, setHostel] = useState("");
   const [course, setCourse] = useState("");
-  const [country, setCountry] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [donation, setDonation] = useState("");
   const [duration, setDuration] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [verified, setVerified] = useState(false); // State to track captcha verification
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem("userId") !== null;
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        const colRef = collection(db, 'Users');
+        const q = query(colRef, where('uid', '==', userId));
+        const snapshot = await getDocs(q);
+        setName(snapshot.docs[0].data().name);
+        setEmail(snapshot.docs[0].data().email);
+        setEntryNo(snapshot.docs[0].data().entryNo);
+        setYearOfPassing(snapshot.docs[0].data().passingYear);
+        setphone(snapshot.docs[0].data().phone);
+        setDepartment(snapshot.docs[0].data().department);
+        setLinkedin(snapshot.docs[0].data().linkedin);
+        setCourse(snapshot.docs[0].data().degree)
+        console.log(email);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchData();
+    }
+  }, [isLoggedIn]);
 
 
   let errorMessage = "";
@@ -107,20 +134,6 @@ const GivingBack = () => {
     console.log(colRef);
     const q = query(colRef, where('email', '==', email));
 
-    // try {
-    //   console.log("in giving back in kind try part")
-    //   const snapshot = await getDocs(q);
-    
-    //   if (snapshot.size > 0) {
-    //     // Documents satisfying the query exist
-    //       errorMessage = "Entered email is already in use. Please log in or use different email id.";
-    //       toast.error(errorMessage, toastOptions);
-    //       return;
-    //   } 
-    // } catch (error) {
-    //   console.error('Error getting documents:', error);
-    // }
-
     setIsLoading(true);
     try {
       const data = {
@@ -130,9 +143,7 @@ const GivingBack = () => {
         passingYear: yearOfPassing,
         phone: phone,
         department: department,
-        hostel: hostel,
         degree: course,
-        country: country,
         linkedIn: linkedin,
         itemName: donation,
         duration: duration
@@ -161,9 +172,7 @@ const GivingBack = () => {
           passingYear: yearOfPassing,
           phone: phone,
           department: department,
-          hostel: hostel,
           degree: course,
-          country: country,
           linkedIn: linkedin,
           itemName: donation,
           duration: duration
@@ -180,9 +189,7 @@ const GivingBack = () => {
     setYearOfPassing("");
     setphone("");
     setDepartment("");
-    setHostel("");
     setCourse("");
-    setCountry("");
     setLinkedin("");
     setDonation("");
     setDuration("");
@@ -226,7 +233,8 @@ const GivingBack = () => {
                 Email ID:
                 <br/>
                 <input 
-                  type="email" 
+                  type="email"
+                  value = {email} 
                   name="email" 
                   className='text_input'
                   onChange={handleEmailChange} 
@@ -273,104 +281,22 @@ const GivingBack = () => {
               <label>
                 Your Department at IIT Ropar:
                 <br/>
-                <select 
+                <input  
                   name="department" 
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                   className='text_input'
-                >
-                  <option value="">Choose</option>
-                  <option value="CSE">Computer Science</option>
-                  <option value="EE">Electrical</option>
-                  <option value="ME">Mechanical</option>
-                  <option value="MnC">Mathematics and Computing</option>
-                  <option value="CH">Chemical</option>
-                  <option value="Civil">Civil</option>
-                  <option value="EP">Engineering Physics</option>
-                  <option value="Ai">Artifical Intelligence</option>
-                  <option value="ME">Metalurgy Engineering</option>
-                  <option value="DS">Data Science</option>
-                  <option value="bio">Biomedical</option>
-                  <option value="Maths">Maths</option>
-                  <option value="Phy">Physics</option>
-                  <option value="chem">Chemistry</option>
-                  <option value="Humanities">Humanities</option>
-                </select>
-              </label>
-              <br />
-              <label>
-                Your Hostel:
-                <br/>
-                <select 
-                  name="hostel" 
-                  value={hostel}
-                  onChange={(e) => setHostel(e.target.value)}
-                  className='text_input'
-                >
-                  <option value="">Choose</option>
-                  <option value="chenab">Chenab</option>
-                  <option value="ravi">Ravi</option>
-                  <option value="satluj">Satluj</option>
-                  <option value="bhramputra">Bhramputra</option>
-                  <option value="beas">Beas</option>
-                  {/* Add more options as needed */}
-                </select>
-              </label>
-              <br />
-              <label>
-                Degree or Type of Program(s) Enrolled in at IIT Ropar:
-                <br />
-                <input 
-                  type="checkbox" 
-                  name="degree" 
-                  value="undergraduate"
-                  onChange={(e) => setCourse(e.target.value)}
-                /> 
-                  Undergraduate (B.Tech/ B.E./B.Sc.)
-                <br />
-                <input 
-                  type="checkbox" 
-                  name="degree" 
-                  value="masters"
-                  onChange={(e) => setCourse(e.target.value)} 
-                /> 
-                  Masters (M.Tech/M.Sc.)
-                <br />
-                <input 
-                  type="checkbox" 
-                  name="degree" 
-                  value="phd"
-                  onChange={(e) => setCourse(e.target.value)} 
-                /> 
-                  Ph.D
-                <br />
-                <input 
-                  type="checkbox" 
-                  name="degree" 
-                  value="dualDegree"
-                  onChange={(e) => setCourse(e.target.value)} 
-                /> 
-                  Dual Degree (Integrated Program - Undergraduate + Masters)
-                <br />
-                <input 
-                  type="text" 
-                  name="others_degree" 
-                  value={course}
-                  onChange={(e) => setCourse(e.target.value)}
-                  className='text_input' 
-                  placeholder='Others' 
                 />
               </label>
               <br />
               <label>
-                Current Country of Residence:
+                Degree or Type of Program(s) Enrolled in at IIT Ropar:
                 <br/>
-                <input 
-                  type="text" 
-                  name="country" 
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  className='text_input' 
+                <input  
+                  name="degree" 
+                  value={course}
+                  onChange={(e) => setCourse(e.target.value)}
+                  className='text_input'
                 />
               </label>
               <br />
