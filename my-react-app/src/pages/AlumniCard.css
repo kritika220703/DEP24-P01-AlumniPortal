@@ -1,0 +1,62 @@
+.alumni-card {
+    width: 600px;
+    color: black;
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid black; /* Add border with black color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center; /* Vertically center align items */
+  }
+  
+  .logo img {
+    width: 600px;
+    height: auto;
+    margin-right: 20px;
+  }
+  
+  .header-text {
+    flex-grow: 1; /* Allow the header text to take remaining space */
+  }
+  
+  .header-text h2 {
+    margin: 0;
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  
+  .header-text p {
+    margin: 0;
+  }
+  
+  .alumni-content {
+    display: flex;
+  }
+  
+  .profile-photo {
+    width: 100px; /* Adjust the width as needed */
+    margin-right: 20px;
+    margin-top: 10px;
+  }
+  
+  .info {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info div p {
+    margin: 0;
+  }
+  

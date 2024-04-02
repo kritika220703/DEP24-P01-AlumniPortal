@@ -28,6 +28,8 @@ const Login = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showVerifyButton, setShowVerifyButton] = useState(false);
+
   // const [userRes, setUserRes] = useState(null);
 
   const { isAdmin, setIsAdmin } = useContext(StateContext);
@@ -181,6 +183,7 @@ const Login = () => {
         } else {
             notifySuccess("OTP sent to your email id");
             setIsOtpSent(true);
+            setShowVerifyButton(true);
         }
     } catch {
         errorMessage = "Failed to create an account.";
@@ -292,22 +295,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 mb-4 border-2 border-blue-800 rounded-md bg-white focus:outline-none focus:border-indigo-900"
             />
-  
-            <button
-              type="submit"
-              className="w-full px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 focus:outline-none"
-            >
-              Login
-            </button>
-  
-            <p className="mt-4 text-gray-600 text-center text-lg">
-              Don't have an account?{" "}
-              <Link to="/SignUp" className="text-blue-800 hover:underline">
-                Sign Up
-              </Link>
-            </p>
-  
-            {isOtpSent && (
+  {showVerifyButton ? (
               <div className='mb-6 flex flex-col items-center justify-center gap-5'>
                 <label
                   htmlFor="otp"
@@ -327,11 +315,10 @@ const Login = () => {
                   />
                   <button
                     type="submit"
-                    // type="button" // Change type to "button"
-                    onClick={handleOTPSubmit} // Call handleVerifyOTP function on click
+                    onClick={handleOTPSubmit}
                     className="px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none transition duration-300"
                   >
-                    Verify OTP
+                    Login
                   </button>
                 </div>
   
@@ -342,7 +329,22 @@ const Login = () => {
                   </div>
                 )}
               </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="w-full px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 focus:outline-none"
+              >
+                Generate OTP
+              </button>
             )}
+  
+            <p className="mt-4 text-gray-600 text-center text-lg">
+              Don't have an account?{" "}
+              <Link to="/SignUp" className="text-blue-800 hover:underline">
+                Sign Up
+              </Link>
+            </p>
           </div>
         </div>
       </form>

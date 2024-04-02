@@ -4,7 +4,7 @@ import image4 from '.././assets/i.jpg'
 import { useNavigate } from 'react-router-dom';
 import {db} from "../firebase.js"
 import "react-toastify/dist/ReactToastify.css";
-import './SmartID.css' // Assuming you have a CSS file for this component
+import './SmartID.css' 
 import { toast, ToastContainer } from "react-toastify";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandHoldingUsd } from '@fortawesome/free-solid-svg-icons';
