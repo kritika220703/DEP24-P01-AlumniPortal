@@ -17,6 +17,7 @@ const toastOptions = {
 };
 
 const Contact = () => {
+  const [organisation, setOrganisation] = useState('');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -24,6 +25,15 @@ const Contact = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [verified, setVerified] = useState(false); // State to track captcha verification
   // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const options = ['Alumni Cell', 'E-Cell', 'Placement Cell', 'TBIF'];
+
+  const handleOptionChange = (option) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+  };
 
   let errorMessage = "";
   const notifySuccess = (message) => {
@@ -82,7 +92,8 @@ const Contact = () => {
         email: email,
         name : fullName,
         phone : phone,
-        message : message
+        message : message,
+        organization: selectedOption
       };
 
       console.log("calling api")
@@ -178,8 +189,61 @@ const Contact = () => {
 
       <div className='flex flex-row'>
         <div className="w-[700px] h-[700px] mt-[50px] mx-auto bg-white p-8 border border-gray-300 rounded-lg">
-          <h1 className="text-xl font-bold mb-4 ml-[150px]">Call Back or mail to <br/>office.alumni@iitrpr.ac.in</h1>
+          <h1 className="text-xl font-bold mb-4 text-center">Call Back or Mail to</h1>
           <form onSubmit={handleSubmit}>
+            <div className="relative inline-block text-left">
+              <div>
+                <span className="rounded-md shadow-sm">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center w-full rounded-md border border-gray-300 bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 mb-2 hover:bg-gray-50 focus:bg-white transition-colors duration-300"
+                    onClick={() => setIsOpen(!isOpen)}
+                    id="options-menu"
+                    aria-haspopup="true"
+                    aria-expanded={isOpen}
+                  >
+                    {selectedOption || 'Select an option'}
+                    <svg
+                      className="-mr-1 ml-2 h-5 w-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M7.293 8.293a1 1 0 011.414 0L10 9.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414zM10 16a1 1 0 100-2 1 1 0 000 2z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </span>
+              </div>
+
+              {/* Dropdown menu, show/hide based on menu state */}
+              {isOpen && (
+                <div
+                  className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                >
+                  <div className="py-1" role="none">
+                    {options.map((option) => (
+                      <button
+                        key={option}
+                        onClick={() => handleOptionChange(option)}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left whitespace-nowrap"
+                        role="menuitem"
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <div className="mb-4">
               <label className="block text-gray-700">Full Name</label>
               <input

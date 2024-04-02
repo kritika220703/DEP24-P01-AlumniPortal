@@ -10,6 +10,7 @@ import { useNavigate  } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import 'primereact/resources/themes/mdc-light-deeppurple/theme.css';
+import { reload } from 'firebase/auth';
 
 const CommunityEvents = () => {
   const navigate = useNavigate(); 
@@ -18,22 +19,39 @@ const CommunityEvents = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem("userId") !== null;
   });
-  const [title, settitle] = useState('');
+  const [currtitle, setCurrtitle] = useState('');
+  const [userregistered, setuserregistered] = useState([]);
   const toast = useRef(null);
   const [userData, setUserData] = useState(null);
   const isAdmin = localStorage.getItem("isAdmin");
+
   
   useEffect(() => {
     const fetchPlannedReunions = async () => {
       try {
+        const userId = localStorage.getItem("userId");
+        const colRef = collection(db, 'Users');
+        const q = query(colRef, where('uid', '==', userId));
+        const snapshot1 = await getDocs(q);
+        let email = null;
+        if (snapshot1.size > 0) {
+          email = snapshot1.docs[0].data().email;
+        }
+    
         const plannedReunionData = [];
+    
         const snapshot = await getDocs(collection(db, 'plannedReunions'));
-
+    
         snapshot.forEach(doc => {
           const reunion = doc.data();
+          if(reunion.registeredCandidates){
+            if (email && reunion?.registeredCandidates.some(candidate => candidate.email === email)) {
+              userregistered.push(reunion.title);
+            }
+          }
           plannedReunionData.push(reunion);
         });
-
+    
         setPlannedReunions(plannedReunionData);
       } catch (error) {
         console.error('Error fetching planned reunion data: ', error);
@@ -60,6 +78,14 @@ const CommunityEvents = () => {
     fetchPastReunions();
   }, []);
 
+  useEffect(() => {
+    if (currtitle !== '') {
+      console.log(currtitle);
+      confirm1();
+    }
+  }, [currtitle]);
+  
+
   const accept = async () => {
     try {
         // Get the userId from localStorage
@@ -74,7 +100,8 @@ const CommunityEvents = () => {
             console.log(name, email, entryNo);
 
             const plannedReunionRef = collection(db, 'plannedReunions');
-            const reunionQuery = query(plannedReunionRef, where('title', '==', 'Alumni Reunion 2026'));
+            const reunionQuery = query(plannedReunionRef, where('title', '==', currtitle));
+            console.log(currtitle);
             const reunionSnapshot = await getDocs(reunionQuery);
 
             if (reunionSnapshot.size > 0) {
@@ -86,6 +113,9 @@ const CommunityEvents = () => {
                         const updatedCandidates = [...(data.registeredCandidates || []), { name, email, entryNo }];
                         updateDoc(doc(db, 'plannedReunions', reunionDoc.id), { registeredCandidates: updatedCandidates }, { merge: true });
                         toast.current.show({ severity: 'info', summary: 'Confirmed', detail: `You are Successfully Registered `, life: 3000 });
+                        setTimeout(() => {
+                          window.location.reload();
+                        }, 1000); // Reload after 3 seconds
                     } else {
                         console.log('Already registered');
                         toast.current.show({ severity: 'error', summary: 'Error', detail: 'User Already Registered', life: 3000 });
@@ -122,15 +152,44 @@ const CommunityEvents = () => {
       });
   };
 
-  const renderPlannedReunionRow = (batch, year, date, title) => (
-    
-    <tr key={batch}>
-      <td>{batch}</td>
-      <td>{date}</td>
-      <td>{title}</td>
-      <td>{isLoggedIn ? <Button className='reunion-button' onClick={confirm1} icon="pi pi-check" label="Register"></Button> : <span className='reunion-span'> Register</span>}</td>
-    </tr>
-  );
+  const renderPlannedReunionRow = (batch, year, date, title) => {
+    const isRegistered = userregistered.includes(title);
+
+    const registerButtonClickHandler = () => {
+      if (!isRegistered) {
+        setCurrtitle(title);
+        confirm1();
+      }
+    };
+    return (
+      <tr key={batch}>
+        <td>{batch}</td>
+        <td>{date}</td>
+        <td>{title}</td>
+        <td>
+          {isLoggedIn ? (
+            <Button
+              className={`reunion-button`}
+              onClick={registerButtonClickHandler}
+              icon={isRegistered ? "pi pi-check" : ""}
+              label={isRegistered ? "Registered" : "Register"}
+              disabled={isRegistered}
+            ></Button>
+          ) : (
+            <div
+              className={`w-[80px] h-8 ml-1 flex items-center text-[18px] justify-center rounded-lg cursor-pointer bg-blue-500 text-white`}
+              onClick={() => {
+                navigate('/login');
+              }}
+            >
+              Login
+            </div>
+          )}
+        </td>
+      </tr>
+    );
+  };
+  
 
   const renderPastReunionCard = (image, title, date, description) => (
     <div className='card' key={title}>
