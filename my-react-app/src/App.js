@@ -20,6 +20,7 @@ import ProfMessageAdmin from './pages/ProfMessageAdmin';
 import CommunityEventsAdmin from './pages/CommunityEventsAdmin';
 import SmartID from './pages/SmartID';
 import AlumniCard from './pages/AlumniCard';
+import Fund from './pages/Fund';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route exact path='/profile' element={<Profile/>}/>
           </Route>
           <Route exact path="/home" element={<Home />} />
+          <Route exact path="/fund" element={<Fund />} />
           <Route exact path="/GivingBack" element={<GivingBack />} />
           <Route exact path="/Donate" element={<Donate />} />
           <Route exact path="/ContactUs" element={<Contact />} />

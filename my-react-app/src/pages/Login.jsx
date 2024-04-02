@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from 'react-router-dom';
 import {auth, db} from "../firebase.js"
 import { useAuth } from '../utilities/AuthContext.js';
+// import { IoPersonCircle } from "react-icons/io5";
 import { getDocs, collection, query, where, addDoc } from "firebase/firestore";
 import {
   signInWithEmailAndPassword
@@ -13,6 +14,7 @@ import {
 import DropDown from "../components/RoleDropDown.jsx"
 import image from '.././assets/Spiraliitropar.jpg'
 import {motion} from 'framer-motion'
+import {Navbar } from '../components/Navbar.jsx'
 const toastOptions = {
   position: "bottom-right",
   autoClose: 8000,
@@ -228,7 +230,9 @@ const Login = () => {
                 localStorage.setItem("isAdmin", "true");
               // }
             }
-            navigate("/home");
+            navigate("/home"); 
+           
+            
             setIsOtpSent(false);
         }
     } catch {
@@ -347,6 +351,7 @@ const Login = () => {
         </div>
       </form>
       <ToastContainer />
+      {/* {isAdmin && <IoPersonCircle className='text-[30px]' onClick={() => navigate('/profile')} />} */}
     </>
   );
   

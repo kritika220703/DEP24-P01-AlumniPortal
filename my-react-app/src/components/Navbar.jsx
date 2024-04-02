@@ -7,7 +7,7 @@ import { IoPersonCircle } from "react-icons/io5";
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useAuth } from '../utilities/AuthContext.js'
 
-const Navbar = () => {
+const Navbar = ({loggin}) => {
   // const {logout} = useAuth();
   const[open , setOpen] = React.useState(false)
   const[toggle,setToggle] = React.useState(false);
