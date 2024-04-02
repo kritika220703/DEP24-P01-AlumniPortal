@@ -26,12 +26,12 @@ const NavLinks = () => {
         },
         {
             name: "Community Events",
-            path: "/CommunityEvents",
-            // submenu: true,
-            // sublinks: [
-            //     { name: "Events", path: "/pages/NewsAndUpdates" },
-            //     { name: "Reunion", path: "/pages/Gallery" },
-            // ]
+            // path: "/CommunityEvents",
+            submenu: true,
+            sublinks: [
+                { name: "Events", path: "/events" },
+                { name: "Reunions", path: "/CommunityEvents" },
+            ]
         },
         {
             name: "Contact us",

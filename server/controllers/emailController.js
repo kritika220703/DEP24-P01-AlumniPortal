@@ -139,6 +139,14 @@ const sendSignUpAsAdminEmail = async (req, res) => {
     }
 };
 
+// Define a dictionary mapping organizations to email addresses
+const organizationEmails = {
+    "alumni cell": "2021csb1184@iitrpr.ac.in",
+    "e-cell": "2021csb1220@iitrpr.ac.in",
+    "cdpc": "2021csb1165@iitrpr.ac.in",
+    "tbif": "2021csb113@iitrpr.ac.in"
+};
+
 const sendContactUsmail = async (req, res) => {
     try {
         console.log("in send contact us api")
@@ -147,8 +155,14 @@ const sendContactUsmail = async (req, res) => {
         const Phone = req.body.phone;
         const messageSubject = `New  Contact Us Message from Name : ${Name}, Email : ${Email}, Phone No.: ${Phone}`;
         const messageBody= req.body.message;
+        const organization = req.body.organization
 
-        await sendEmail("2021csb1184@iitrpr.ac.in", messageSubject, messageBody);
+        const recipientEmail = organizationEmails[organization.toLowerCase()];
+
+        if (!recipientEmail) {
+            throw new Error("Invalid organization provided.");
+        }
+        await sendEmail(recipientEmail, messageSubject, messageBody);
 
         console.log("contact us mail sent");
         
@@ -156,6 +170,7 @@ const sendContactUsmail = async (req, res) => {
 
         // res.status(200).status(200);
     } catch(error) {
+        console.error("Error sending contact us mail:", error);
         res.status(400).send(error.message);
     }
 };
