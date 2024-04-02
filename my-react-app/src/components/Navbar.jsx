@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import logo from "./../assets/logo.png"
 import {Link} from "react-router-dom"
 import NavLinks from "./NavLinks"
@@ -11,9 +11,16 @@ const Navbar = () => {
   // const {logout} = useAuth();
   const[open , setOpen] = React.useState(false)
   const[toggle,setToggle] = React.useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem("userId") !== null;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    checkLoggedIn();
   });
+
+  const checkLoggedIn = () => {
+    setIsLoggedIn(localStorage.getItem("userId") !== null);
+  };
+
+
   const navigate = useNavigate()
 
   const handleLogout = async () => {
