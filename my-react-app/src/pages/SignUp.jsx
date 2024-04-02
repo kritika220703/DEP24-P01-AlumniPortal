@@ -3,6 +3,7 @@ import StateContext from '../StateContext.js';
 import { Link, useNavigate ,useLocation} from "react-router-dom";
 import { useAuth } from '../utilities/AuthContext';
 import {auth, db} from "../firebase.js"
+import { FiCheckCircle } from 'react-icons/fi';
 import {
     createUserWithEmailAndPassword
 } from "firebase/auth";
@@ -37,9 +38,10 @@ const SignUp = () => {
     const [otp, setOtp] = useState("");
     const [isOtpSent, setIsOtpSent] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isOtpVerified, setIsOtpVerified] = useState(false);
     const { isAdmin, setIsAdmin } = useContext(StateContext);
     // const [userRes, setUserRes] = useState(null);
-
+    const [showVerifyButton, setShowVerifyButton] = useState(false);
     const [selectedOption, setSelectedOption] = useState("");
 
     const handleOptionSelect = (e) => {
@@ -176,12 +178,12 @@ const SignUp = () => {
             return;
         }
 
-        if (selectedOption==="Alumni" && (!editedUser || editedUser['entryNo'] === '')) {
-            errorMessage = "User is not a Member";
-            toast.error(errorMessage, toastOptions);
-            navigate("/BecomeAMember");
-            return;
-        }
+        // if (selectedOption==="Alumni" && (!editedUser || editedUser['entryNo'] === '')) {
+        //     errorMessage = "User is not a Member";
+        //     toast.error(errorMessage, toastOptions);
+        //     // navigate("/BecomeAMember");
+        //     return;
+        // }
         
         const colRef = collection(db, 'Users');
         console.log(colRef);
@@ -225,6 +227,8 @@ const SignUp = () => {
             } else {
                 notifySuccess("OTP sent to your email id");
                 setIsOtpSent(true);
+                setShowVerifyButton(true);
+
             }
         } catch {
             errorMessage = "Failed to create an account.";
@@ -255,7 +259,7 @@ const SignUp = () => {
             if(response.status !== 200) {
                 errorMessage = "Failed to verify OTP.";
                 toast.error(errorMessage, toastOptions);
-                navigate("/signup");
+                navigate("/BecomeAMember");
                 return;
             } else {
                 await signup(email, "666666", name);
@@ -314,11 +318,10 @@ const SignUp = () => {
 
   return (
     <>
-        {/* <div>SignUp</div> */}
-        {!isOtpSent ? (
-            <form onSubmit={handleSubmit} className="flex justify-center items-center h-screen ">
-                <div className='flex flex-row items-center justify-center w-[950px] h-[480px] bg-white  shadow-lg rounded-2xl mt-0'>
-                <div
+        
+        <form onSubmit={handleSubmit} className="flex justify-center items-center h-screen ">
+            <div className='flex flex-row items-center justify-center w-[950px] h-[480px] bg-white  shadow-lg rounded-2xl mt-0'>
+            <div
             className="relative bg-cover bg-center h-[480px] w-[500px] rounded-2xl flex items-center justify-center"
             style={{ backgroundImage: `url(${image})` }}
             >
@@ -377,60 +380,61 @@ const SignUp = () => {
             <p className="text-red-600">Please enter a valid email address.</p>
         )}
 
-        <button
-            onClick={handleSubmit}
-            className="w-full px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 focus:outline-none"
-        >
-            Sign Up
-        </button>
-
-        <p className="mt-4 text-gray-600 text-center text-lg">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-800 hover:underline">
-            Log In
-            </Link>
-        </p>
+        {showVerifyButton ? (
+              <div className='mb-6 flex flex-col items-center justify-center gap-5'>
+                <label
+                  htmlFor="otp"
+                  className="block text-gray-800 font-medium mb-2"
+                >
+                  Enter OTP:
+                </label>
+  
+                <div className="flex items-center">
+                  <input
+                    type="text"
+                    name="otp"
+                    placeholder="OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className='px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 mr-2'
+                  />
+                  <button
+                    type="submit"
+                    onClick={handleOTPSubmit}
+                    className="px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none transition duration-300"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+  
+                {isOtpVerified && (
+                  <div className="text-indigo-500 mt-2">
+                    <FiCheckCircle size={24} />
+                    <span className="ml-2">OTP Verified!</span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="w-full px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 focus:outline-none"
+              >
+                Generate OTP
+              </button>
+            )}
+  
+            <p className="mt-4 text-gray-600 text-center text-lg">
+              Already have an account?{" "}
+              <Link to="/LogIn" className="text-blue-800 hover:underline">
+                Log In
+              </Link>
+            </p>
                 </div>
                 </div>
             </form>
-        ):(
-            <form onSubmit={handleOTPSubmit}>
-                <div className='mb-6 flex flex-col items-center justify-center gap-5 mx-auto h-screen w-full bg-gray-200'>
-                    {/* <h1 className="text-3xl font-bold">Verify OTP</h1> */}
-                    <label
-                        htmlFor="otp"
-                        className="block text-gray-800 font-medium mb-2"
-                    >
-                        Enter OTP:
-                    </label>
-
-                    <div className="flex items-center">
-                        <input
-                            type="text"
-                            name="otp"
-                            placeholder="OTP"
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value)}
-                            className='px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 mr-2'
-                        />
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-700 focus:outline-none transition duration-300"
-                        >
-                        Verify OTP
-                        </button>
-                    </div>
-
-                    {/* <div className="text-indigo-500 mt-2">
-                        <FiCheckCircle size={24} />
-                        <span className="ml-2">OTP Verified!</span>
-                    </div> */}
-                </div>
-            </form>
-        )}
         <ToastContainer />
     </>
-  )
-}
+)};
 
 export default SignUp
