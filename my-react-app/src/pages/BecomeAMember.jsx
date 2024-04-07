@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { Checkmark } from 'react-checkmark'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faCheckSquare  } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate ,useLocation } from 'react-router-dom';
+import { toast, ToastContainer } from "react-toastify";
 import './BecomeAMember.css'; // Assuming you have a CSS file for this component
 import {
   ref,
@@ -10,13 +11,24 @@ import {
   getDownloadURL 
 } from "firebase/storage";
 import {storage,db} from "../firebase.js"
-import {collection, query, where, getDocs } from "firebase/firestore";
+import {collection, query, where, getDocs ,doc, updateDoc, addDoc } from "firebase/firestore";
+
+
+const toastOptions = {
+  position: "bottom-right",
+  autoClose: 8000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "dark",
+};
 
 const BecomeAMember = () => {
+  const location = useLocation();
   const [isFormSubmitted, setIsFormSubmitted] = useState(0);
   const [ischeckbox, setIsWorkingProfessional] = useState(0);
   const [profilePicture, setProfilePicture] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const { userId , email } = location.state || {};
   const [editedUser, setEditedUser] = useState({
       name: '',
       role: '',
@@ -36,7 +48,7 @@ const BecomeAMember = () => {
       email: ''
   });
   const navigate = useNavigate(); 
-  
+  let errormsg = '';
   const handleSubmit = async (e) => {
     e.preventDefault();
     const mandatoryFields = ['name', 'role', 'phone', 'contrycode', 'entryNo', 'country', 'hostel', 'degree', 'department', 'passingYear', 'joiningYear'];
@@ -103,7 +115,7 @@ const BecomeAMember = () => {
         return;
       }
     }
-    else{
+    else if(ischeckbox === 2){
       const isEduExpValid = editedUser.higherEducation.every((highEdu) => {
         return highEdu && highEdu.institute && highEdu.degree && highEdu.department && highEdu.startYear && highEdu.endYear;
       });
@@ -119,6 +131,12 @@ const BecomeAMember = () => {
         setErrorMessage("Please enter a valid 4-digit year");
         return;
       }
+    }
+    else{
+      errormsg = "Select What are you doing currently.";
+      console.log(errormsg);
+      toast.error(errormsg, toastOptions);
+      return;
     }
 
     setIsFormSubmitted(2);
@@ -167,8 +185,54 @@ const BecomeAMember = () => {
     console.log(editedUser)
   };
 
-  const handleSignUpClick = () => {
-    navigate('/SignUp', { state: { editedUser, profilePicture } });
+  const handleSignUpClick = async () => {
+    
+    const docRef = await addDoc(collection(db, "Users"), {
+        uid: userId,
+        email: email,
+    });
+    const userDocRef = doc(db, 'users', userId);
+    const colRef = collection(db, 'Users');
+    const q = query(colRef, where('email', '==', email));
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.size > 0) {
+        // Get the reference to the first matching document
+        const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
+    
+        if (profilePicture) {
+            const storageRef = ref(storage,`/files/${editedUser['entryNo']}`)
+            console.log("stor ref: ",storageRef);
+            const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+        
+            uploadTask.on(
+                "state_changed",
+                (err) => console.log(err),
+                () => {
+                    console.log("innnn");
+                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                        console.log("URL: ",url);
+                        editedUser['profileURL']=url;
+                        // setProfileURL(process.env.PROFILE_BASE_URL + url);
+                        // setEditedUser({ ...editedUser, profileURL: url });
+                    });
+                }
+            ); 
+            // console.log(profileURL);
+        }
+        editedUser['email']=email;
+        // Update the document with the new data
+        await updateDoc(docRef, editedUser);
+        localStorage.setItem("userId", userId);
+        console.log('Document successfully updated!');
+    } else {
+      console.log('No documents found for the given query.');
+      errormsg = "User needs to signup first";
+      toast.error(errormsg, toastOptions);
+      return;
+    }
+    navigate('/home');
   };
 
 
@@ -421,7 +485,7 @@ const BecomeAMember = () => {
             <h1> Thank You Virat, for joining IIT Ropar Alumni Network </h1>
           </div>
           <div className='member-button'>
-                <button type="submit" className='submit-member' onClick={handleSignUpClick}>SignUp</button>
+                <button type="submit" className='submit-member' onClick={handleSignUpClick}>Home</button>
           </div>
         </div>
         ) : (
@@ -592,6 +656,7 @@ const BecomeAMember = () => {
         </div>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };
