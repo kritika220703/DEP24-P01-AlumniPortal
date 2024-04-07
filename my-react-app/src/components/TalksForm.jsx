@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 import { BsChatDots, BsBriefcase, BsLightbulb } from "react-icons/bs";
+import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
+import {auth, db} from "../firebase.js"
 
 const TalksForm = () => {
     const [topic, setTopic] = useState('');
@@ -7,11 +11,133 @@ const TalksForm = () => {
     const [content, setContent] = useState('');
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [date, setDate] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const userId = localStorage.getItem("userId")
+    console.log(userId);
+    
+    const toastOptions = {
+        position: "bottom-right",
+        autoClose: 8000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      };
 
-    const handleSubmit = (e) => {
+    let errorMessage = "";
+    const notifySuccess = (message) => {
+        toast.success(message, toastOptions);
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Handle form submission
-        console.log('Form submitted:', { topic, type, content, date });
+
+        if(topic === ""){
+            errorMessage  = "Please provide your topic.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+    
+        if(type === ""){
+            errorMessage = "Type is required.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+
+        if(content === ""){
+            errorMessage  = "Please provide your content.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+
+        if(date === ""){
+            errorMessage  = "Please provide date.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+
+        try {
+            // Fetch user document from Firestore
+            const colRef = collection(db, 'Users');
+            const q = query(colRef, where('uid', '==', userId));
+            const snapshot = await getDocs(q);
+    
+            // Check if user document exists
+            if (snapshot.empty) {
+                errorMessage = "User not found.";
+                toast.error(errorMessage, toastOptions);
+                return;
+            }
+    
+            // Extract user data from document
+            snapshot.forEach(async(doc) => {
+                const userData = doc.data();
+                const { name, email, phone } = userData;
+                await setEmail(email);
+                await setName(name);
+                await setPhone(phone);
+    
+                // Do something with the user data (e.g., display it, store it, etc.)
+                console.log('User Name:', name);
+                console.log('User Email:', email);
+                console.log('User Phone:', phone);
+
+                // Now that the state has been updated, you can proceed with the API call
+                const data = {
+                    email: email, 
+                    name: name,
+                    phone: phone,
+                    topic: topic,
+                    type: type,
+                    content: content,
+                    date: date,
+                    additionalInfo: additionalInfo
+                };
+
+                const response = await fetch(`http://localhost:3000/email/events/talks`, {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+                console.log(response.status);
+
+                if(response.status !== 200) {
+                    errorMessage = "Failed to send mail.";
+                    toast.error(errorMessage, toastOptions);
+                    return;
+                } 
+
+                const docRef = await addDoc(collection(db, "Talks"), {
+                    uid: userId,
+                    email: email, 
+                    name: name,
+                    phone: phone,
+                    topic: topic,
+                    type: type,
+                    content: content,
+                    date: date,
+                    additionalInfo: additionalInfo
+                });
+
+                notifySuccess("Mail sent successfully to admin!")
+                console.log('Form submitted:', { topic, type, content, date });
+
+            });
+
+        } catch(error) {
+            errorMessage = "Error submitting form!";
+            toast.error(errorMessage, toastOptions);
+        }
+
+        // Reload the page
+        setTimeout(() => {
+            window.location.reload();
+        }, 5000); // Reload after 3 seconds
+
     };
 
     return (
@@ -23,7 +149,7 @@ const TalksForm = () => {
                 </h1>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="topic" className="block text-left">Topic of Talk:</label>
+                        <label htmlFor="topic" className="block text-left">Topic of Talk<span className="text-red-500">*</span> :</label>
                         <input
                             type="text"
                             id="topic"
@@ -34,7 +160,7 @@ const TalksForm = () => {
                         />
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="type" className="block text-left">Type of Talk:</label>
+                        <label htmlFor="type" className="block text-left">Type of Talk<span className="text-red-500">*</span> :</label>
                         <select
                             id="type"
                             value={type}
@@ -49,7 +175,7 @@ const TalksForm = () => {
                         </select>
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="content" className="block text-left">Content Covered:</label>
+                        <label htmlFor="content" className="block text-left">Content Covered<span className="text-red-500">*</span> :</label>
                         <textarea
                             id="content"
                             value={content}
@@ -60,7 +186,7 @@ const TalksForm = () => {
                         ></textarea>
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="date" className="block text-left">Date of Talk:</label>
+                        <label htmlFor="date" className="block text-left">Date of Talk<span className="text-red-500">*</span> :</label>
                         <input
                             type="date"
                             id="date"
@@ -94,6 +220,7 @@ const TalksForm = () => {
             <div className='w-1/2 p-4'>
                 <img src='/images/talk1.webp' alt="Talk" className="w-full h-full object-cover"/>
             </div>
+            <ToastContainer />
         </div>
     );
 };

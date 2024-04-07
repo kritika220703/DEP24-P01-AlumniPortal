@@ -247,6 +247,93 @@ const sendReunionAlertmail = async (req, res) => {
     }
 };
 
+const sendEventsTalkmail = async (req, res) => {
+    try {
+        console.log("in send events talk api")
+        const Email = req.body.email;
+        const Name = req.body.name;
+        const Phone = req.body.phone;
+        const topic = req.body.topic
+        const type = req.body.type
+        const date = req.body.date
+        const content = req.body.content
+        const additionalInfo = req.body.additionalInfo
+        const messageSubject = `New  Talks Message`;
+        const messageBody= `From Name : ${Name} \nEmail : ${Email} \nPhone No.: ${Phone} \n\nInformation about Talk:\nTopic:  ${topic}\nType of Talk: ${type}\nTentative Date of Talk: ${date}\nContent of Talk: ${content}\n\nAdditional Info: ${additionalInfo}`;
+
+        const recipientEmail = "2021csb1184@iitrpr.ac.in";
+
+        await sendEmail(recipientEmail, messageSubject, messageBody);
+
+        console.log("talk mail sent");
+        
+        res.status(200).send("talk mail Sent");
+
+    } catch(error) {
+        console.error("Error sending talk mail:", error);
+        res.status(400).send(error.message);
+    }
+};
+
+const sendEventsWorkshopsmail = async (req, res) => {
+    try {
+        console.log("in send events workshop api")
+        const Email = req.body.email;
+        const Name = req.body.name;
+        const Phone = req.body.phone;
+        const topic = req.body.topic
+        const type = req.body.type
+        const date = req.body.date
+        const duration = req.body.duration
+        const content = req.body.content
+        const additionalInfo = req.body.additionalInfo
+        const messageSubject = `New  Workshop Message\n\n`;
+        const messageBody= `From Name : ${Name} \nEmail : ${Email} \nPhone No.: ${Phone} \n\nInformation about Workshop:\nTopic:  ${topic}\nType of Workshop: ${type}\nTentative Date of Workshop: ${date}\nDuration: ${duration}\nContent of Workshop: ${content}\n\nAdditional Info: ${additionalInfo}`;
+
+        const recipientEmail = "2021csb1184@iitrpr.ac.in";
+
+        await sendEmail(recipientEmail, messageSubject, messageBody);
+
+        console.log("workshop mail sent");
+        
+        res.status(200).send("workshop mail Sent");
+
+    } catch(error) {
+        console.error("Error sending workshop mail:", error);
+        res.status(400).send(error.message);
+    }
+};
+
+const sendEventsStartupPresentationsmail = async (req, res) => {
+    try {
+        console.log("in send events workshop api")
+        const Email = req.body.email;
+        const Name = req.body.name;
+        const Phone = req.body.phone;
+        const startup = req.body.startup
+        const problem = req.body.problem
+        const date = req.body.date
+        const presenter = req.body.presenter
+        const content = req.body.content
+        const idea = req.body.idea
+        const additionalInfo = req.body.additionalInfo
+        const messageSubject = `New  Startup Presentation Message\n\n`;
+        const messageBody= `From Name : ${Name} \nEmail : ${Email} \nPhone No.: ${Phone} \n\nInformation about Startup Presentation:\nStartup:  ${startup}\nIdea: ${idea}\nProblem being solved: ${problem}\nContent of Presentation: ${content}\nPresenter: ${presenter}\nDate: ${date}\n\nAdditional Info: ${additionalInfo}`;
+
+        const recipientEmail = "2021csb1184@iitrpr.ac.in";
+
+        await sendEmail(recipientEmail, messageSubject, messageBody);
+
+        console.log("Startup Presentation mail sent");
+        
+        res.status(200).send("Startup Presentation mail Sent");
+
+    } catch(error) {
+        console.error("Error sending Startup Presentation mail:", error);
+        res.status(400).send(error.message);
+    }
+};
+
 
 module.exports = {
     sendOTPmail,
@@ -254,6 +341,9 @@ module.exports = {
     sendContactUsmail,
     sendGivingBackInKindmail,
     sendSignUpAsAdminEmail,
-    sendReunionAlertmail
+    sendReunionAlertmail,
+    sendEventsTalkmail,
+    sendEventsWorkshopsmail,
+    sendEventsStartupPresentationsmail
 };
 

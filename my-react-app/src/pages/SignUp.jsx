@@ -322,8 +322,8 @@ const SignUp = () => {
         <form onSubmit={handleSubmit} className="flex justify-center items-center h-screen ">
             <div className='flex flex-row items-center justify-center w-[950px] h-[480px] bg-white  shadow-lg rounded-2xl mt-0'>
             <div
-            className="relative bg-cover bg-center h-[480px] w-[500px] rounded-2xl flex items-center justify-center"
-            style={{ backgroundImage: `url(${image})` }}
+                className="relative bg-cover bg-center h-[480px] w-[500px] rounded-2xl flex items-center justify-center"
+                style={{ backgroundImage: `url(${image})` }}
             >
             <div className="text-center text-white px-2">
                 <motion.h1
