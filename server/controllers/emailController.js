@@ -334,6 +334,91 @@ const sendEventsStartupPresentationsmail = async (req, res) => {
     }
 };
 
+const sendMentorshipProgramsmail = async (req, res) => {
+    try {
+        console.log("in send events mentorship Program api")
+        const Email = req.body.email;
+        const Name = req.body.name;
+        const Phone = req.body.phone;
+        const domain = req.body.domain
+        const eligibility = req.body.eligibility
+        const date = req.body.date
+        const duration = req.body.duration
+        const content = req.body.content
+        const additionalInfo = req.body.additionalInfo
+        const messageSubject = `New  Mentorship Program Message\n\n`;
+        const messageBody= `From Name : ${Name} \nEmail : ${Email} \nPhone No.: ${Phone} \n\nInformation about Mentorship Program:\nDomain:  ${domain}\nEligibility: ${eligibility}\nTentative Start Date: ${date}\nDuration: ${duration}\nContent of Program: ${content}\n\nAdditional Info: ${additionalInfo}`;
+
+        const recipientEmail = "2021csb1184@iitrpr.ac.in";
+
+        await sendEmail(recipientEmail, messageSubject, messageBody);
+
+        console.log("mp mail sent");
+        
+        res.status(200).send("mentorship program mail Sent");
+
+    } catch(error) {
+        console.error("Error sending mentorship program mail:", error);
+        res.status(400).send(error.message);
+    }
+};
+
+const sendCommunityServiceProjectsmail = async (req, res) => {
+    try {
+        console.log("in send events community service project api")
+        const Email = req.body.email;
+        const Name = req.body.name;
+        const Phone = req.body.phone;
+        const projectName = req.body.projectName
+        const projectDescription = req.body.projectDescription
+        const date = req.body.date
+        const duration = req.body.duration
+        const location = req.body.location
+        const additionalInfo = req.body.additionalInfo
+        const messageSubject = `New  Community Service Project Message\n\n`;
+        const messageBody= `From Name : ${Name} \nEmail : ${Email} \nPhone No.: ${Phone} \n\nInformation about Community Service Projects:\nproject Name:  ${projectName}\nProject Description: ${projectDescription}\nTentative Start Date: ${date}\nDuration: ${duration}\nLocation: ${location}\n\nAdditional Info: ${additionalInfo}`;
+
+        const recipientEmail = "2021csb1184@iitrpr.ac.in";
+
+        await sendEmail(recipientEmail, messageSubject, messageBody);
+
+        console.log("community service projects mail sent");
+        
+        res.status(200).send("community service projects mail Sent");
+
+    } catch(error) {
+        console.error("Error sending community service projects mail:", error);
+        res.status(400).send(error.message);
+    }
+};
+
+const sendEventsHackathonsmail = async (req, res) => {
+    try {
+        console.log("in send events hackathon api")
+        const Email = req.body.email;
+        const Name = req.body.name;
+        const Phone = req.body.phone;
+        const topic = req.body.topic
+        const type = req.body.type
+        const date = req.body.date
+        const duration = req.body.duration
+        const additionalInfo = req.body.additionalInfo
+        const messageSubject = `New  Hackathon Message\n\n`;
+        const messageBody= `From Name : ${Name} \nEmail : ${Email} \nPhone No.: ${Phone} \n\nInformation about Hackathon:\nTopic:  ${topic}\nType of Hackathon: ${type}\nTentative Date of Hackathon: ${date}\nDuration: ${duration}\n\nAdditional Info: ${additionalInfo}`;
+
+        const recipientEmail = "2021csb1184@iitrpr.ac.in";
+
+        await sendEmail(recipientEmail, messageSubject, messageBody);
+
+        console.log("hackathon mail sent");
+        
+        res.status(200).send("hackathon mail Sent");
+
+    } catch(error) {
+        console.error("Error sending hackathon mail:", error);
+        res.status(400).send(error.message);
+    }
+};
 
 module.exports = {
     sendOTPmail,
@@ -344,6 +429,9 @@ module.exports = {
     sendReunionAlertmail,
     sendEventsTalkmail,
     sendEventsWorkshopsmail,
-    sendEventsStartupPresentationsmail
+    sendEventsStartupPresentationsmail,
+    sendMentorshipProgramsmail,
+    sendCommunityServiceProjectsmail,
+    sendEventsHackathonsmail
 };
 

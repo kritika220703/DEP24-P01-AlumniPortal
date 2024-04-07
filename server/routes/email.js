@@ -10,7 +10,10 @@ const {
     sendReunionAlertmail,
     sendEventsTalkmail,
     sendEventsWorkshopsmail,
-    sendEventsStartupPresentationsmail
+    sendEventsStartupPresentationsmail,
+    sendMentorshipProgramsmail,
+    sendCommunityServiceProjectsmail,
+    sendEventsHackathonsmail
 } = require('../controllers/emailController.js');
 
 router.post('/sendotp', sendOTPmail);
@@ -22,6 +25,9 @@ router.post('/invite', sendReunionAlertmail);
 router.post('/events/talks', sendEventsTalkmail);
 router.post('/events/workshops', sendEventsWorkshopsmail);
 router.post('/events/startupPresentations', sendEventsStartupPresentationsmail);
+router.post('/events/mentorshipPrograms', sendMentorshipProgramsmail);
+router.post('/events/communityServiceProjects', sendCommunityServiceProjectsmail);
+router.post('/events/hackathons', sendEventsHackathonsmail);
 
 module.exports = {
     routes: router

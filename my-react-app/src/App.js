@@ -49,7 +49,9 @@ function App() {
           <Route exact path="/CommunityEventsAdmin" element={<CommunityEventsAdmin/>} />
           <Route exact path="/SmartID" element={<SmartID/>} />
           <Route exact path="/AlumniCard" element={<AlumniCard/>} />
-          <Route exact path="/events" element={<Events/>} />
+          <Route exact path='/events' element={<PrivateRoute/>}>
+            <Route exact path="/events" element={<Events/>} />
+          </Route>
         </Routes>
       </AuthProvider>
     </div>
