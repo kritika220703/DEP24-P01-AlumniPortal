@@ -22,6 +22,7 @@ import SmartID from './pages/SmartID';
 import AlumniCard from './pages/AlumniCard';
 import Events from './pages/Events';
 import Fund from './pages/Fund';
+import Internship from './pages/Internship';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route exact path="/SmartID" element={<SmartID/>} />
           <Route exact path="/AlumniCard" element={<AlumniCard/>} />
           <Route exact path="/events" element={<Events/>} />
+          <Route exact path="/Internship" element={<Internship/>} />
         </Routes>
       </AuthProvider>
     </div>
