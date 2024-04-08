@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Checkmark } from 'react-checkmark'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faCheckSquare  } from '@fortawesome/free-solid-svg-icons';
@@ -47,13 +47,25 @@ const BecomeAMember = () => {
       profileURL: '',
       email: ''
   });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    checkLoggedIn();
+  });
+
+  const checkLoggedIn = () => {
+    setIsLoggedIn(localStorage.getItem("userId") !== null);
+  };
+
   const navigate = useNavigate(); 
+
+  if(isLoggedIn){
+    navigate("/home");
+  }
   let errormsg = '';
   const handleSubmit = async (e) => {
     e.preventDefault();
     const mandatoryFields = ['name', 'role', 'phone', 'contrycode', 'entryNo', 'country', 'hostel', 'degree', 'department', 'passingYear', 'joiningYear'];
     const missingFields = mandatoryFields.filter(field => !editedUser[field]);
-
     if (missingFields.length > 0) {
       setErrorMessage("Please fill in all mandatory fields.");
       return;
@@ -62,12 +74,22 @@ const BecomeAMember = () => {
       setErrorMessage("Please enter a valid Entry Number.");
       return;
     }
-    if((editedUser['passingYear'].length !== 4 || isNaN(editedUser['passingYear']))){
+    if(editedUser['passingYear'].length !== 4 || isNaN(editedUser['passingYear'])){
       setErrorMessage("Please enter a valid 4-digit year");
       return;
     }
-    if((editedUser['joiningYear'].length !== 4 || isNaN(editedUser['joiningYear']))){
+    if( editedUser['joiningYear'].length !== 4 || isNaN(editedUser['joiningYear']) ){
       setErrorMessage("Please enter a valid 4-digit year");
+      return;
+    }
+    if(parseInt(editedUser['passingYear'], 10) < parseInt(editedUser['joiningYear'], 10)){
+      setErrorMessage("Joining Should be before Passing");
+      return;
+    }
+    const currentYear = new Date().getFullYear();
+    const inputYear = parseInt(editedUser['passingYear'], 10);
+    if(currentYear < inputYear){
+      setErrorMessage("Passing year should be less than input year");
       return;
     }
     if((editedUser['phone'].length !== 10 || isNaN(editedUser['phone']))){
@@ -95,7 +117,11 @@ const BecomeAMember = () => {
       });
 
       const isWorkYear = editedUser.work_exp.every((workExp) => {
-        return workExp && workExp.startYear.length===4 && workExp.endYear.length===4 && !isNaN(workExp.startYear) && !isNaN(workExp.endYear);
+        return workExp && !isNaN(workExp.startYear) && !isNaN(workExp.endYear) && workExp.startYear.length===4 && workExp.endYear.length===4;
+      });
+
+      const joining_passing = editedUser.work_exp.every((workExp) => {
+        return workExp && !isNaN(workExp.startYear) && !isNaN(workExp.endYear) && parseInt(workExp.startYear, 10) > parseInt(workExp.endYear, 10);
       });
       
       if (!isWorkExpValid) {
@@ -105,6 +131,10 @@ const BecomeAMember = () => {
       }
       if(!isWorkYear){
         setErrorMessage("Please enter a valid 4-digit year");
+        return;
+      }
+      if(!joining_passing){
+        setErrorMessage("Start date should be before end date.");
         return;
       }
     } 
@@ -120,7 +150,11 @@ const BecomeAMember = () => {
         return highEdu && highEdu.institute && highEdu.degree && highEdu.department && highEdu.startYear && highEdu.endYear;
       });
       const isEduYear = editedUser.higherEducation.every((highEdu) => {
-        return highEdu && highEdu.startYear.length===4 && highEdu.endYear.length===4 && !isNaN(highEdu.endYear) && !isNaN(highEdu.startYear);
+        return highEdu && !isNaN(highEdu.endYear) && !isNaN(highEdu.startYear) && highEdu.startYear.length===4 && highEdu.endYear.length===4;
+      });
+
+      const joining_passing = editedUser.higherEducation.every((highEdu) => {
+        return highEdu && !isNaN(highEdu.endYear) && !isNaN(highEdu.startYear) && parseInt(highEdu.startYear, 10) > parseInt(highEdu.endYear, 10);
       });
 
       if (!isEduExpValid) {
@@ -129,6 +163,11 @@ const BecomeAMember = () => {
       }
       if(!isEduYear){
         setErrorMessage("Please enter a valid 4-digit year");
+        return;
+      }
+
+      if(!joining_passing){
+        setErrorMessage("Start date should be before end date.");
         return;
       }
     }
@@ -149,13 +188,24 @@ const BecomeAMember = () => {
     if (!e.target.checked) {
       setIsWorkingProfessional(0);
     }
+    setEditedUser({
+      ...editedUser,
+      higherEducation:  [{}],
+      others: ''
+    });
   };
+  
 
   const handleeducation = (e) => {
     setIsWorkingProfessional(2);
     if (!e.target.checked) {
       setIsWorkingProfessional(0);
     }
+    setEditedUser({
+      ...editedUser,
+      work_exp:  [{}],
+      others: ''
+    });
   };
 
   const handleothers = (e) => {
@@ -163,6 +213,11 @@ const BecomeAMember = () => {
     if (!e.target.checked) {
       setIsWorkingProfessional(0);
     }
+    setEditedUser({
+      ...editedUser,
+      higherEducation:  [{}],
+      work_exp: [{}]
+    });
   };
 
   const addWorkExperience = () => {
@@ -172,6 +227,17 @@ const BecomeAMember = () => {
     });
   };
 
+  const removeWorkExperience = () => {
+    // Create a new array excluding the last education detail
+    const newwork_exp = editedUser.work_exp.slice(0, -1);
+
+    // Update the state with the new array
+    setEditedUser({
+        ...editedUser,
+        work_exp: newwork_exp
+    });
+};
+
   const addEducationDetail = () => {
       // Add an empty work experience object to the array
       setEditedUser({
@@ -180,9 +246,20 @@ const BecomeAMember = () => {
     });
   };
 
+  const removeEducationDetail = () => {
+    // Create a new array excluding the last education detail
+    const newHigherEducation = editedUser.higherEducation.slice(0, -1);
+
+    // Update the state with the new array
+    setEditedUser({
+        ...editedUser,
+        higherEducation: newHigherEducation
+    });
+};
+
+
   const handleProfilePictureChange = (e) => {
     setProfilePicture(e.target.files[0]);
-    console.log(editedUser)
   };
 
   const handleSignUpClick = async () => {
@@ -200,7 +277,8 @@ const BecomeAMember = () => {
     if (querySnapshot.size > 0) {
         // Get the reference to the first matching document
         const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
-    
+        editedUser['email']= email;
+        console.log(profilePicture);
         if (profilePicture) {
             const storageRef = ref(storage,`/files/${editedUser['entryNo']}`)
             console.log("stor ref: ",storageRef);
@@ -208,31 +286,34 @@ const BecomeAMember = () => {
         
             uploadTask.on(
                 "state_changed",
+                (snapshot) => {},
                 (err) => console.log(err),
-                () => {
+                async () => {
                     console.log("innnn");
-                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                        console.log("URL: ",url);
-                        editedUser['profileURL']=url;
-                        // setProfileURL(process.env.PROFILE_BASE_URL + url);
-                        // setEditedUser({ ...editedUser, profileURL: url });
-                    });
+                    const url = await getDownloadURL(uploadTask.snapshot.ref);
+                    const updatedEditedUser = { ...editedUser, profileURL: url };
+                    console.log(updatedEditedUser);
+                    await updateDoc(docRef, updatedEditedUser);
+                    localStorage.setItem("userId", userId);
+                    console.log('Document successfully updated!');
+                    navigate('/home');
                 }
             ); 
             // console.log(profileURL);
         }
-        editedUser['email']=email;
-        // Update the document with the new data
-        await updateDoc(docRef, editedUser);
-        localStorage.setItem("userId", userId);
-        console.log('Document successfully updated!');
+        else{
+          console.log(editedUser);
+          await updateDoc(docRef, editedUser);
+          localStorage.setItem("userId", userId);
+          console.log('Document successfully updated!');
+          navigate('/home');
+        }
     } else {
       console.log('No documents found for the given query.');
       errormsg = "User needs to signup first";
       toast.error(errormsg, toastOptions);
       return;
     }
-    navigate('/home');
   };
 
 
@@ -282,8 +363,8 @@ const BecomeAMember = () => {
                   <br />
                   <br />
                   <input
-                    type="checkbox"
-                    name="work"
+                    type="radio"
+                    name="activity"
                     value="working"
                     onChange={handleworking}
                   />{' '}
@@ -291,8 +372,8 @@ const BecomeAMember = () => {
                   <br />
                   <br />
                   <input
-                    type="checkbox"
-                    name="time"
+                    type="radio"
+                    name="activity"
                     value="Education"
                     onChange={handleeducation}
                   />{' '}
@@ -300,8 +381,8 @@ const BecomeAMember = () => {
                   <br />
                   <br />
                   <input
-                    type="checkbox"
-                    name="time"
+                    type="radio"
+                    name="activity"
                     value="Others"
                     onChange={handleothers}
                   />{' '}
@@ -378,6 +459,8 @@ const BecomeAMember = () => {
                   </div>
                 ))}
                 <button onClick={addEducationDetail}  className='add-div-button' > Add Education Details</button>
+                <button onClick={removeEducationDetail}  className='add-div-button' >Remove</button>
+
               </div>
             ) : ischeckbox === 1 ? (
               <div className='working-details'>
@@ -446,6 +529,7 @@ const BecomeAMember = () => {
                   </div>
                 ))}
                 <button onClick={addWorkExperience} className='add-div-button'> Add work Experience</button>
+                <button onClick={removeWorkExperience} className='add-div-button'> Remove</button>
               </div>
             ) : ischeckbox === 3 ? (
               <div>
@@ -482,7 +566,7 @@ const BecomeAMember = () => {
           <div className='member-form-container2'>
             <Checkmark />
           <div className='member-form-container3' > 
-            <h1> Thank You Virat, for joining IIT Ropar Alumni Network </h1>
+            <h1> Thank You {editedUser['name']}, for joining IIT Ropar Alumni Network </h1>
           </div>
           <div className='member-button'>
                 <button type="submit" className='submit-member' onClick={handleSignUpClick}>Home</button>
