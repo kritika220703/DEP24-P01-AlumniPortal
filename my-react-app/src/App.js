@@ -22,7 +22,13 @@ import SmartID from './pages/SmartID';
 import AlumniCard from './pages/AlumniCard';
 import Events from './pages/Events';
 import Fund from './pages/Fund';
-
+import SpecialProject from './pages/SpecialProject';
+import GeneralPurpose from './pages/GeneralPurpose';
+import FinancialAidProgram from './pages/FinancialAidProgram';
+import LegacyProjects from './pages/LegacyProjects';
+import FacultyProgram from './pages/FacultyProgram';
+import HostelProject from './pages/HostelProject';
+import ProjectDetails from './pages/ProjectDetails';
 function App() {
   return (
     <div className="App">
@@ -50,6 +56,13 @@ function App() {
           <Route exact path="/SmartID" element={<SmartID/>} />
           <Route exact path="/AlumniCard" element={<AlumniCard/>} />
           <Route exact path="/events" element={<Events/>} />
+          <Route exact path="/special-projects" element={<SpecialProject/>} />
+          <Route exact path="/general-purpose" element={<GeneralPurpose/>} />
+          <Route exact path="/financial-aid-program" element={<FinancialAidProgram/>} />
+          <Route exact path="/legacy-projects" element={<LegacyProjects/>} />
+          <Route exact path="/faculty-program" element={<FacultyProgram/>} />
+          <Route exact path="/hostel-project" element={<HostelProject/>} />
+          <Route path="/project/:id" element={<ProjectDetails />} />
         </Routes>
       </AuthProvider>
     </div>

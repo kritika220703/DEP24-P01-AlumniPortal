@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState,useEffect} from 'react';
 import image from '../assets/fund1.png'
 import image1 from '../assets/fund4.jpg'
 import image2 from '../assets/fund3.jpg'
@@ -6,20 +6,33 @@ import image3 from '../assets/fund5.jpg'
 import image4 from '../assets/fund9.jpg'
 import image5 from '../assets/fund8.jpg'
 import ProjectCard from './ProjectCard'; 
-
+import {useNavigate} from 'react-router-dom';
 
 const Fund = () => {
+ const navigate = useNavigate();
+ const [cards, setCards] = useState(() => {
+  const savedCards = localStorage.getItem('fundraiser_cards');
+  return savedCards ? JSON.parse(savedCards) : [];
+});
+useEffect(() => {
+  localStorage.setItem('fundraiser_cards', JSON.stringify(cards));
+}, [cards]);
 
-       const addCard = () => {
-        if (formData.title && formData.description) {
-          const newCard = { title: formData.title, description: formData.description, imageFile: imageFile };
-          setCards([...cards, newCard]);
-          setFormData({ title: "", description: "" });
-          setImageFile(null);
-        }
-      };
+ const handleCardClick = (projectId) => {
+  navigate(`/project/${projectId}`);
+};
+
+ const addCard = () => {
+  if (formData.title && formData.description) {
+    const newCard = { title: formData.title, description: formData.description, imageFile: imageFile };
+    setCards([...cards, newCard]);
+    setFormData({ title: "", description: "" });
+    setImageFile(null);
+    // navigate(`/card/${cards.length}`); // Navigate to the newly created card's details page
+  }
+};
     const isAdmin = localStorage.getItem("isAdmin");
-    const [cards, setCards] = useState([]);
+    // const [cards, setCards] = useState([]);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -57,11 +70,13 @@ const Fund = () => {
     }
   };
 
-const handleRemoveCard = (index) => {
-    const updatedCards = [...cards];
-    updatedCards.splice(index, 1);
-    setCards(updatedCards);
-  };
+  const handleRemoveCard = (index, event) => {
+    event.stopPropagation(); // Prevent the click event from propagating
+      const updatedCards = [...cards];
+      updatedCards.splice(index, 1);
+      setCards(updatedCards);
+      localStorage.setItem('fundraiser_cards', JSON.stringify(updatedCards));
+    };
   
   return (
     <div className='flex flex-col items-center justify-center'>
@@ -72,7 +87,9 @@ const handleRemoveCard = (index) => {
         </div>
 
 <div className='flex flex-row  items-center justify-center gap-[50px]'>
-        <div className='shadow-lg w-[320px] h-[350px]  flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'>
+        <div className='shadow-lg w-[320px] h-[350px]  flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100' 
+            onClick={()=>{navigate('/special-projects')}}
+        >
               <div className='w-[320px] h-[150px]'>
                 <img src={`${image}`} className='object-cover rounded-t-lg'/>
               </div>
@@ -83,7 +100,9 @@ const handleRemoveCard = (index) => {
               </div>
         </div>
 
-        <div className='shadow-lg w-[320px] h-[350px]  flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'>
+        <div className='shadow-lg w-[320px] h-[350px]  flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'
+          onClick={()=>{navigate('/general-purpose')}}
+        >
               <div className='w-[320px] h-[150px]'>
                 <img src={`${image1}`} className='object-cover rounded-t-lg'/>
               </div>
@@ -94,7 +113,8 @@ const handleRemoveCard = (index) => {
               </div>
         </div>
 
-        <div className='shadow-lg w-[320px] h-[350px] flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'>
+        <div className='shadow-lg w-[320px] h-[350px] flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100' 
+        onClick={()=>{navigate('/financial-aid-program')}}>
               <div className='w-[320px] h-[150px]'>
                 <img src={`${image2}`} className='object-cover rounded-t-lg'/>
               </div>
@@ -108,18 +128,23 @@ const handleRemoveCard = (index) => {
 </div>
 
 <div className='flex flex-row  items-center justify-center gap-[50px] '>
-        <div className='shadow-lg w-[320px] h-[350px] flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'>
+        
+        <div className='shadow-lg w-[320px] h-[350px] flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'
+           onClick={()=>{navigate('/legacy-projects')}}
+        >
               <div className='w-[320px] h-[150px]'>
                 <img src={`${image4}`} className='object-cover rounded-t-lg'/>
               </div>
 
               <div className='flex flex-col gap-3 ml-3 mr-3  mt-2'>
-                <p className='text-[20px]  font-semibold'>Class Legacy Projects</p>
-                <p className='text-[15px]'>Join your batchmates in funding significant, meaningful projects at IIT Ropar that have lasting impact!...</p>
+                <p className='text-[20px]  font-semibold'>Undergraduate Labs</p>
+                <p className='text-[15px]'>The funds will be used to provide new and upgraded technology for the labs as well as maintain lab space and e...</p>
               </div>
         </div>
         
-        <div className='shadow-lg w-[320px] h-[350px] flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'>
+        <div className='shadow-lg w-[320px] h-[350px] flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'
+          onClick={()=>{navigate('/faculty-program')}}
+        >
               <div className='w-[320px] h-[150px]'>
                 <img src={`${image3}`} className='object-cover rounded-t-lg'/>
               </div>
@@ -130,7 +155,9 @@ Faculty/Memorial Programs</p>
                 <p className='text-[15px]'>IIT Ropar faculty is at the heart of what distinguishes IIT Ropar from others. Help support faculty excellence programs....</p>
               </div>
         </div>
-        <div className='shadow-lg w-[320px] h-[350px] flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'>
+        <div className='shadow-lg w-[320px] h-[350px] flex flex-col gap-8 mb-8 mt-8 ml-10 rounded-xl cursor-pointer hover:bg-gray-100'
+         onClick={()=>{navigate('/hostel-project')}}
+        >
               <div className='w-[320px] h-[150px]'>
                 <img src={`${image5}`} className='object-cover rounded-t-lg'/>
               </div>
@@ -145,12 +172,14 @@ Faculty/Memorial Programs</p>
        
 {cards.map((card, index) => (
   index % 3 === 0 && (
-    <div key={index} className="flex flex-wrap justify-between mt-8 gap-[33px] mr-5">
+    <div key={index} onClick={() => handleCardClick(index)} className="flex flex-wrap justify-between mt-8 gap-[33px] mr-5">
       {[index, index + 1, index + 2].map((cardIndex) => (
         cards[cardIndex] && (
           <div key={cardIndex} className="w-[30%]">
-            <ProjectCard title={cards[cardIndex].title} description={cards[cardIndex].description} imageFile={cards[cardIndex].imageFile} onRemove={() => handleRemoveCard(index)} />
+            <ProjectCard  index={cardIndex} title={cards[cardIndex].title} description={cards[cardIndex].description} imageFile={cards[cardIndex].imageFile} onRemove={() => handleRemoveCard(index)}
+            onClick={()=>{navigate(`/project/${index}`)}} />
           </div>
+
         )
       ))}
     </div>
