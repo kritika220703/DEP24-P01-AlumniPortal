@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-import { BsBriefcase } from "react-icons/bs";
+import { BsChatDots, BsBriefcase, BsLightbulb } from "react-icons/bs";
 import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
 import {auth, db} from "../firebase.js"
 
-const WorkshopsForm = () => {
-    const [topic, setTopic] = useState('');
-    const [type, setType] = useState('');
-    const [content, setContent] = useState('');
+const CommunityServiceProjectsForm = () => {
+    const [projectName, setProjectName] = useState('');
+    const [projectDescription, setProjectDescription] = useState('');
+    const [location, setLocation] = useState('');
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [date, setDate] = useState('');
-    const [duration, setDuration] = useState('');
+    const [skills, setSkills] = useState('');
     const [name, setName] = useState('');
+    const [duration, setDuration] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const userId = localStorage.getItem("userId")
-    console.log(userId);
 
     const toastOptions = {
         position: "bottom-right",
@@ -35,19 +35,19 @@ const WorkshopsForm = () => {
         e.preventDefault();
         // Handle form submission
 
-        if(topic === ""){
-            errorMessage  = "Please provide your topic.";
+        if(projectName === ""){
+            errorMessage  = "Please provide your Project Name.";
             toast.error(errorMessage, toastOptions);
             return;
         }
     
-        if(type === ""){
-            errorMessage = "Type is required.";
+        if(projectDescription === ""){
+            errorMessage = "project Description is required.";
             toast.error(errorMessage, toastOptions);
             return;
         }
 
-        if(content === ""){
+        if(location === ""){
             errorMessage  = "Please provide your content.";
             toast.error(errorMessage, toastOptions);
             return;
@@ -96,15 +96,15 @@ const WorkshopsForm = () => {
                     email: email, 
                     name: name,
                     phone: phone,
-                    topic: topic,
-                    type: type,
-                    content: content,
+                    projectName: projectName,
+                    projectDescription: projectDescription,
+                    location: location,
                     date: date,
                     duration: duration,
                     additionalInfo: additionalInfo
                 };
 
-                const response = await fetch(`http://localhost:3000/email/events/workshops`, {
+                const response = await fetch(`http://localhost:3000/email/events/communityServiceProjects`, {
                     method: "POST",
                     headers: {
                     "Content-Type": "application/json",
@@ -119,21 +119,21 @@ const WorkshopsForm = () => {
                     return;
                 } 
 
-                const docRef = await addDoc(collection(db, "Workshops"), {
+                const docRef = await addDoc(collection(db, "Community Service Projects"), {
                     uid: userId,
                     email: email, 
                     name: name,
                     phone: phone,
-                    topic: topic,
-                    type: type,
-                    content: content,
+                    projectName: projectName,
+                    projectDescription: projectDescription,
+                    location: location,
                     date: date,
                     duration: duration,
                     additionalInfo: additionalInfo
                 });
 
                 notifySuccess("Mail sent successfully to admin!")
-                console.log('Form submitted:', { topic, type, content, date, duration });
+                console.log('Form submitted:', { projectName, projectDescription, location, date, duration });
 
             });
 
@@ -146,54 +146,50 @@ const WorkshopsForm = () => {
         setTimeout(() => {
             window.location.reload();
         }, 5000); // Reload after 3 seconds
+
     };
 
-    return (
-        <div className='flex flex-row gap-6 w-'>
+  return (
+    <div className='flex flex-row gap-6 w-'>
             <div className='w-1/2 p-4'>
                 <h1 className="text-4xl font-bold mb-4 transition-opacity duration-300 opacity-100 mt-4">
-                    <span className="text-blue-500 text-center mr-4">Workshops</span><BsBriefcase className="inline-block mr-2" size={24} />
+                    <span className="text-blue-500 text-center mr-4">Community Service Projects</span>
                 </h1>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="topic" className="block text-left">Topic of Workshop<span className="text-red-500">*</span> :</label>
+                        <label htmlFor="projectName" className="block text-left">Project Name<span className="text-red-500">*</span> :</label>
                         <input
                             type="text"
-                            id="topic"
-                            value={topic}
-                            onChange={(e) => setTopic(e.target.value)}
+                            id="projectName"
+                            value={projectName}
+                            onChange={(e) => setProjectName(e.target.value)}
                             className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm"
                             required
                         />
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="type" className="block text-left">Type of Workshop<span className="text-red-500">*</span> :</label>
-                        <select
+                        <label htmlFor="projectDescription" className="block text-left">Project Description<span className="text-red-500">*</span> :</label>
+                        <input
                             id="type"
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
+                            value={projectDescription}
+                            onChange={(e) => setProjectDescription(e.target.value)}
                             className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm"
                             required
-                        >
-                            <option value="">Select type</option>
-                            <option value="Technical">Technical</option>
-                            <option value="Soft Skills">Soft Skills</option>
-                            {/* Add more options as needed */}
-                        </select>
+                        />
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="content" className="block text-left">Content Covered<span className="text-red-500">*</span> :</label>
-                        <textarea
-                            id="content"
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
+                        <label htmlFor="location" className="block text-left">Location<span className="text-red-500">*</span> :</label>
+                        <input
+                            id="location"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
                             className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm"
                             rows="4"
                             required
-                        ></textarea>
+                        />
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="date" className="block text-left">Date of Workshop:</label>
+                        <label htmlFor="date" className="block text-left">Tentative Start Date:</label>
                         <input
                             type="date"
                             id="date"
@@ -240,7 +236,7 @@ const WorkshopsForm = () => {
             </div>
             <ToastContainer />
         </div>
-    );
-};
+  )
+}
 
-export default WorkshopsForm;
+export default CommunityServiceProjectsForm

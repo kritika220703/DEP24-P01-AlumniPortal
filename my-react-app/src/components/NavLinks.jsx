@@ -21,6 +21,7 @@ const NavLinks = () => {
                 // { name: "Alumni Initiatives", path: "/" },
                 { name: "Donate", path: "/Donate" },
                 { name: "Give Back in Kind", path: "/givingback" },
+                { name: "Fundraising", path: "/fund" },
             ],
             path: "/givingback",
         },

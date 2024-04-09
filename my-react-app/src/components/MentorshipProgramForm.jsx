@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-import { BsBriefcase } from "react-icons/bs";
+import { BsChatDots, BsBriefcase, BsLightbulb } from "react-icons/bs";
 import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
 import {auth, db} from "../firebase.js"
 
-const WorkshopsForm = () => {
-    const [topic, setTopic] = useState('');
-    const [type, setType] = useState('');
+const MentorshipProgramForm = () => {
+    
+    const [domain, setDomain] = useState('');
+    const [eligibility, setEligibility] = useState('');
     const [content, setContent] = useState('');
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [date, setDate] = useState('');
-    const [duration, setDuration] = useState('');
     const [name, setName] = useState('');
+    const [duration, setDuration] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const userId = localStorage.getItem("userId")
-    console.log(userId);
-
+    
     const toastOptions = {
         position: "bottom-right",
         autoClose: 8000,
@@ -35,14 +35,14 @@ const WorkshopsForm = () => {
         e.preventDefault();
         // Handle form submission
 
-        if(topic === ""){
-            errorMessage  = "Please provide your topic.";
+        if(domain === ""){
+            errorMessage  = "Please provide your domain.";
             toast.error(errorMessage, toastOptions);
             return;
         }
     
-        if(type === ""){
-            errorMessage = "Type is required.";
+        if(eligibility === ""){
+            errorMessage = "eligibility is required.";
             toast.error(errorMessage, toastOptions);
             return;
         }
@@ -96,15 +96,15 @@ const WorkshopsForm = () => {
                     email: email, 
                     name: name,
                     phone: phone,
-                    topic: topic,
-                    type: type,
+                    domain: domain,
+                    eligibility: eligibility,
                     content: content,
                     date: date,
                     duration: duration,
                     additionalInfo: additionalInfo
                 };
 
-                const response = await fetch(`http://localhost:3000/email/events/workshops`, {
+                const response = await fetch(`http://localhost:3000/email/events/mentorshipPrograms`, {
                     method: "POST",
                     headers: {
                     "Content-Type": "application/json",
@@ -119,13 +119,13 @@ const WorkshopsForm = () => {
                     return;
                 } 
 
-                const docRef = await addDoc(collection(db, "Workshops"), {
+                const docRef = await addDoc(collection(db, "Mentorship Programs"), {
                     uid: userId,
                     email: email, 
                     name: name,
                     phone: phone,
-                    topic: topic,
-                    type: type,
+                    domain: domain,
+                    eligibility: eligibility,
                     content: content,
                     date: date,
                     duration: duration,
@@ -133,7 +133,7 @@ const WorkshopsForm = () => {
                 });
 
                 notifySuccess("Mail sent successfully to admin!")
-                console.log('Form submitted:', { topic, type, content, date, duration });
+                console.log('Form submitted:', { domain, eligibility, content, date, duration });
 
             });
 
@@ -146,40 +146,36 @@ const WorkshopsForm = () => {
         setTimeout(() => {
             window.location.reload();
         }, 5000); // Reload after 3 seconds
+
     };
 
-    return (
-        <div className='flex flex-row gap-6 w-'>
+  return (
+    <div className='flex flex-row gap-6 w-'>
             <div className='w-1/2 p-4'>
                 <h1 className="text-4xl font-bold mb-4 transition-opacity duration-300 opacity-100 mt-4">
-                    <span className="text-blue-500 text-center mr-4">Workshops</span><BsBriefcase className="inline-block mr-2" size={24} />
+                    <span className="text-blue-500 text-center mr-4">Mentorship Programs</span>
                 </h1>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="topic" className="block text-left">Topic of Workshop<span className="text-red-500">*</span> :</label>
+                        <label htmlFor="domain" className="block text-left">Domain<span className="text-red-500">*</span> :</label>
                         <input
                             type="text"
-                            id="topic"
-                            value={topic}
-                            onChange={(e) => setTopic(e.target.value)}
+                            id="domain"
+                            value={domain}
+                            onChange={(e) => setDomain(e.target.value)}
                             className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm"
                             required
                         />
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="type" className="block text-left">Type of Workshop<span className="text-red-500">*</span> :</label>
-                        <select
+                        <label htmlFor="eligibility" className="block text-left">Eligibility<span className="text-red-500">*</span> :</label>
+                        <input
                             id="type"
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
+                            value={eligibility}
+                            onChange={(e) => setEligibility(e.target.value)}
                             className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm"
                             required
-                        >
-                            <option value="">Select type</option>
-                            <option value="Technical">Technical</option>
-                            <option value="Soft Skills">Soft Skills</option>
-                            {/* Add more options as needed */}
-                        </select>
+                        />
                     </div>
                     <div className="mt-4">
                         <label htmlFor="content" className="block text-left">Content Covered<span className="text-red-500">*</span> :</label>
@@ -193,7 +189,7 @@ const WorkshopsForm = () => {
                         ></textarea>
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="date" className="block text-left">Date of Workshop:</label>
+                        <label htmlFor="date" className="block text-left">Tentative Start Date:</label>
                         <input
                             type="date"
                             id="date"
@@ -243,4 +239,4 @@ const WorkshopsForm = () => {
     );
 };
 
-export default WorkshopsForm;
+export default MentorshipProgramForm

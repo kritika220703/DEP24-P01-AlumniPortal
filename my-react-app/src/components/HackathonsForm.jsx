@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-import { BsBriefcase } from "react-icons/bs";
+import { BsChatDots, BsBriefcase, BsLightbulb } from "react-icons/bs";
 import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
 import {auth, db} from "../firebase.js"
 
-const WorkshopsForm = () => {
+const HackathonsForm = () => {
     const [topic, setTopic] = useState('');
     const [type, setType] = useState('');
-    const [content, setContent] = useState('');
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [date, setDate] = useState('');
     const [duration, setDuration] = useState('');
@@ -16,7 +15,6 @@ const WorkshopsForm = () => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const userId = localStorage.getItem("userId")
-    console.log(userId);
 
     const toastOptions = {
         position: "bottom-right",
@@ -43,12 +41,6 @@ const WorkshopsForm = () => {
     
         if(type === ""){
             errorMessage = "Type is required.";
-            toast.error(errorMessage, toastOptions);
-            return;
-        }
-
-        if(content === ""){
-            errorMessage  = "Please provide your content.";
             toast.error(errorMessage, toastOptions);
             return;
         }
@@ -98,13 +90,12 @@ const WorkshopsForm = () => {
                     phone: phone,
                     topic: topic,
                     type: type,
-                    content: content,
                     date: date,
                     duration: duration,
                     additionalInfo: additionalInfo
                 };
 
-                const response = await fetch(`http://localhost:3000/email/events/workshops`, {
+                const response = await fetch(`http://localhost:3000/email/events/hackathons`, {
                     method: "POST",
                     headers: {
                     "Content-Type": "application/json",
@@ -126,14 +117,13 @@ const WorkshopsForm = () => {
                     phone: phone,
                     topic: topic,
                     type: type,
-                    content: content,
                     date: date,
                     duration: duration,
                     additionalInfo: additionalInfo
                 });
 
                 notifySuccess("Mail sent successfully to admin!")
-                console.log('Form submitted:', { topic, type, content, date, duration });
+                console.log('Form submitted:', { topic, type, date, duration });
 
             });
 
@@ -148,15 +138,15 @@ const WorkshopsForm = () => {
         }, 5000); // Reload after 3 seconds
     };
 
-    return (
-        <div className='flex flex-row gap-6 w-'>
+  return (
+    <div className='flex flex-row gap-6 w-'>
             <div className='w-1/2 p-4'>
                 <h1 className="text-4xl font-bold mb-4 transition-opacity duration-300 opacity-100 mt-4">
-                    <span className="text-blue-500 text-center mr-4">Workshops</span><BsBriefcase className="inline-block mr-2" size={24} />
+                    <span className="text-blue-500 text-center mr-4">Hackathons</span><BsBriefcase className="inline-block mr-2" size={24} />
                 </h1>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="topic" className="block text-left">Topic of Workshop<span className="text-red-500">*</span> :</label>
+                        <label htmlFor="topic" className="block text-left">Topic of Hackathon<span className="text-red-500">*</span> :</label>
                         <input
                             type="text"
                             id="topic"
@@ -167,7 +157,7 @@ const WorkshopsForm = () => {
                         />
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="type" className="block text-left">Type of Workshop<span className="text-red-500">*</span> :</label>
+                        <label htmlFor="type" className="block text-left">Type of Hackathon<span className="text-red-500">*</span> :</label>
                         <select
                             id="type"
                             value={type}
@@ -176,24 +166,27 @@ const WorkshopsForm = () => {
                             required
                         >
                             <option value="">Select type</option>
-                            <option value="Technical">Technical</option>
-                            <option value="Soft Skills">Soft Skills</option>
+                            <option value="Contest">Contest</option>
+                            <option value="Case Study">Case Study</option>
+                            <option value="Others">Others</option>
                             {/* Add more options as needed */}
+                            {/* {type === 'Others' && (
+                                <div className="mt-4">
+                                    <label htmlFor="otherType" className="block text-left">Specify Other Type<span className="text-red-500">*</span> :</label>
+                                    <input
+                                        type="text"
+                                        id="type"
+                                        value={type}
+                                        onChange={(e) => setType(e.target.value)}
+                                        className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm"
+                                        required
+                                    />
+                                </div>
+                            )} */}
                         </select>
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="content" className="block text-left">Content Covered<span className="text-red-500">*</span> :</label>
-                        <textarea
-                            id="content"
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm"
-                            rows="4"
-                            required
-                        ></textarea>
-                    </div>
-                    <div className="mt-4">
-                        <label htmlFor="date" className="block text-left">Date of Workshop:</label>
+                        <label htmlFor="date" className="block text-left">Start Date of Hackathon:</label>
                         <input
                             type="date"
                             id="date"
@@ -240,7 +233,7 @@ const WorkshopsForm = () => {
             </div>
             <ToastContainer />
         </div>
-    );
-};
+  )
+}
 
-export default WorkshopsForm;
+export default HackathonsForm

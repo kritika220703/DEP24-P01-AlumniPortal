@@ -29,26 +29,24 @@ const toastOptions = {
 
 const SignUp = () => {
     const location = useLocation();
-    const { editedUser, profilePicture } = location.state || {};
+    // const { editedUser, profilePicture } = location.state || {};
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [isValidEmail, setIsValidEmail] = useState(true);
-    // const [password, setPassword] = useState("");
-    // const [cpassword, setCPassword] = useState("");
+    const [showVerifyButton, setShowVerifyButton] = useState(false);
     const [otp, setOtp] = useState("");
     const [isOtpSent, setIsOtpSent] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [isOtpVerified, setIsOtpVerified] = useState(false);
     const { isAdmin, setIsAdmin } = useContext(StateContext);
     // const [userRes, setUserRes] = useState(null);
-    const [showVerifyButton, setShowVerifyButton] = useState(false);
+
     const [selectedOption, setSelectedOption] = useState("");
 
     const handleOptionSelect = (e) => {
         setSelectedOption(e.target.value);
     };
 
-    console.log(editedUser);
+    // console.log(editedUser);
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
@@ -82,52 +80,52 @@ const SignUp = () => {
     
             console.log(user);
 
-            const docRef = await addDoc(collection(db, "Users"), {
-                uid: user.uid,
-                email: email, 
-                name: name,
-            });
+            // const docRef = await addDoc(collection(db, "Users"), {
+            //     uid: user.uid,
+            //     email: email, 
+            //     name: name,
+            // });
 
-            const userId = user.uid;
-            const userDocRef = doc(db, 'users', userId);
-            const colRef = collection(db, 'Users');
-            const q = query(colRef, where('uid', '==', userId));
+            // const userId = user.uid;
+            // const userDocRef = doc(db, 'users', userId);
+            // const colRef = collection(db, 'Users');
+            // const q = query(colRef, where('uid', '==', userId));
 
-            const querySnapshot = await getDocs(q);
+            // const querySnapshot = await getDocs(q);
 
-            // Check if any documents match the query
-            if (selectedOption==="Alumni" && querySnapshot.size > 0) {
-                // Get the reference to the first matching document
-                const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
+            // // Check if any documents match the query
+            // if (selectedOption==="Alumni" && querySnapshot.size > 0) {
+            //     // Get the reference to the first matching document
+            //     const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
             
-                if (profilePicture) {
-                    const storageRef = ref(storage,`/files/${editedUser['entryNo']}`)
-                    console.log("stor ref: ",storageRef);
-                    const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+            //     if (profilePicture) {
+            //         const storageRef = ref(storage,`/files/${editedUser['entryNo']}`)
+            //         console.log("stor ref: ",storageRef);
+            //         const uploadTask = uploadBytesResumable(storageRef, profilePicture);
                 
-                    uploadTask.on(
-                        "state_changed",
-                        (err) => console.log(err),
-                        () => {
-                            console.log("innnn");
-                            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                                console.log("URL: ",url);
-                                editedUser['profileURL']=url;
-                                // setProfileURL(process.env.PROFILE_BASE_URL + url);
-                                // setEditedUser({ ...editedUser, profileURL: url });
-                            });
-                        }
-                    ); 
-                    // console.log(profileURL);
-                }
-                editedUser['email']=email;
-                // Update the document with the new data
-                await updateDoc(docRef, editedUser);
+            //         uploadTask.on(
+            //             "state_changed",
+            //             (err) => console.log(err),
+            //             () => {
+            //                 console.log("innnn");
+            //                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            //                     console.log("URL: ",url);
+            //                     editedUser['profileURL']=url;
+            //                     // setProfileURL(process.env.PROFILE_BASE_URL + url);
+            //                     // setEditedUser({ ...editedUser, profileURL: url });
+            //                 });
+            //             }
+            //         ); 
+            //         // console.log(profileURL);
+            //     }
+            //     editedUser['email']=email;
+            //     // Update the document with the new data
+            //     await updateDoc(docRef, editedUser);
 
-                console.log('Document successfully updated!');
-            } else {
-            console.log('No documents found for the given query.');
-            }
+            //     console.log('Document successfully updated!');
+            // } else {
+            // console.log('No documents found for the given query.');
+            // }
 
             console.log("auth.currentuser::   ",auth.currentUser);
             login(user);
@@ -156,8 +154,10 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if(selectedOption === "Admin"){
-
+        if(selectedOption === ""){
+            errorMessage = "Select Option Alumni/Admin.";
+            toast.error(errorMessage, toastOptions);
+            return;
         }
         
         if(email === ""){
@@ -177,13 +177,6 @@ const SignUp = () => {
             toast.error(errorMessage, toastOptions);
             return;
         }
-
-        // if (selectedOption==="Alumni" && (!editedUser || editedUser['entryNo'] === '')) {
-        //     errorMessage = "User is not a Member";
-        //     toast.error(errorMessage, toastOptions);
-        //     // navigate("/BecomeAMember");
-        //     return;
-        // }
         
         const colRef = collection(db, 'Users');
         console.log(colRef);
@@ -202,6 +195,13 @@ const SignUp = () => {
         } catch (error) {
             console.error('Error getting documents:', error);
         }
+
+        // if (selectedOption==="Alumni" && (!editedUser || editedUser['entryNo'] === '')) {
+        //     errorMessage = "User is not a Member";
+        //     toast.error(errorMessage, toastOptions);
+        //     navigate("/BecomeAMember");
+        //     return;
+        // }
 
         setIsLoading(true);
         try {
@@ -228,7 +228,6 @@ const SignUp = () => {
                 notifySuccess("OTP sent to your email id");
                 setIsOtpSent(true);
                 setShowVerifyButton(true);
-
             }
         } catch {
             errorMessage = "Failed to create an account.";
@@ -259,7 +258,7 @@ const SignUp = () => {
             if(response.status !== 200) {
                 errorMessage = "Failed to verify OTP.";
                 toast.error(errorMessage, toastOptions);
-                navigate("/BecomeAMember");
+                navigate("/signup");
                 return;
             } else {
                 await signup(email, "666666", name);
@@ -269,11 +268,11 @@ const SignUp = () => {
                 const userId = auth.currentUser.uid;
                 // Storing user ID in local storage
                 if(selectedOption === "Alumni"){
-                    localStorage.setItem("userId", userId);
+                    // localStorage.setItem("userId", userId);
+                    localStorage.setItem("isAdmin", "false");
+                    navigate('/becomeamember', { state: { userId, email } });
                 }
                 
-                localStorage.setItem("isAdmin", "false");
-
                 if(selectedOption === "Admin"){
                     console.log("in dens admin mail frontend")
                     const data = {
@@ -295,18 +294,12 @@ const SignUp = () => {
                         navigate("/signup");
                         return;
                     }
+                    notifySuccess("Email sent to Admin for approval.")
+                    navigate("/login");
                 }
                 // if(email === "2021csb1184@iitrpr.ac.in"){
                 //     setIsAdmin(true);
                 // }
-                if(selectedOption === "Alumni"){
-                    navigate("/home");
-                }
-                else{
-                    notifySuccess("Email sent to Admin for approval.")
-                    navigate("/login");
-                }
-                
                 setIsOtpSent(false);
             }
         } catch {
@@ -406,13 +399,6 @@ const SignUp = () => {
                     Sign Up
                   </button>
                 </div>
-  
-                {isOtpVerified && (
-                  <div className="text-indigo-500 mt-2">
-                    <FiCheckCircle size={24} />
-                    <span className="ml-2">OTP Verified!</span>
-                  </div>
-                )}
               </div>
             ) : (
               <button
@@ -435,6 +421,7 @@ const SignUp = () => {
             </form>
         <ToastContainer />
     </>
-)};
+  )
+}
 
 export default SignUp
