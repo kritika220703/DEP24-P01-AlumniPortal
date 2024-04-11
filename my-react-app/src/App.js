@@ -28,7 +28,8 @@ import FinancialAidProgram from './pages/FinancialAidProgram';
 import LegacyProjects from './pages/LegacyProjects';
 import FacultyProgram from './pages/FacultyProgram';
 import HostelProject from './pages/HostelProject';
-import ProjectDetails from './pages/ProjectDetails';
+import ProjectDetails from './pages/ProjectDetails';import Jobs from './pages/Jobs';
+
 function App() {
   return (
     <div className="App">
@@ -65,6 +66,7 @@ function App() {
           <Route exact path='/events' element={<PrivateRoute/>}>
             <Route exact path="/events" element={<Events/>} />
           </Route>
+          <Route exact path="/Jobs" element={<Jobs/>} />
         </Routes>
       </AuthProvider>
     </div>

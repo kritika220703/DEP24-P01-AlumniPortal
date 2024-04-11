@@ -247,6 +247,70 @@ const sendReunionAlertmail = async (req, res) => {
     }
 };
 
+
+const sendEmail2 = async(recipient, cc, subject, message) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            service: 'outlook',
+            port: 587,
+            auth: {
+                user: process.env.EMAIL_ID,
+                pass: process.env.EMAIL_PASSWORD
+            }
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL_ID,
+            to: recipient,
+            cc: cc, // Add the CC email address
+            subject: subject,
+            text: message
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log(`Email sent: ${info.response}`);
+        console.log("otp mail sent");
+    } catch (error) {
+        console.log("Error sending OTP mail:", error.message);
+        console.log("error while sending otp mail");
+    }
+};
+
+
+const sendJobsmail = async (req, res) => {
+    try {
+        console.log("In send job mail API");
+        const formData = req.body;
+
+        // Define the prefixed email address and CC email address
+        const recipientEmail = '2021csb1165@iitrpr.ac.in'; // Prefixed email address
+        const ccEmail = '2021csb1220@iitrpr.ac.in'; // CC email address
+
+        const messageSubject = 'New Job Opportunity Submission';
+        const messageBody = `Details:\n\n` +
+                            `Job Type: ${formData.type}\n` +
+                            `Company Name: ${formData.companyName}\n` +
+                            `Contact Person: ${formData.contactPerson}\n` +
+                            `Contact Number: ${formData.contactNumber}\n` +
+                            `Email: ${formData.email}\n` +
+                            `Job Domain: ${formData.jobDomain}\n` +
+                            `Duration: ${formData.duration}\n` +
+                            `Description: ${formData.description}\n\n`;
+
+        // Send the email to the prefixed address and include CC
+        await sendEmail2(recipientEmail, ccEmail, messageSubject, messageBody);
+        
+        console.log("Job submission mail sent");
+
+        // Send success response
+        res.status(200).send("Job submission mail sent");
+    } catch (error) {
+        console.error("Error sending job submission mail:", error);
+        res.status(400).send(error.message);
+    }
+};
+
+
 const sendEventsTalkmail = async (req, res) => {
     try {
         console.log("in send events talk api")
@@ -427,6 +491,7 @@ module.exports = {
     sendGivingBackInKindmail,
     sendSignUpAsAdminEmail,
     sendReunionAlertmail,
+    sendJobsmail,
     sendEventsTalkmail,
     sendEventsWorkshopsmail,
     sendEventsStartupPresentationsmail,

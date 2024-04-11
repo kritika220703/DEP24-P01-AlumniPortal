@@ -8,6 +8,7 @@ const {
     sendGivingBackInKindmail,
     sendSignUpAsAdminEmail,
     sendReunionAlertmail,
+    sendJobsmail,
     sendEventsTalkmail,
     sendEventsWorkshopsmail,
     sendEventsStartupPresentationsmail,
@@ -28,6 +29,7 @@ router.post('/events/startupPresentations', sendEventsStartupPresentationsmail);
 router.post('/events/mentorshipPrograms', sendMentorshipProgramsmail);
 router.post('/events/communityServiceProjects', sendCommunityServiceProjectsmail);
 router.post('/events/hackathons', sendEventsHackathonsmail);
+router.post('/jobs', sendJobsmail);
 
 module.exports = {
     routes: router
