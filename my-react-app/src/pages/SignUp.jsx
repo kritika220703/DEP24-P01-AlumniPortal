@@ -33,14 +33,11 @@ const SignUp = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [isValidEmail, setIsValidEmail] = useState(true);
-    // const [password, setPassword] = useState("");
-    // const [cpassword, setCPassword] = useState("");
     const [otp, setOtp] = useState("");
     const [isOtpSent, setIsOtpSent] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isOtpVerified, setIsOtpVerified] = useState(false);
     const { isAdmin, setIsAdmin } = useContext(StateContext);
-    // const [userRes, setUserRes] = useState(null);
     const [showVerifyButton, setShowVerifyButton] = useState(false);
     const [selectedOption, setSelectedOption] = useState("");
 
