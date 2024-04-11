@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { useNavigate  } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaPhone, FaBuilding } from 'react-icons/fa';
 import { GiDiploma } from 'react-icons/gi';
 import { db, auth } from "../firebase";
@@ -79,6 +80,7 @@ const Profile = () => {
         profileURL: ''
     });
     
+    const navigate = useNavigate(); 
     const isAdmin = localStorage.getItem("isAdmin");
     console.log(isAdmin);
     useEffect(() => {
@@ -985,11 +987,17 @@ const Profile = () => {
                         {!isEditing && (
                             <div className="p-2 flex justify-center">
                                 <button
-                                    className="bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold"
+                                    className="bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold mr-10"
                                     onClick={handleEditClick}
                                     disabled={isEditing}
                                 >
                                     Edit Profile
+                                </button>
+                                <button
+                                    className="bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold"
+                                    onClick={() => navigate("/AlumniCard")} // Wrap navigate function call in an arrow function
+                                >
+                                    Smart ID Card
                                 </button>
                             </div>
                         )};

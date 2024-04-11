@@ -55,7 +55,6 @@ function App() {
           <Route exact path="/CommunityEventsAdmin" element={<CommunityEventsAdmin/>} />
           <Route exact path="/SmartID" element={<SmartID/>} />
           <Route exact path="/AlumniCard" element={<AlumniCard/>} />
-          {/* <Route exact path="/events" element={<Events/>} /> */}
           <Route exact path="/special-projects" element={<SpecialProject/>} />
           <Route exact path="/general-purpose" element={<GeneralPurpose/>} />
           <Route exact path="/financial-aid-program" element={<FinancialAidProgram/>} />
