@@ -16,7 +16,7 @@ const EventsSidebar = ({ setSelectedOption }) => {
         { name: "Startup Presentations", icon: FaRegLightbulb },
         { name: "Mentorship Programs", icon: AiOutlineHeart, margin: true },
         { name: "Community Service Projects", icon: FiFolder },
-        { name: "Tech Talks and Hackathons", icon: BsLightbulb },   
+        { name: "Hackathons", icon: BsLightbulb },   
     ];
 
     const [open, setOpen] = useState(false);

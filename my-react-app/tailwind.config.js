@@ -6,7 +6,11 @@ module.exports = {
         customBlue: '#09326C',
       },
     },
+
   },
-  plugins: [],
+   plugins: [
+    require('@tailwindcss/line-clamp'),
+    // Other Tailwind CSS plugins
+  ],
 }
 

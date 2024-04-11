@@ -252,6 +252,7 @@ const Profile = () => {
                     console.log(profileURL);
                 }
                 else{
+                    console.log("no photo");
                     console.log(editedUser);
                     await updateDoc(docRef, editedUser);
                     setUserData(editedUser);
@@ -475,8 +476,8 @@ const Profile = () => {
                 className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between mr-[170px]"
               >
                 <div>
-                  <h3 className="text-lg font-semibold">{highEdu.course}</h3>
-                  <h4 className="text-sm text-gray-500">{highEdu.specialization}</h4>
+                  <h3 className="text-lg font-semibold">{highEdu.degree}</h3>
+                  <h4 className="text-sm text-gray-500">{highEdu.department}</h4>
                   <p className="text-sm text-gray-500">{highEdu.institute}</p>
                 </div>
                 <div className="flex flex-row justify-center items-center">
@@ -508,6 +509,11 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-col justify-center items-end">
                   <p className="text-sm text-gray-500">{workExp.duration}</p>
+                </div>
+                <div className="flex flex-row justify-center items-center">
+                  <h5>
+                    {workExp.startYear}-{workExp.endYear}
+                  </h5>
                 </div>
               </li>
             ))}
@@ -838,8 +844,8 @@ const Profile = () => {
 
                                 <div className='flex flex-row space-x-1 ml-[170px]'>
                                     <select
-                                        name="course"
-                                        value={highEdu.course || ''}
+                                        name="degree"
+                                        value={highEdu.degree || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
                                         className="w-1/1.5 px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
                                     >
@@ -851,12 +857,12 @@ const Profile = () => {
                                         ))}
                                     </select>
                                     <select
-                                        name="specialization"
-                                        value={highEdu.specialization || ''}
+                                        name="department"
+                                        value={highEdu.department || ''}
                                         onChange={(e) => handleInputChangeHigherEdu(e, index)}
                                         className="w-[450px] px-4 py-2 mb-2 border border-gray-500  rounded-md focus:outline-none focus:border-indigo-500"
                                     >
-                                        <option value="">Specialization</option>
+                                        <option value="">Department</option>
                                         {specializationOptions.map((option, i) => (
                                             <option key={i} value={option}>
                                                 {option}

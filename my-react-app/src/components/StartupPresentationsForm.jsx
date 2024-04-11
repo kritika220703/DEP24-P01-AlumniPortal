@@ -1,6 +1,10 @@
 // StartupPresentationsForm.js
 import React, { useState } from 'react';
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 import { BsChatDots, BsBriefcase, BsLightbulb } from "react-icons/bs";
+import { addDoc, getDoc, getDocs, collection, doc, updateDoc, query, where } from "firebase/firestore";
+import {auth, db} from "../firebase.js"
 
 const StartupPresentationsForm = () => {
     const [content, setContent] = useState('');
@@ -10,11 +14,148 @@ const StartupPresentationsForm = () => {
     const [idea, setIdea] = useState('');
     const [problem, setProblem] = useState('');
     const [presenter, setPresenter] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const userId = localStorage.getItem("userId")
+    console.log(userId);
 
-    const handleSubmit = (e) => {
+    const toastOptions = {
+        position: "bottom-right",
+        autoClose: 8000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      };
+
+    let errorMessage = "";
+    const notifySuccess = (message) => {
+        toast.success(message, toastOptions);
+    };
+
+    const handleSubmit =async (e) => {
         e.preventDefault();
         // Handle form submission
-        console.log('Form submitted:', { startup, idea, problem, content, presenter, date, additionalInfo });
+
+        if(startup === ""){
+            errorMessage  = "Please provide your Startup Name.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+    
+        if(idea === ""){
+            errorMessage = "Please describe your Idea.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+
+        if(problem === ""){
+            errorMessage = "Please describe problem which is solved.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+
+        if(content === ""){
+            errorMessage  = "Please provide content.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+
+        if(date === ""){
+            errorMessage  = "Please provide date.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+
+        if(presenter === ""){
+            errorMessage  = "Please provide Presenter's Name.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+
+        try {
+            // Fetch user document from Firestore
+            const colRef = collection(db, 'Users');
+            const q = query(colRef, where('uid', '==', userId));
+            const snapshot = await getDocs(q);
+    
+            // Check if user document exists
+            if (snapshot.empty) {
+                errorMessage = "User not found.";
+                toast.error(errorMessage, toastOptions);
+                return;
+            }
+    
+            // Extract user data from document
+            snapshot.forEach(async(doc) => {
+                const userData = doc.data();
+                const { name, email, phone } = userData;
+                await setEmail(email);
+                await setName(name);
+                await setPhone(phone);
+    
+                // Do something with the user data (e.g., display it, store it, etc.)
+                console.log('User Name:', name);
+                console.log('User Email:', email);
+                console.log('User Phone:', phone);
+
+                // Now that the state has been updated, you can proceed with the API call
+                const data = {
+                    email: email, 
+                    name: name,
+                    phone: phone,
+                    startup: startup,
+                    idea: idea,
+                    problem: problem,
+                    presenter: presenter,
+                    content: content,
+                    date: date,
+                    additionalInfo: additionalInfo
+                };
+
+                const response = await fetch(`http://localhost:3000/email/events/startupPresentations`, {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+                console.log(response.status);
+
+                if(response.status !== 200) {
+                    errorMessage = "Failed to send mail.";
+                    toast.error(errorMessage, toastOptions);
+                    return;
+                } 
+
+                const docRef = await addDoc(collection(db, "Startup Presentations"), {
+                    uid: userId,
+                    email: email, 
+                    name: name,
+                    phone: phone,
+                    startup: startup,
+                    idea: idea,
+                    problem: problem,
+                    presenter: presenter,
+                    content: content,
+                    date: date,
+                    additionalInfo: additionalInfo
+                });
+
+                notifySuccess("Mail sent successfully to admin!")
+                console.log('Form submitted:', { startup, idea, problem, content, presenter, date, additionalInfo });
+
+            });
+
+        } catch(error) {
+            errorMessage = "Error submitting form!";
+            toast.error(errorMessage, toastOptions);
+        }
+
+        // Reload the page
+        setTimeout(() => {
+            window.location.reload();
+        }, 5000); // Reload after 3 seconds
     };
 
     return (
@@ -26,7 +167,7 @@ const StartupPresentationsForm = () => {
                 </h1>
                 <form onSubmit={handleSubmit}>
                     <div className="mt-4">
-                        <label htmlFor="startup" className="block text-left">StartUp Name</label>
+                        <label htmlFor="startup" className="block text-left">StartUp Name<span className="text-red-500">*</span> </label>
                         <input
                             id="startup"
                             value={startup}
@@ -37,7 +178,7 @@ const StartupPresentationsForm = () => {
                         ></input>
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="idea" className="block text-left">Idea behind the startup:</label>
+                        <label htmlFor="idea" className="block text-left">Idea behind the startup<span className="text-red-500">*</span> :</label>
                         <textarea
                             id="idea"
                             value={idea}
@@ -48,7 +189,7 @@ const StartupPresentationsForm = () => {
                         ></textarea>
                     </div>
                     <div className="mt-4">
-                        <label htmlFor="problem" className="block text-left">What problem is it solving?</label>
+                        <label htmlFor="problem" className="block text-left">What problem is it solving?<span className="text-red-500">*</span> </label>
                         <textarea
                             id="problem"
                             value={problem}
@@ -115,6 +256,7 @@ const StartupPresentationsForm = () => {
             <div className='w-1/2 p-4'>
                 <img src='/images/talk1.webp' alt="Talk" className="w-full h-full object-cover"/>
             </div>
+            <ToastContainer />
         </div>
     );
 };

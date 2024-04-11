@@ -4,6 +4,9 @@ import { BsChatDots, BsBriefcase, BsLightbulb } from "react-icons/bs";
 import TalksForm from '../components/TalksForm';
 import WorkshopsForm from '../components/WorkshopsForm';
 import StartupPresentationsForm from '../components/StartupPresentationsForm';
+import MentorshipProgramForm from '../components/MentorshipProgramForm';
+import CommunityServiceProjectsForm from '../components/CommunityServiceProjectsForm';
+import HackathonsForm from '../components/HackathonsForm';
 
 const Events = () => {
     const [selectedOption, setSelectedOption] = useState('Talks');
@@ -23,6 +26,7 @@ const Events = () => {
     };
 
     const renderForm = () => {
+        console.log(selectedOption);
         switch (selectedOption) {
             case 'Talks':
                 return <TalksForm />;
@@ -30,6 +34,12 @@ const Events = () => {
                 return <WorkshopsForm />;
             case 'Startup Presentations':
                 return <StartupPresentationsForm />;
+            case 'Mentorship Programs':
+                return <MentorshipProgramForm/>;
+            case 'Community Service Projects':
+                return <CommunityServiceProjectsForm/>
+            case 'Hackathons':
+                return <HackathonsForm/>
             default:
                 return null;
         }
