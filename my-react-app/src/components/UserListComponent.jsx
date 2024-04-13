@@ -3,9 +3,27 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { auth, db } from "../firebase.js";
 import { query, where, getDocs, collection } from 'firebase/firestore';
-
+// import SidebarProfile from "./SidebarProfile"
+import { motion } from 'framer-motion';
+const SmoothTransitionOption = ({ text, isSelected, onClick }) => {
+  return (
+    <motion.p
+      className='w-[250px] h-[35px] flex items-center justify-center cursor-pointer'
+      whileHover={{ backgroundColor: isSelected ? '#4f46e5' : '#2563eb', color: '#fff', borderRadius: '9999px' }}
+      onClick={onClick}
+     
+    >
+      {text}
+    </motion.p>
+  );
+};
 const UserListComponent = () => {
   const [users, setUsers] = useState([]);
+  const [selectedOption, setSelectedOption] = useState('Registered Alumni');
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+  };
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [filters, setFilters] = useState({
     name: [],
@@ -128,49 +146,131 @@ const UserListComponent = () => {
   
 
   return (
-    <div className="container mx-auto px-8">
-      <div className='flex justify-center'>
-        <h2 className="text-3xl text-white border bg-indigo-700 p-3 w-[200px] rounded-lg mx-auto text-center font-bold mb-8">Alumni List</h2>
-      </div>
-      <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: '500px' }}>
-        <table className="w-full border-collapse border border-gray-400 rounded-lg min-h-3">
-            <thead>
-            <tr>
-                <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                  Name  <FilterDropdown options={users.map(user => user.name)} columnName="name" />
-                </th>
-                <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                  Email <FilterDropdown options={users.map(user => user.email)} columnName="email" />
-                </th>
-                <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                  Degree  <FilterDropdown options={users.map(user => user.degree)} columnName="degree" />
-                </th>
-                <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                  Department  <FilterDropdown options={users.map(user => user.department)} columnName="department" />
-                </th>
-                <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                  Entry No  <FilterDropdown options={users.map(user => user.entryNo)} columnName="entryNo" />
-                </th>
-                <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                  Phone <FilterDropdown options={users.map(user => user.phone)} columnName="phone" />
-                </th>
-                {/* Add more headers as needed */}
-            </tr>
-            </thead>
-            <tbody>
-            {filteredUsers.map((user, index) => (
-                <tr key={index}>
-                <td className="p-3 border border-gray-400 bg-white">{user.name}</td>
-                <td className="p-3 border border-gray-400 bg-white">{user.email}</td>
-                <td className="p-3 border border-gray-400 bg-white">{user.degree}</td>
-                <td className="p-3 border border-gray-400 bg-white">{user.department}</td>
-                <td className="p-3 border border-gray-400 bg-white">{user.entryNo}</td>
-                <td className="p-3 border border-gray-400 bg-white">{user.phone}</td>
-                {/* Add more cells as needed */}
+    <div className='flex flex-row gap-[80px]'>
+      {/* <SidebarProfile /> */}
+      <div className='flex flex-col gap-[15px] container mx-auto '>
+         <div className='w-[500px] ml-[450px] h-[40px] bg-gray-200 text-indigo-600 text-[20px] rounded-full mt-5 flex flex-row'>
+          <SmoothTransitionOption
+            text='Registered Alumni'
+            isSelected={selectedOption === 'Registered Alumni'}
+            onClick={() => handleOptionSelect('Registered Alumni')}
+          />
+          <SmoothTransitionOption
+            text='Pending Approval'
+            isSelected={selectedOption === 'Pending Approval'}
+            onClick={() => handleOptionSelect('Pending Approval')}
+          />
+        </div>
+        <div className="container mx-auto px-8">
+        {selectedOption === 'Registered Alumni' && (
+          <>
+          <div className='flex justify-center'>
+          <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+            <h2 className="text-[25px] text-white border rounded-full bg-indigo-700 p-2 w-[300px]  mx-auto text-center font-bold mb-8">Registered Alumni List</h2>
+            </motion.div>
+          </div>
+          <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: '500px' }}>
+            <table className="w-full border-collapse border border-gray-400 rounded-lg min-h-3">
+                <thead>
+                <tr>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Name  <FilterDropdown options={users.map(user => user.name)} columnName="name" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Email <FilterDropdown options={users.map(user => user.email)} columnName="email" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Degree  <FilterDropdown options={users.map(user => user.degree)} columnName="degree" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Department  <FilterDropdown options={users.map(user => user.department)} columnName="department" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Entry No  <FilterDropdown options={users.map(user => user.entryNo)} columnName="entryNo" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Phone <FilterDropdown options={users.map(user => user.phone)} columnName="phone" />
+                    </th>
+                    {/* Add more headers as needed */}
                 </tr>
-            ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {filteredUsers.map((user, index) => (
+                    <tr key={index}>
+                    <td className="p-3 border border-gray-400 bg-white">{user.name}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.email}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.degree}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.department}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.entryNo}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.phone}</td>
+                    {/* Add more cells as needed */}
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+          </div>
+          </>
+        )}
+        {selectedOption === 'Pending Approval' &&(
+          ////////////////////Sample Pending Approval////////////////////////
+          /////////// this has to be changed to the actual pending approval list/////////////
+          <>
+          <div className='flex justify-center'>
+          <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+            <h2 className="text-[25px] text-white border rounded-full bg-indigo-700 p-3 w-[300px]  mx-auto text-center font-bold mb-8">Pending Approval list</h2>
+            </motion.div>
+          </div>
+          <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: '500px' }}>
+            <table className="w-full border-collapse border border-gray-400 rounded-lg min-h-3">
+                <thead>
+                <tr>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Name  <FilterDropdown options={users.map(user => user.name)} columnName="name" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Email <FilterDropdown options={users.map(user => user.email)} columnName="email" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Degree  <FilterDropdown options={users.map(user => user.degree)} columnName="degree" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Department  <FilterDropdown options={users.map(user => user.department)} columnName="department" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Entry No  <FilterDropdown options={users.map(user => user.entryNo)} columnName="entryNo" />
+                    </th>
+                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
+                      Phone <FilterDropdown options={users.map(user => user.phone)} columnName="phone" />
+                    </th>
+                    {/* Add more headers as needed */}
+                </tr>
+                </thead>
+                <tbody>
+                {filteredUsers.map((user, index) => (
+                    <tr key={index}>
+                    <td className="p-3 border border-gray-400 bg-white">{user.name}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.email}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.degree}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.department}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.entryNo}</td>
+                    <td className="p-3 border border-gray-400 bg-white">{user.phone}</td>
+                    {/* Add more cells as needed */}
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+          </div>
+          </>
+        )}
+        </div>
       </div>
     </div>
   );

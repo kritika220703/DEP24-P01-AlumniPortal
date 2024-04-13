@@ -32,6 +32,7 @@ const NavLinks = () => {
             sublinks: [
                 { name: "Events", path: "/events" },
                 { name: "Reunions", path: "/CommunityEvents" },
+                {name: "Interns/Full-Time", path: "/Jobs" },
             ]
         },
         {

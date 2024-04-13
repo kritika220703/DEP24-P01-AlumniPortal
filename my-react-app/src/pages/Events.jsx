@@ -51,9 +51,6 @@ const Events = () => {
             <div className="ml-4 w-full">
                 {selectedOption && (
                     <div className='w-full'>
-                        {/* <h1 className="text-4xl font-bold mb-4 transition-opacity duration-300 opacity-100 mr-4 mt-4 pl-4">
-                            <span className="text-blue-500 text-center mr-4">{selectedOption}</span>{renderIcon()}
-                        </h1> */}
                         {renderForm()}
                     </div>
                 )}
