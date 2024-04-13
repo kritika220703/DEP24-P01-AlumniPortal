@@ -70,8 +70,8 @@ useEffect(() => {
     }
   };
 
-  const handleRemoveCard = (index, event) => {
-    event.stopPropagation(); // Prevent the click event from propagating
+  const handleRemoveCard = (index) => {
+    // event.stopPropagation(); // Prevent the click event from propagating
       const updatedCards = [...cards];
       updatedCards.splice(index, 1);
       setCards(updatedCards);

@@ -9,6 +9,7 @@ import PlannedReunionsList from './PlannedReunionsList';
 import PlannedReunionsListDownload from './PlannedReunionsListDownload';
 import PastReunionsList from './PastReunionsList';
 import PastReunionslistDownload from './PastReunionslistDownload';
+import SidebarProfile from "./SidebarProfile"
 import {useState } from "react";
 const DataList = () => {
     const[toggle,setToggle] = React.useState('Alumni');
@@ -42,9 +43,34 @@ const DataList = () => {
         setChange(!change);
     };
 
+    const [selectedOption, setSelectedOption] = useState('Alumni');
+    const renderForm = () => {
+        console.log(selectedOption);
+        switch (selectedOption) {
+            case 'Alumni':
+                return <UserListComponent />;
+            case 'Give Back in Kind':
+                return <GivingBackInKindListComponent />;
+            case 'Past Reunions':
+                return <PastReunionsList />;
+            case 'Planned Reunions':
+                return <PlannedReunionsList/>;
+            default:
+                return null;
+        }
+    };
 
   return (
-    <div>
+    <div className='flex flex-row '>
+        <SidebarProfile setSelectedOption={setSelectedOption}/>
+        <div className="ml-4 w-full">
+                {selectedOption && (
+                    <div className='w-full'>
+                        {renderForm()}
+                    </div>
+                )}
+            </div>
+        {/* <div >
         <div className='bg-none w-full h-[130px] flex flex-row items-center justify-center'>
         <motion.div
             className='w-[1200px] h-[70px] flex flex-row items-center justify-between text-[26px] font-bold'
@@ -54,7 +80,7 @@ const DataList = () => {
             onClick={handleChangeClick}
         >
 
-             {['Alumni', 'Give Back In Kind', 'Past Reunions', 'Planned Reunions'].map((option) => (
+             {/* {['Alumni', 'Give Back In Kind', 'Past Reunions', 'Planned Reunions'].map((option) => (
                     <motion.p
                         key={option}
                         className={`w-[250px] h-[50px] hover:bg-blue-400 flex items-center justify-center hover:rounded-3xl hover:text-white cursor-pointer ${toggle === option ? 'bg-blue-400 text-white rounded-3xl' : ''} `}
@@ -66,13 +92,13 @@ const DataList = () => {
                     >
                         {option}
                     </motion.p>
-                ))}
+                ))} 
             
            
         </motion.div>
         </div>
 
-        <div className='flex flex-col'>
+        {/* <div className='flex flex-col'>
             {toggle === 'Alumni' && (
                 <React.Fragment>
                      <UserListComponent />
@@ -99,7 +125,8 @@ const DataList = () => {
                 </React.Fragment>
             )}
             
-        </div>
+        </div> 
+        </div> */}
     </div>
   )
 }
