@@ -283,7 +283,7 @@ const sendJobsmail = async (req, res) => {
         const formData = req.body;
 
         // Define the prefixed email address and CC email address
-        const recipientEmail = '2021csb1165@iitrpr.ac.in'; // Prefixed email address
+        const recipientEmail = '2021csb1184@iitrpr.ac.in'; // Prefixed email address
         const ccEmail = '2021csb1220@iitrpr.ac.in'; // CC email address
 
         const messageSubject = 'New Job Opportunity Submission';
@@ -305,7 +305,7 @@ const sendJobsmail = async (req, res) => {
         // Send success response
         res.status(200).send("Job submission mail sent");
     } catch (error) {
-        console.error("Error sending job submission mail:", error);
+        console.log("Error sending job submission mail:", error);
         res.status(400).send(error.message);
     }
 };
