@@ -7,6 +7,9 @@ import image4 from '../assets/fund9.jpg'
 import image5 from '../assets/fund8.jpg'
 import ProjectCard from './ProjectCard'; 
 import {useNavigate} from 'react-router-dom';
+import { db, storage } from "../firebase"; 
+import { addDoc, collection, query, where, getDocs , getDoc, doc, updateDoc} from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const Fund = () => {
  const navigate = useNavigate();
@@ -22,20 +25,54 @@ useEffect(() => {
   navigate(`/project/${projectId}`);
 };
 
- const addCard = () => {
-  if (formData.title && formData.description) {
-    const newCard = { title: formData.title, description: formData.description, imageFile: imageFile };
-    setCards([...cards, newCard]);
-    setFormData({ title: "", description: "" });
-    setImageFile(null);
-    // navigate(`/card/${cards.length}`); // Navigate to the newly created card's details page
+const addCard = async () => {
+  if (formData.title && formData.shortDescription && formData.longDescription) {
+      const newCard = {
+          title: formData.title,
+          shortDescription: formData.shortDescription,
+          longDescription: formData.longDescription,
+          imageFile: imageFile,
+      };
+
+      // If there is an image file, upload it to Firebase Storage
+      if (imageFile) {
+        const storageRef = ref(storage, `fundcards/${Date.now()}_${imageFile.name}`);
+        try {
+            // Upload the image file
+            await uploadBytes(storageRef, imageFile);
+            // Get the download URL for the uploaded image
+            const imageUrl = await getDownloadURL(storageRef);
+            // Add the image URL to the new card data
+            newCard.imageFile = imageUrl;
+        } catch (error) {
+            console.error("Error uploading image: ", error);
+            return;
+        }
+    }
+    
+      // Define the Firestore collection where you want to save the new card
+      const cardsCollectionRef = collection(db, 'Fundcards');
+
+      try {
+          const docRef = await addDoc(cardsCollectionRef, newCard);
+          // You can update local state if needed
+          setCards([...cards, { ...newCard, id: docRef.id }]);
+          // Reset the form data
+          setFormData({ title: '', shortDescription: '', longDescription: '' });
+          setImageFile(null);
+          closeForm();
+      } catch (error) {
+          console.error("Error adding new card: ", error);
+      }
   }
 };
+
     const isAdmin = localStorage.getItem("isAdmin");
     // const [cards, setCards] = useState([]);
     const [formData, setFormData] = useState({
         title: '',
-        description: '',
+        shortDescription: '',
+        longDescription: '',
       });
       const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -61,10 +98,16 @@ useEffect(() => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.title && formData.description) {
-      const newCard = { title: formData.title, description: formData.description, imageFile: imageFile };
+    if (formData.title && formData.shortDescription && formData.longDescription) {
+      addCard();
+      const newCard = {
+        title: formData.title,
+        shortDescription: formData.shortDescription,
+        longDescription: formData.longDescription,
+        imageFile: imageFile,
+      };
       setCards([...cards, newCard]);
-      setFormData({ title: "", description: "" });
+      setFormData({ title: '', shortDescription: '', longDescription: '' });
       setImageFile(null);
       closeForm();
     }
@@ -226,7 +269,7 @@ Faculty/Memorial Programs</p>
                         {isFormOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
           <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
-          <div className="bg-white p-4 rounded-lg shadow-lg z-50 flex flex-col w-[600px] h-[600px] relative">
+          <div className="bg-white p-4 rounded-lg shadow-lg z-50 flex flex-col w-[600px] h-[600px] relative overflow-auto">
             <button
               onClick={closeForm}
               className="absolute top-0 right-0 m-2 w-7 h-8 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 focus:outline-none"
@@ -244,13 +287,22 @@ Faculty/Memorial Programs</p>
                 <input type="text" name="title" value={formData.title} onChange={handleInputChange} className='h-[45px] w-full border overflow-x-auto border-gray-500 hover:border-indigo-900' />
               </div>
               <div>
-                <label className="block mt-3 text-[18px]">Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
+                <label className="block mt-3 text-[18px]">Short Description</label>
+              <textarea
+                  name="shortDescription"
+                  value={formData.shortDescription}
                   onChange={handleInputChange}
-                  className="w-full h-[100px] max-h-[200px] overflow-auto bg-gray-200 rounded-lg px-4 py-2 focus:bg-white transition-colors duration-300"
-                ></textarea>
+                  className="w-full h-[100px] max-h-[200px] overflow-auto bg-gray-200 rounded-lg px-4 py-2 focus:bg-white transition-colors duration-300 overflow-auto"
+              ></textarea>
+              </div>
+              <div>
+              <label className="block mt-3 text-[18px]">Long Description</label>
+              <textarea
+                  name="longDescription"
+                  value={formData.longDescription}
+                  onChange={handleInputChange}
+                  className="w-full h-[200px] max-h-[300px] overflow-auto bg-gray-200 rounded-lg px-4 py-2 focus:bg-white transition-colors duration-300 overflow-auto"
+              ></textarea>
               </div>
               <button type="submit" className="text-[20px]  text-gray-200 ml-[230px] w-[120px] h-[50px] mt-3 flex items-center justify-center bg-indigo-700 rounded-xl" >
                 Add Card
