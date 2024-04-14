@@ -31,7 +31,8 @@ const Fund = () => {
   const [imageURL, setImageURL] = useState('');
   const [formData, setFormData] = useState({
     title: "",
-    description: "",
+    shortDescription: "",
+    longDescription: "",
   });
   const [cards, setCards] = useState(() => {
     const savedCards = localStorage.getItem("fundraiser_cards");
@@ -62,7 +63,8 @@ const Fund = () => {
           const cardData = doc.data();
           fetchedCards.push({
             title: cardData.title,
-            description: cardData.description,
+            shortDescription: cardData.shortDescription,
+            longDescription: cardData.longDescription,
             imageFile: cardData.imageURL, // Assuming imageFile is stored in Firestore
             // Add other properties if available in your Firestore documents
           });
@@ -83,14 +85,15 @@ const Fund = () => {
   };
 
   const addCard = () => {
-    if (formData.title && formData.description) {
+    if (formData.title && formData.shortDescription && formData.longDescription) {
       const newCard = {
         title: formData.title,
-        description: formData.description,
+        shortDescription: formData.shortDescription,
+        longDescription: formData.longDescription,
         imageFile: imageFile,
       };
       setCards([...cards, newCard]);
-      setFormData({ title: "", description: "" });
+      setFormData({ title: "", shortDescription: "", longDescription: "" });
       setImageFile(null);
       // navigate(`/card/${cards.length}`); // Navigate to the newly created card's details page
     }
@@ -126,8 +129,14 @@ const Fund = () => {
       return;
     }
 
-    if(formData.description === ""){
-      errorMessage  = "Please provide description";
+    if (formData.shortDescription === "") {
+      errorMessage = "Please provide a short description";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+
+    if (formData.longDescription === "") {
+      errorMessage = "Please provide a long description";
       toast.error(errorMessage, toastOptions);
       return;
     }
@@ -138,10 +147,11 @@ const Fund = () => {
       return;
     }
 
-    if (formData.title && formData.description) {
+    if (formData.title && formData.shortDescription && formData.longDescription) {
       const newCard = {
         title: formData.title,
-        description: formData.description,
+        shortDescription: formData.shortDescription,
+        longDescription: formData.longDescription,
         imageFile: imageFile,
       };
 
@@ -174,7 +184,8 @@ const Fund = () => {
             name: name,
             phone: phone,
             title: formData.title,
-            description: formData.description,
+            shortDescription: formData.shortDescription,
+            longDescription: formData.longDescription,
             imageURL: imageFile
           };
 
@@ -216,18 +227,20 @@ const Fund = () => {
                   name: name,
                   phone: phone,
                   title: formData.title,
-                  description: formData.description,
+                  shortDescription: formData.shortDescription,
+                  longDescription: formData.longDescription,
                   imageURL: url
                 });
 
                 // Update state with the new card information
                 const newCard = {
                   title: formData.title,
-                  description: formData.description,
+                  shortDescription: formData.shortDescription,
+                  longDescription: formData.longDescription,
                   imageFile: imageFile,
                 };
                 setCards([...cards, newCard]);
-                setFormData({ title: "", description: "" });
+                setFormData({ title: "", shortDescription: "", longDescription: "" });
                 setImageFile(null);
                 closeForm();
                 notifySuccess("Card added successfully!");
@@ -407,7 +420,8 @@ const Fund = () => {
                       <ProjectCard
                         index={cardIndex}
                         title={cards[cardIndex].title}
-                        description={cards[cardIndex].description}
+                        shortDescription={card.shortDescription}
+                        longDescription={card.longDescription}
                         imageFile={cards[cardIndex].imageFile}
                         onRemove={() => handleRemoveCard(index)}
                         onClick={() => {
@@ -433,7 +447,7 @@ const Fund = () => {
           {isFormOpen && (
             <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
               <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
-              <div className="bg-white p-4 rounded-lg shadow-lg z-50 flex flex-col w-[600px] h-[600px] relative">
+              <div className="bg-white p-4 rounded-lg shadow-lg z-50 flex flex-col w-[600px] h-[600px] relative overflow-auto">
                 <button
                   onClick={closeForm}
                   className="absolute top-0 right-0 m-2 w-7 h-8 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 focus:outline-none"
@@ -468,16 +482,25 @@ const Fund = () => {
                     />
                   </div>
                   <div>
-                    <label className="block mt-3 text-[18px]">
-                      Description
-                    </label>
-                    <textarea
-                      name="description"
-                      value={formData.description}
-                      onChange={handleInputChange}
-                      className="w-full h-[100px] max-h-[200px] overflow-auto bg-gray-200 rounded-lg px-4 py-2 focus:bg-white transition-colors duration-300"
-                    ></textarea>
-                  </div>
+                  <label className="block mt-3 text-[18px]">Short Description</label>
+                  <textarea
+                    name="shortDescription"
+                    value={formData.shortDescription}
+                    onChange={handleInputChange}
+                    className="w-full h-[100px] max-h-[200px] overflow-auto bg-gray-200 rounded-lg px-4 py-2 focus:bg-white transition-colors duration-300"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label className="block mt-3 text-[18px]">Long Description</label>
+                  <textarea
+                    name="longDescription"
+                    value={formData.longDescription}
+                    onChange={handleInputChange}
+                    className="w-full h-[100px] max-h-[200px] overflow-auto bg-gray-200 rounded-lg px-4 py-2 focus:bg-white transition-colors duration-300"
+                  ></textarea>
+                </div>
+
                   <button
                     type="submit"
                     className="text-[20px]  text-gray-200 ml-[230px] w-[120px] h-[50px] mt-3 flex items-center justify-center bg-indigo-700 rounded-xl"
