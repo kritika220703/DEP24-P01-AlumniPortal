@@ -1,8 +1,8 @@
 import React from 'react';
 
 function ProjectCard({ imageFile, title, description, onRemove, onCardClick ,index }) {
-  const handleClick = (event) => {
-    event.stopPropagation();
+  const handleClick = () => {
+    // event.stopPropagation();
     onRemove(index);
   };
     return (

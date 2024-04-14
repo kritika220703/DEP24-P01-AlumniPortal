@@ -3,6 +3,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { auth, db } from "../firebase.js";
 import { query, where, getDocs, collection } from 'firebase/firestore';
+import {motion} from 'framer-motion'
 
 const GivingBackInKindListComponent = () => {
   const [users, setUsers] = useState([]);
@@ -128,10 +129,18 @@ const GivingBackInKindListComponent = () => {
     );
   };
 
-  return (
+  return ( 
     <div className="container mx-auto px-8">
       <div className='flex justify-center'>
-        <h2 className="text-3xl text-white border bg-indigo-700 p-3 w-[400px] text-center mx-auto rounded-lg font-bold mb-8">Giving Back In Kind List</h2>
+      <motion.div
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h2 className="text-3xl text-white border mt-5 rounded-full bg-indigo-700 p-3 w-[400px] text-center mx-auto font-bold mb-8">
+        Giving Back In Kind List
+      </h2>
+    </motion.div>
       </div>
       <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: '500px' }}>
         <table className="w-full border-collapse border-3xl border-gray-400 rounded-lg">
