@@ -2,23 +2,50 @@ import React from 'react';
 import { motion } from "framer-motion";
 import {useState , useEffect} from 'react';
 import { BiChevronDown } from "react-icons/bi";
-
+import {db} from "../firebase.js";
+import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { toast, ToastContainer } from "react-toastify";
 import list from "./list.json";
-
 import Accordion from "./Accordion.json";
 import AccordionItem from "./AccordionItem.jsx";
 import AccordionReccuring from './AccordionReccuring.jsx';
+
+const toastOptions = {
+  position: "bottom-right",
+  autoClose: 8000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "dark",
+};
+
+
 const GiveToIITRopar = () => {
     const[toggle,setToggle] = React.useState(false);
-    const [countries, setCountries] = useState(null);
     const [inputValue, setInputValue] = useState("");
     const [selected, setSelected] = useState("");
     const [open, setOpen] = useState(false);
-    const [email, setEmail] = useState("");
+    const [userData, setUserData] = useState({
+      firstName: '',
+      lastName: '',
+      email: '',
+      panNumber: '',
+      contactNumber: '',
+      addressLine1: '',
+      addressLine2: '',
+      country: '',
+      state: '',
+      city: '',
+      pincode: '',
+    });
     const handleClick = () => {
         setSelected("Select a fund");
         setOpen(!open);
       };
+
+let errorMessage = "";
+const notifySuccess = (message) => {
+    toast.success(message, toastOptions);
+};
     
   const [openaccordion, setOpenaccordion] = useState(false);
   const Toggle =(index) => {
@@ -26,6 +53,73 @@ const GiveToIITRopar = () => {
       return setOpenaccordion(null);
     }
     setOpenaccordion(index);
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const panRegex = /[A-Z]{5}[0-9]{4}[A-Z]{1}/;
+    if(userData.donation === "" || isNaN(userData.donation)){
+      errorMessage = "Enter a valid amount."
+    }
+    if(userData.email === ""){
+      errorMessage = "Email is required.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+    console.log(userData);
+    if(userData.firstName === "" || userData.lastName === ""){
+      errorMessage = "Name is required.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+    if(userData.panNumber === "" || !panRegex.test(userData.panNumber)){
+      errorMessage = "Valid Pan Number is required.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+    if(userData.contactNumber === "" || userData.contactNumber.length !== 10 || isNaN(userData.contactNumber) ){
+      errorMessage = "Valid Contact Number is required";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+    const colRef = collection(db, 'Donation');
+    console.log(colRef);
+    const docRef = addDoc(collection(db, "Donation"), {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      panNumber: userData.panNumber,
+      contactNumber: userData.contactNumber,
+      addressLine1: userData.addressLine1,
+      addressLine2: userData.addressLine2,
+      country: userData.country,
+      state: userData.state,
+      city: userData.city,
+      pincode: userData.pincode,
+    });
+    notifySuccess("Donation Added Successfully");
+    setUserData({
+      donation: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      panNumber: '',
+      contactNumber: '',
+      addressLine1: '',
+      addressLine2: '',
+      country: '',
+      state: '',
+      city: '',
+      pincode: '',
+    })
   }
 
 
@@ -111,47 +205,21 @@ const GiveToIITRopar = () => {
                   <p className='text-semibold text-lg text-gray-700'>Donation Amount in INR</p>
                   <input
                     type="text"
+                    value={userData.donation}
+                    onChange={handleChange}
+                    name="donation"
                     className="w-[300px] h-10 p-2 border border-gray-500 rounded "
                     placeholder=''/>
                 </div>
                
 
                 </div>
-      
-
-
-
-
-{/* <div class="relative z-0 w-full mb-5 flex items-center border border-gray-300">
-  <input
-    type="text"
-    name="name"
-    placeholder=" "
-    required
-    className="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
-  />
-  <label
-    for="name"
-    onClick={() => setOpen(!open)}
-    className={`absolute duration-300 top-3 -z-1 origin-0 text-gray-500  ${
-      !selected && "text-gray-700"
-    }`}
-  >
-    Select a fund
-  </label>
-  <BiChevronDown size={20} className={`${open ? "ml-2 rotate-180" : "ml-2"}`} />
-</div> */}
-
-
-     
-
       <ul
         className={`bg-white mt-2 overflow-y-auto ${
           open ? "max-h-60  border border-gray-300 w-72 absolute z-10" : "max-h-0"
         } `}
       >
         <div className="flex items-center px-2 sticky top-0 bg-white">
-          {/* <AiOutlineSearch size={18} className="text-gray-700" /> */}
           <input
             type="text"
             value={inputValue}
@@ -185,109 +253,149 @@ const GiveToIITRopar = () => {
           </li>
         ))}
       </ul>
-    {/* </div> */}
-            </div>
+    </div>
 
+    <div>
+      <p className='text-gray-800 text-[30px] font-bold'>Contact Details</p>
+      <div className='flex flex-row gap-[50px] mt-4'>
         <div>
-          <p className='text-gray-800 text-[30px] font-bold'>Contact Details</p>
-          <div className='flex flex-row gap-[50px] mt-4'>
-          <div>
-              <p className='text-semibold text-lg text-gray-700'>First Name</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
-          <div>
-              <p className='text-semibold text-lg text-gray-700'>Last Name</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
-          </div>
-          <div className='flex flex-row gap-[50px] mt-6'>
-          <div>
-              <p className='text-semibold text-lg text-gray-700'>Email ID</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
-          <div>
-              <p className='text-semibold text-lg text-gray-700'>PAN Number</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
-          </div>
-          <div className='mt-6'>
-              <p className='text-semibold text-lg text-gray-700'>Contact Number</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
+          <p className='text-semibold text-lg text-gray-700'>First Name</p>
+          <input
+            type="text"
+            className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+            placeholder=''
+            name="firstName"
+            value={userData.firstName}
+            onChange={handleChange}
+          />
         </div>
-
         <div>
-          <p className='text-gray-800 text-[30px] font-bold'>Address Details</p>
-          <div className='flex flex-row gap-[50px] mt-4'>
+          <p className='text-semibold text-lg text-gray-700'>Last Name</p>
+          <input
+            type="text"
+            className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+            placeholder=''
+            name="lastName"
+            value={userData.lastName}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+      <div className='flex flex-row gap-[50px] mt-6'>
+        <div>
+          <p className='text-semibold text-lg text-gray-700'>Email ID</p>
+          <input
+            type="text"
+            className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+            placeholder=''
+            name="email"
+            value={userData.email}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <p className='text-semibold text-lg text-gray-700'>PAN Number</p>
+          <input
+            type="text"
+            className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+            placeholder=''
+            name="panNumber"
+            value={userData.panNumber}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+      <div className='mt-6'>
+        <p className='text-semibold text-lg text-gray-700'>Contact Number</p>
+        <input
+          type="text"
+          className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+          placeholder=''
+          name="contactNumber"
+          value={userData.contactNumber}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <p className='text-gray-800 text-[30px] font-bold mt-8'>Address Details</p>
+        <div className='flex flex-row gap-[50px] mt-4'>
           <div>
-              <p className='text-semibold text-lg text-gray-700'>Address Line1</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
+            <p className='text-semibold text-lg text-gray-700'>Address Line1</p>
+            <input
+              type="text"
+              className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+              placeholder=''
+              name="addressLine1"
+              value={userData.addressLine1}
+              onChange={handleChange}
+            />
           </div>
           <div>
-              <p className='text-semibold text-lg text-gray-700'>Address Line2</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
-          </div>
-          <div className='flex flex-row gap-[50px] mt-6'>
-          <div>
-              <p className='text-semibold text-lg text-gray-700'>Country</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
-          <div>
-              <p className='text-semibold text-lg text-gray-700'>State</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
-          </div>
-          <div className=' flex flex-row gap-[50px] mt-6'>
-            <div>
-              <p className='text-semibold text-lg text-gray-700'>City</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
-            <div>
-              <p className='text-semibold text-lg text-gray-700'>Pincode</p>
-              <input
-                type="text"
-                className="w-[300px] h-10 p-2 border border-gray-500 rounded "
-                placeholder=''/>
-          </div>
+            <p className='text-semibold text-lg text-gray-700'>Address Line2</p>
+            <input
+              type="text"
+              className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+              placeholder=''
+              name="addressLine2"
+              value={userData.addressLine2}
+              onChange={handleChange}
+            />
           </div>
         </div>
-
-        <div className=' ml-[25px] w-[600px] h-[50px] bg-indigo-800 text-white text-[27px] flex items-center justify-center font-bold font-serif cursor-pointer'>
-          <p>Continue to Payment Conformation</p>
+        <div className='flex flex-row gap-[50px] mt-6'>
+          <div>
+            <p className='text-semibold text-lg text-gray-700'>Country</p>
+            <input
+              type="text"
+              className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+              placeholder=''
+              name="country"
+              value={userData.country}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <p className='text-semibold text-lg text-gray-700'>State</p>
+            <input
+              type="text"
+              className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+              placeholder=''
+              name="state"
+              value={userData.state}
+              onChange={handleChange}
+            />
+          </div>
         </div>
-      
+        <div className=' flex flex-row gap-[50px] mt-6'>
+          <div>
+            <p className='text-semibold text-lg text-gray-700'>City</p>
+            <input
+              type="text"
+              className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+              placeholder=''
+              name="city"
+              value={userData.city}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <p className='text-semibold text-lg text-gray-700'>Pincode</p>
+            <input
+              type="text"
+              className="w-[300px] h-10 p-2 border border-gray-500 rounded"
+              placeholder=''
+              name="pincode"
+              value={userData.pincode}
+              onChange={handleChange}
+            />
+          </div>
         </div>
+      </div>
+      </div>
+      <div className=' ml-[25px] w-[600px] h-[50px] bg-indigo-800 text-white text-[27px] flex items-center justify-center font-bold font-serif cursor-pointer mt-8' onClick={handleSubmit}>
+        <p>Continue to Payment Confirmation</p>
+      </div>
+    </div>
 
         <div className='w-[600px] h-[180px] border text-[23px] text-gray-700 text-normal border-gray-400 flex items-center justify-center font-sans sticky top-[30px]'>
           <p className='ml-5'>Forge a commitment to 'Pay Your Fees at Today's Rate' and sustain the legacy of excellence at IIT Ropar! <span
@@ -318,7 +426,9 @@ const GiveToIITRopar = () => {
   </div>
 </div>
 </div>
+<ToastContainer />
     </div>
+
   )
 }
 export default GiveToIITRopar;
