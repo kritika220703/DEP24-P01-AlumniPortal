@@ -26,18 +26,17 @@ import {
 const Fund = () => {
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId")
+  const isAdmin = localStorage.getItem("isAdmin");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [imageFile, setImageFile] = useState(null);
-  const [imageURL, setImageURL] = useState('');
   const [formData, setFormData] = useState({
     title: "",
     shortDescription: "",
     longDescription: "",
   });
-  const [cards, setCards] = useState(() => {
-    const savedCards = localStorage.getItem("fundraiser_cards");
-    return savedCards ? JSON.parse(savedCards) : [];
-  });
+
+
+  const [cards, setCards] = useState([]);
 
   const toastOptions = {
     position: "bottom-right",
@@ -98,7 +97,6 @@ const Fund = () => {
       // navigate(`/card/${cards.length}`); // Navigate to the newly created card's details page
     }
   };
-  const isAdmin = localStorage.getItem("isAdmin");
   // const [cards, setCards] = useState([]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
