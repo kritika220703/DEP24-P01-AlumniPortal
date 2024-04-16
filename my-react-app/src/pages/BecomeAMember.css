@@ -94,6 +94,38 @@
   outline:none;
 }
 
+.member-form-payment{
+  display: flex;
+  flex-direction: row;
+}
+
+.member-form-payment2{
+  background-color: #dadada;
+  padding: 50px;
+  width: 800px;
+  margin-right: 20px;
+  text-align: center; 
+  font-size: large;
+}
+
+.member-form-payment2 select{
+  width: 90%;
+}
+
+.membership-card {
+  border: 1px solid  black;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color:  rgb(55 48 163);
+  color:#fff
+}
+
+.membership-card-box{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
 
 
   .submit-member {
