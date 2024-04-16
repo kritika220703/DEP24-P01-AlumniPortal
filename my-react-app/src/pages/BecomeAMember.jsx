@@ -28,6 +28,7 @@ const BecomeAMember = () => {
   const [ischeckbox, setIsWorkingProfessional] = useState(0);
   const [profilePicture, setProfilePicture] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [paymantoption, setpaymentoption ] = useState('');
   const { userId , email } = location.state || {};
   const [editedUser, setEditedUser] = useState({
       name: '',
@@ -121,7 +122,7 @@ const BecomeAMember = () => {
       });
 
       const joining_passing = editedUser.work_exp.every((workExp) => {
-        return workExp && !isNaN(workExp.startYear) && !isNaN(workExp.endYear) && parseInt(workExp.startYear, 10) > parseInt(workExp.endYear, 10);
+        return workExp && !isNaN(workExp.startYear) && !isNaN(workExp.endYear) && parseInt(workExp.startYear, 10) < parseInt(workExp.endYear, 10);
       });
       
       if (!isWorkExpValid) {
@@ -154,7 +155,7 @@ const BecomeAMember = () => {
       });
 
       const joining_passing = editedUser.higherEducation.every((highEdu) => {
-        return highEdu && !isNaN(highEdu.endYear) && !isNaN(highEdu.startYear) && parseInt(highEdu.startYear, 10) > parseInt(highEdu.endYear, 10);
+        return highEdu && !isNaN(highEdu.endYear) && !isNaN(highEdu.startYear) && parseInt(highEdu.startYear, 10) < parseInt(highEdu.endYear, 10);
       });
 
       if (!isEduExpValid) {
@@ -563,16 +564,61 @@ const BecomeAMember = () => {
             </div>
           </div>
         ) : isFormSubmitted === 2 ? (
+          <div className='member-form-container'>
+              <h1> Pay Member Fees for joining the Alumni Network: </h1>
+              <br/>
+            <div className='member-form-payment'>
+              <div className='member-form-payment2'>
+                  <h2> Membership Fees: </h2>
+                  <br/>
+                  <div className='membership-card-box'>
+                    <div className="membership-card">
+                      <h3> Yearly Membership  750 Rs</h3>
+                    </div>
+                    <br/>
+                    <div className="membership-card">
+                      <h3> Lifetime Membership 3000 Rs</h3>
+                    </div>
+                  </div>
+                  <label>
+                    Choose the Payment Option :
+                    <br/>
+                    <select name="paymenttype" 
+                      className='text_input-member'
+                      value = {paymantoption}
+                      onChange={(e) => setpaymentoption(e.target.value)}
+                      >
+                    <option value="">Choose</option>
+                    <option value='Yearly'>Yearly Membership</option>
+                    <option value='student'>Lifetime Membership</option>
+                    </select>
+                  </label>
+                  <div className=' mt-[30px] py-[4px] w-[400px] h-[40px] bg-indigo-800 text-white text-[27px] font-bold font-serif cursor-pointer' onClick={() => setIsFormSubmitted(3)}>
+                    <p>Continue to Payment Conformation</p>
+                  </div>
+                  </div>
+                  <div>
+                    <img src="/images/payment.jpg"/>
+                  </div>
+                  
+              </div>
+          </div>
+        ) : isFormSubmitted === 3 ? (
           <div className='member-form-container2'>
-            <Checkmark />
-          <div className='member-form-container3' > 
-            <h1> Thank You {editedUser['name']}, for joining IIT Ropar Alumni Network </h1>
+              <Checkmark />
+            <div className='member-form-container3' > 
+              <h1> Thank You {editedUser['name']}, for joining IIT Ropar Alumni Network </h1>
+            </div>
+            <div className='becomemember-payment'>
+
+            </div>
+            <div className='member-button'>
+                  <button type="submit" className='submit-member' onClick={handleSignUpClick}>Home</button>
+            </div>
           </div>
-          <div className='member-button'>
-                <button type="submit" className='submit-member' onClick={handleSignUpClick}>Home</button>
-          </div>
-        </div>
-        ) : (
+      ) 
+        :
+        (
         <div className='member-form-container'>
           <h1> Add your role details in - Indian Institute of Technology Ropar </h1>
           <p>Fields marked * are mandatory</p>
