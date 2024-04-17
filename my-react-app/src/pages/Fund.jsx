@@ -34,7 +34,7 @@ const Fund = () => {
   }, []);
 
   const checkLoggedIn = () => {
-    setIsLoggedIn(!!localStorage.getItem("userId"));
+    setIsLoggedIn(localStorage.getItem("userId") !== null);
   };
 
   // Fetching cards data from Firestore
@@ -204,8 +204,8 @@ const Fund = () => {
         ))}
       </div>
 
-      {/* Button to add a new fundraising project */}
-      <div className="w-full flex justify-center mt-6 mb-6">
+      {isLoggedIn && (
+        <div className="w-full flex justify-center mt-6 mb-6">
         <button
           className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700"
           onClick={openForm}
@@ -213,6 +213,8 @@ const Fund = () => {
           Add Fundraising Project
         </button>
       </div>
+      )}
+      
 
       {/* Form for adding a new fundraising project */}
       {isFormOpen && (
