@@ -28,9 +28,11 @@ import FinancialAidProgram from './pages/FinancialAidProgram';
 import LegacyProjects from './pages/LegacyProjects';
 import FacultyProgram from './pages/FacultyProgram';
 import HostelProject from './pages/HostelProject';
-import ProjectDetails from './pages/ProjectDetails';import Jobs from './pages/Jobs';
+import ProjectDetails from './pages/ProjectDetails';
+import Jobs from './pages/Jobs';
 import UserListComponent from './components/UserListComponent';
 import GivingBackInKindListComponent from './components/GivingBackInKindList';
+import FundraisingPages from './pages/FundraisingPages';
 
 function App() {
   return (
@@ -72,6 +74,7 @@ function App() {
             <Route exact path="/events" element={<Events/>} />
           </Route>
           <Route exact path="/Jobs" element={<Jobs/>} />
+          <Route exact path= "/FundraisingPages" element={<FundraisingPages/>} />
         </Routes>
       </AuthProvider>
     </div>

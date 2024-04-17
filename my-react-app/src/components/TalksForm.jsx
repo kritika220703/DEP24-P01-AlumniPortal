@@ -218,7 +218,7 @@ const TalksForm = () => {
                 </form>
             </div>
             <div className='w-1/2 p-4'>
-                <img src='/images/talk1.webp' alt="Talk" className="w-full h-full object-cover"/>
+                <img src='/images/talk.jpeg' alt="Talk" className="w-full h-full object-cover"/>
             </div>
             <ToastContainer />
         </div>
