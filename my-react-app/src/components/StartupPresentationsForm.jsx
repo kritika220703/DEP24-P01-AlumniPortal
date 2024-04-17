@@ -254,7 +254,7 @@ const StartupPresentationsForm = () => {
                 </form>
             </div>
             <div className='w-1/2 p-4'>
-                <img src='/images/talk1.webp' alt="Talk" className="w-full h-full object-cover"/>
+                <img src='/images/startup.jpg' alt="Talk" className="w-full h-full object-cover"/>
             </div>
             <ToastContainer />
         </div>

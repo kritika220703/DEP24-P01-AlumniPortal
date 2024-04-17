@@ -232,7 +232,7 @@ const MentorshipProgramForm = () => {
                 </form>
             </div>
             <div className='w-1/2 p-4'>
-                <img src='/images/talk1.webp' alt="Workshop" className="w-full h-full object-cover"/>
+                <img src='/images/mentorship.jpg' alt="Workshop" className="w-full h-full object-cover"/>
             </div>
             <ToastContainer />
         </div>
