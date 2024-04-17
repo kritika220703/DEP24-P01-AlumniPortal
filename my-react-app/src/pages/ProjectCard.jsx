@@ -20,7 +20,6 @@ function ProjectCard({ imageFile, title, description, onRemove, onCardClick ,ind
         <p className='text-[15px] overflow-hidden line-clamp-3'>{description}</p>
         </div>
       </div>
-      // </div>
     );
   }
 
