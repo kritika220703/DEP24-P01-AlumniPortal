@@ -4,7 +4,16 @@ import 'firebase/firestore';
 import { auth, db } from "../firebase.js";
 import { query, where, getDocs, collection } from 'firebase/firestore';
 // import SidebarProfile from "./SidebarProfile"
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import { motion } from 'framer-motion';
+import { FaArrowDown } from "react-icons/fa6";
 const SmoothTransitionOption = ({ text, isSelected, onClick }) => {
   return (
     <motion.p
@@ -107,7 +116,7 @@ const UserListComponent = () => {
     return (
       <div className="relative inline ml-2">
         <button
-          className="p-1 border rounded-md bg-gray-100 hover:bg-gray-200"
+          className="p-1 border rounded-md bg-gray-600 hover:bg-gray-400"
           onClick={toggleDropdown}
         >
           <svg
@@ -122,7 +131,7 @@ const UserListComponent = () => {
               clipRule="evenodd"
             />
           </svg>
-
+ 
           
         </button>
         {isOpen && (
@@ -143,6 +152,28 @@ const UserListComponent = () => {
       </div>
     );
   };
+  
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+  
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    
+     '& td, & th': {
+      border: 0,
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.background.slate300, // Change this to the desired hover color
+    },
+  }));
+  
+
   
 
   return (
@@ -173,46 +204,38 @@ const UserListComponent = () => {
             <h2 className="text-[25px] text-white border rounded-full bg-indigo-700 p-2 w-[300px]  mx-auto text-center font-bold mb-8">Registered Alumni List</h2>
             </motion.div>
           </div>
-          <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: '500px' }}>
-            <table className="w-full border-collapse border border-gray-400 rounded-lg min-h-3">
-                <thead>
-                <tr>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Name  <FilterDropdown options={users.map(user => user.name)} columnName="name" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Email <FilterDropdown options={users.map(user => user.email)} columnName="email" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Degree  <FilterDropdown options={users.map(user => user.degree)} columnName="degree" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Department  <FilterDropdown options={users.map(user => user.department)} columnName="department" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Entry No  <FilterDropdown options={users.map(user => user.entryNo)} columnName="entryNo" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Phone <FilterDropdown options={users.map(user => user.phone)} columnName="phone" />
-                    </th>
-                    {/* Add more headers as needed */}
-                </tr>
-                </thead>
-                <tbody>
-                {filteredUsers.map((user, index) => (
-                    <tr key={index}>
-                    <td className="p-3 border border-gray-400 bg-white">{user.name}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.email}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.degree}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.department}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.entryNo}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.phone}</td>
-                    {/* Add more cells as needed */}
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-          </div>
+          
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 700 }} aria-label="customized table" className='shadow-3xl'>
+        <TableHead>
+          <TableRow hover>
+            <StyledTableCell> Name  <FilterDropdown options={users.map(user => user.name)} columnName="name" className="text-black"/></StyledTableCell>
+            <StyledTableCell align="right">Email <FilterDropdown options={users.map(user => user.email)} columnName="email" /></StyledTableCell>
+            <StyledTableCell align="right">Degree  <FilterDropdown options={users.map(user => user.degree)} columnName="degree" /></StyledTableCell>
+            <StyledTableCell align="right"> Department  <FilterDropdown options={users.map(user => user.department)} columnName="department" /></StyledTableCell>
+            <StyledTableCell align="right">Entry No  <FilterDropdown options={users.map(user => user.entryNo)} columnName="entryNo" /></StyledTableCell>
+            <StyledTableCell align="right">Phone <FilterDropdown options={users.map(user => user.phone)} columnName="phone" /></StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        {filteredUsers.map((user, index) => (
+            <StyledTableRow key={index} hover sx={{cursor:"pointer"}}>
+              
+              <StyledTableCell >
+              {user.name}
+              </StyledTableCell>
+              <StyledTableCell align="right" >{user.email}</StyledTableCell>
+              <StyledTableCell align="right">{user.degree}</StyledTableCell>
+              <StyledTableCell align="right">{user.department}</StyledTableCell>
+              <StyledTableCell align="right">{user.entryNo}</StyledTableCell>
+              <StyledTableCell align="right">{user.phone}</StyledTableCell>
+              
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+         
           </>
         )}
         {selectedOption === 'Pending Approval' &&(
@@ -228,46 +251,38 @@ const UserListComponent = () => {
             <h2 className="text-[25px] text-white border rounded-full bg-indigo-700 p-3 w-[300px]  mx-auto text-center font-bold mb-8">Pending Approval list</h2>
             </motion.div>
           </div>
-          <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: '500px' }}>
-            <table className="w-full border-collapse border border-gray-400 rounded-lg min-h-3">
-                <thead>
-                <tr>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Name  <FilterDropdown options={users.map(user => user.name)} columnName="name" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Email <FilterDropdown options={users.map(user => user.email)} columnName="email" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Degree  <FilterDropdown options={users.map(user => user.degree)} columnName="degree" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Department  <FilterDropdown options={users.map(user => user.department)} columnName="department" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Entry No  <FilterDropdown options={users.map(user => user.entryNo)} columnName="entryNo" />
-                    </th>
-                    <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                      Phone <FilterDropdown options={users.map(user => user.phone)} columnName="phone" />
-                    </th>
-                    {/* Add more headers as needed */}
-                </tr>
-                </thead>
-                <tbody>
-                {filteredUsers.map((user, index) => (
-                    <tr key={index}>
-                    <td className="p-3 border border-gray-400 bg-white">{user.name}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.email}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.degree}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.department}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.entryNo}</td>
-                    <td className="p-3 border border-gray-400 bg-white">{user.phone}</td>
-                    {/* Add more cells as needed */}
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-          </div>
+          
+            <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 700 }} aria-label="customized table" className='shadow-3xl'>
+        <TableHead>
+          <TableRow hover>
+            <StyledTableCell> Name  <FilterDropdown options={users.map(user => user.name)} columnName="name" className="text-black"/></StyledTableCell>
+            <StyledTableCell align="right">Email <FilterDropdown options={users.map(user => user.email)} columnName="email" /></StyledTableCell>
+            <StyledTableCell align="right">Degree  <FilterDropdown options={users.map(user => user.degree)} columnName="degree" /></StyledTableCell>
+            <StyledTableCell align="right"> Department  <FilterDropdown options={users.map(user => user.department)} columnName="department" /></StyledTableCell>
+            <StyledTableCell align="right">Entry No  <FilterDropdown options={users.map(user => user.entryNo)} columnName="entryNo" /></StyledTableCell>
+            <StyledTableCell align="right">Phone <FilterDropdown options={users.map(user => user.phone)} columnName="phone" /></StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        {filteredUsers.map((user, index) => (
+            <StyledTableRow key={index} hover sx={{cursor:"pointer"}}>
+              
+              <StyledTableCell >
+              {user.name}
+              </StyledTableCell>
+              <StyledTableCell align="right" >{user.email}</StyledTableCell>
+              <StyledTableCell align="right">{user.degree}</StyledTableCell>
+              <StyledTableCell align="right">{user.department}</StyledTableCell>
+              <StyledTableCell align="right">{user.entryNo}</StyledTableCell>
+              <StyledTableCell align="right">{user.phone}</StyledTableCell>
+              
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+          
           </>
         )}
         </div>
