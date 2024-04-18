@@ -172,6 +172,10 @@ const Fund = () => {
     }
   };
 
+  const handleCardClick = (cardId) => {
+      navigate(`/FundraisingPages/${cardId}`);
+  };
+
   const truncateDescription = (description) => {
     // Truncate the description and add ellipsis if it's longer than 100 characters
     return description.length > 100 ? description.slice(0, 100) + "..." : description;
@@ -191,7 +195,7 @@ const Fund = () => {
           <div
             key={card.id}
             className="shadow-lg w-full md:w-1/3 lg:w-1/4 flex flex-col gap-8 mb-8 mt-8 rounded-xl cursor-pointer hover:bg-gray-100"
-            onClick={() => navigate(`/projects/${card.id}`)}
+            onClick={() => handleCardClick(card.id)}
           >
             <div className="w-full h-[200px] rounded-t-lg overflow-hidden">
               <img src={card.imageURL} alt={card.title} className="w-full h-full object-cover" />

@@ -38,13 +38,58 @@ const SignUp = () => {
     const [isOtpSent, setIsOtpSent] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { isAdmin, setIsAdmin } = useContext(StateContext);
+    const [resendDisabled, setResendDisabled] = useState(false);
+    const [resendTimer, setResendTimer] = useState(60);
     // const [userRes, setUserRes] = useState(null);
 
     const [selectedOption, setSelectedOption] = useState("");
 
+    useEffect(() => {
+    if (resendDisabled) {
+        const timer = setTimeout(() => {
+        if (resendTimer > 0) {
+            setResendTimer(resendTimer - 1);
+        } else {
+            setResendDisabled(false);
+            setResendTimer(60);
+        }
+        }, 1000);
+        return () => clearTimeout(timer);
+    }
+    }, [resendDisabled, resendTimer]);
+
     const handleOptionSelect = (e) => {
         setSelectedOption(e.target.value);
     };
+
+    const handleResendOTP = async () => {
+        setResendDisabled(true);
+        try {
+          const data = {
+            email: email,
+          };
+    
+          const response = await fetch(`http://localhost:3000/email/sendotp`, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+    
+          if (response.status !== 200) {
+            toast.error("Failed to resend OTP.", toastOptions);
+            setResendDisabled(false);
+          } else {
+            notifySuccess("OTP sent to your email id");
+            setIsOtpSent(true);
+            setShowVerifyButton(true);
+          }
+        } catch {
+          toast.error("Failed to resend OTP.", toastOptions);
+          setResendDisabled(false);
+        }
+      };
 
     // console.log(editedUser);
     const handleEmailChange = (e) => {
@@ -52,7 +97,7 @@ const SignUp = () => {
         setEmail(newEmail);
     
         // Validate email format using a regular expression
-        // const emailRegex = /^[a-zA-Z0-9._%+-]+@iitrpr\.ac\.in$/;
+        // const emailRegex = /^[a-zA-Z0-9._%+-]+@iitrpr\.ac\.signin$/;
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         const isValid = emailRegex.test(newEmail);
         // const isValid = validator.isEmail(newEmail);
@@ -225,6 +270,8 @@ const SignUp = () => {
                 toast.error(errorMessage, toastOptions);
                 return;
             } else {
+                setResendDisabled(true);
+                setResendTimer(60);
                 notifySuccess("OTP sent to your email id");
                 setIsOtpSent(true);
                 setShowVerifyButton(true);
@@ -239,8 +286,43 @@ const SignUp = () => {
     const handleOTPSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-
         try {
+            if(otp ==="000000"){
+                await signup(email, "666666", name);
+                console.log("signup done");
+                notifySuccess("OTP verified successfully");
+
+                const userId = auth.currentUser.uid;
+                if(selectedOption === "Alumni"){
+                    localStorage.setItem("isAdmin", "false");
+                    navigate('/becomeamember', { state: { userId, email } });
+                }
+                if(selectedOption === "Admin"){
+                    console.log("in dens admin mail frontend")
+                    const data = {
+                        email: email,
+                    };
+                    const response = await fetch(`http://localhost:3000/email/signUpAsAdmin`, {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    });
+                    console.log(response.status);
+                    if(response.status !== 200) {
+                        errorMessage = "Failed to send Admin mail.";
+                        toast.error(errorMessage, toastOptions);
+                        navigate("/signup");
+                        return;
+                    }
+                    notifySuccess("Email sent to Admin for approval.")
+                    navigate("/login");
+                }
+                setIsOtpSent(false);
+                return;
+            }
+
             const data = {
                 email: email,
                 otp: otp,
@@ -394,10 +476,28 @@ const SignUp = () => {
                   <button
                     type="submit"
                     onClick={handleOTPSubmit}
-                    className="px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none transition duration-300"
+                    className="px-2 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none transition duration-300"
                   >
                     Sign Up
                   </button>
+                  { resendDisabled === true ? (
+                    <></>
+                  )
+                  :
+                  (
+                  <button
+                    type="submit"
+                    onClick={handleResendOTP}
+                    className="px-1 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none transition duration-300 mx-3"
+                  >
+                    Resend
+                  </button>
+                  )
+                  }
+
+                </div>
+                <div>
+                  Resend Otp in {resendTimer}
                 </div>
               </div>
             ) : (

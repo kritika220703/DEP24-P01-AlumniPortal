@@ -31,15 +31,15 @@
 
 .G_container-1 {
   display: flex;
-  padding-left: 50px;
+  padding-left: 140px;
   padding-right: 50px;
   padding-top: 30px;
   padding-bottom: 30px;
 }
 
 .G_container-1 img {
-  width: 50%;
-  height: 300px;
+  width: 40%;
+  height: 350px;
   padding-top: 40px;
   padding-right: 30px;
   border-radius: 10px;

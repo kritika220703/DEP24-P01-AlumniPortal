@@ -82,7 +82,7 @@ function Captcha({ setVerified }) {  // Receive setVerified as prop
                 <div className="col-md-4"></div>
                 <div className="col-md-8" style={{ position: "relative" }}>
                     <img src={captchaImg} style={{ width: "150px", height: "50px" }} alt="Captcha" />
-                    <h4 id="captcha" style={{ position: "absolute", top: "25%", left: "12%", transform: "translate(-50%, -50%)", color: "black", textShadow: "1px 1px 2px black" }}>{captcha}</h4>
+                    <h4 id="captcha" style={{ position: "absolute", top: "25%", left: "8%", transform: "translate(-50%, -50%)", color: "black", textShadow: "1px 1px 2px black" }}>{captcha}</h4>
                     <div className="form-group row mt-3">
                         <input 
                             type="text" 

@@ -6,9 +6,9 @@ import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
 import { useNavigate  } from 'react-router-dom';
-import image1 from '.././assets/IIT_Front.webp'
-import image4 from '.././assets/image4.jpg'
-import image3 from '.././assets/1597330094171_LRM_EXPORT_20191204_205026.jpg'
+import image1 from '.././assets/a1.jpg'
+import image4 from '.././assets/a4.jpeg'
+import image3 from '.././assets/fund6.png'
 import {motion} from 'framer-motion'
 import {db} from "../firebase.js";
 import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
@@ -128,7 +128,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className='text-[70px] text-white font-semibold mb-4 mt-10'
+            className='text-[70px] text-black font-semibold mb-4 mt-10'
           >
             Welcome to Alumni Relations
           </motion.h1>
@@ -139,7 +139,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className='text-[70px] text-white font-semibold mb-4'
+            className='text-[70px] text-black font-semibold mb-4'
           >
             Welcome to Alumni Relations
           </motion.h1>
@@ -148,7 +148,7 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1 }}
-              className='text-[25px]  text-white mb-8 w-full whitespace-nowrap'
+              className='text-[25px]  text-black mb-8 w-full whitespace-nowrap'
             >
               Register now and become a member of Alumni Association of IIT Ropar.
             </motion.p>
@@ -157,7 +157,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.5 }}
-            className='bg-transparent border-blue-900 border-[4px] rounded-full text-white text-[27px] font-bold py-2 px-3'
+            className='bg-transparent border-blue-900 border-[4px] rounded-full text-black text-[27px] font-bold py-2 px-3'
             onClick={() => { navigate('/BecomeAMember') }}
           >
             Register Now
@@ -225,19 +225,19 @@ const Home = () => {
                     <h1 className="text-2xl font-bold mb-4 animate-bounce mt-2" >Monthly Newsletters</h1>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
                         <div className="relative bg-gray-200 rounded-lg overflow-hidden">
-                            <img src="/images/download.jfif" alt="January 2024" className="object-cover w-full h-48" />
+                            <img src="/images/images.jpg" alt="January 2024" className="object-cover w-full h-48" />
                             <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50">
                                 <h2 className="text-white font-bold text-lg">January 2024</h2>
                             </div>
                         </div>
                         <div className="relative bg-gray-200 rounded-lg overflow-hidden">
-                            <img src="/images/download (1).jfif" alt="January 2024" className="object-cover w-full h-48" />
+                            <img src="/images/car1.jpg" alt="January 2024" className="object-cover w-full h-48" />
                             <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50">
                                 <h2 className="text-white font-bold text-lg">December 2023</h2>
                             </div>
                         </div>
                         <div className="relative bg-gray-200 rounded-lg overflow-hidden">
-                            <img src="/images/download (2).jfif" alt="January 2024" className="object-cover w-full h-48" />
+                            <img src="/images/iit_ropar_front.jpg" alt="January 2024" className="object-cover w-full h-48" />
                             <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50">
                                 <h2 className="text-white font-bold text-lg">November 2023</h2>
                             </div>
