@@ -34,22 +34,23 @@ const BecomeAMember = () => {
   const [paymantoption, setpaymentoption] = useState("");
   const { userId, email } = location.state || {};
   const [editedUser, setEditedUser] = useState({
-    name: "",
-    role: "",
-    phone: "",
-    contrycode: "",
-    entryNo: "",
-    country: "",
-    hostel: "",
-    degree: "",
-    department: "",
-    passingYear: "",
-    joiningYear: "",
-    work_exp: [{}], // Store work experience as an array
-    higherEducation: [{}], // Store work experience as an array
-    others: "",
-    profileURL: "",
-    email: "",
+      name: '',
+      role: '',
+      phone: '',
+      contrycode: '',
+      entryNo: '',
+      country: '',
+      hostel: '',
+      degree: '',
+      department: '',
+      passingYear: '',
+      joiningYear: '',
+      work_exp: [{}], 
+      higherEducation: [{}],// Store work experience as an array
+      others: '',
+      profileURL: '',
+      email: '',
+      approved:false
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -58,6 +59,10 @@ const BecomeAMember = () => {
 
   const checkLoggedIn = () => {
     setIsLoggedIn(localStorage.getItem("userId") !== null);
+  };
+
+  const notifySuccess = (message) => {
+    toast.success(message, toastOptions);
   };
 
   const navigate = useNavigate();
@@ -329,38 +334,41 @@ const BecomeAMember = () => {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.size > 0) {
-      // Get the reference to the first matching document
-      const docRef = doc(db, "Users", querySnapshot.docs[0].id);
-      editedUser["email"] = email;
-      console.log(profilePicture);
-      if (profilePicture) {
-        const storageRef = ref(storage, `/files/${editedUser["entryNo"]}`);
-        console.log("stor ref: ", storageRef);
-        const uploadTask = uploadBytesResumable(storageRef, profilePicture);
-
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {},
-          (err) => console.log(err),
-          async () => {
-            console.log("innnn");
-            const url = await getDownloadURL(uploadTask.snapshot.ref);
-            const updatedEditedUser = { ...editedUser, profileURL: url };
-            console.log(updatedEditedUser);
-            await updateDoc(docRef, updatedEditedUser);
-            localStorage.setItem("userId", userId);
-            console.log("Document successfully updated!");
-            navigate("/home");
-          }
-        );
-        // console.log(profileURL);
-      } else {
-        console.log(editedUser);
-        await updateDoc(docRef, editedUser);
-        localStorage.setItem("userId", userId);
-        console.log("Document successfully updated!");
-        navigate("/home");
-      }
+        // Get the reference to the first matching document
+        const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
+        editedUser['email']= email;
+        console.log(profilePicture);
+        if (profilePicture) {
+            const storageRef = ref(storage,`/files/${editedUser['entryNo']}`)
+            console.log("stor ref: ",storageRef);
+            const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+        
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {},
+                (err) => console.log(err),
+                async () => {
+                    console.log("innnn");
+                    const url = await getDownloadURL(uploadTask.snapshot.ref);
+                    const updatedEditedUser = { ...editedUser, profileURL: url };
+                    console.log(updatedEditedUser);
+                    await updateDoc(docRef, updatedEditedUser);
+                    // localStorage.setItem("userId", userId);
+                    console.log('Document successfully updated!');
+                    notifySuccess("Request Send for Approval");
+                    navigate('/home');
+                }
+            ); 
+            // console.log(profileURL);
+        }
+        else{
+          console.log(editedUser);
+          await updateDoc(docRef, editedUser);
+          // localStorage.setItem("userId", userId);
+          console.log('Document successfully updated!');
+          notifySuccess("Request Send for Approval");
+          navigate('/home');
+        }
     } else {
       console.log("No documents found for the given query.");
       errormsg = "User needs to signup first";
