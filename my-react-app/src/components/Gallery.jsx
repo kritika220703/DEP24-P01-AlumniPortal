@@ -3,31 +3,31 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { RxDotFilled } from 'react-icons/rx';
 
 const Gallery = () => {
-    // const slides=[
-    //     {url:"./../assets/img1.jpg",alt:"image1"},
-    //     {url:"./../assets/img2.jpg",alt:"image2"},
-    //     {url:"./../assets/img3.jpeg",alt:"image3"},
-    //     {url:"./../assets/img4.jpg",alt:"image4"},
-    // ];
+    const slides=[
+      { url: require('../assets/c1.jpeg'), alt: 'image1' },
+      { url: require('../assets/c2.jpeg'), alt: 'image2' },
+      { url: require('../assets/c3.jpeg'), alt: 'image3' },
+      { url: require('../assets/c4.jpeg'), alt: 'image4' },
+    ];
 
-    const slides = [
-        {
-          url: 'https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2020/04/17/Pictures/iconic-pillars-installed-iit-the-entrance-ropar_125b41aa-8099-11ea-a716-f322ae116ff6.jpg',
-        },
-        {
-          url: 'https://dst.gov.in/sites/default/files/SAMRIDHI%20Conclave.png',
-        },
-        {
-          url: 'https://www.iitrpr.ac.in/ismp/images/carousel/slide_7.jpg',
-        },
+    // const slides = [
+    //     {
+    //       url: 'https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2020/04/17/Pictures/iconic-pillars-installed-iit-the-entrance-ropar_125b41aa-8099-11ea-a716-f322ae116ff6.jpg',
+    //     },
+    //     {
+    //       url: 'https://dst.gov.in/sites/default/files/SAMRIDHI%20Conclave.png',
+    //     },
+    //     {
+    //       url: 'https://www.iitrpr.ac.in/ismp/images/carousel/slide_7.jpg',
+    //     },
     
-        {
-          url: 'https://royalpatiala.in/wp-content/uploads/2022/12/Graduands-in-jubilant-modd-jpg.webp',
-        },
-        {
-          url: 'https://ihub-awadh.in/wp-content/uploads/2023/09/SPRINT-UPES.jpg',
-        },
-      ];
+    //     {
+    //       url: 'https://royalpatiala.in/wp-content/uploads/2022/12/Graduands-in-jubilant-modd-jpg.webp',
+    //     },
+    //     {
+    //       url: 'https://ihub-awadh.in/wp-content/uploads/2023/09/SPRINT-UPES.jpg',
+    //     },
+    //   ];
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const prevSlide = () => {

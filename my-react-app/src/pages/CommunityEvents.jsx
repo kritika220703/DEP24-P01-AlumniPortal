@@ -215,7 +215,7 @@ const CommunityEvents = () => {
         <div className='container-1'>
           <img src="/images/car1.jpg" alt="Donate Image" />
           <div className='note'>
-            <h1>CLASS REUNIONS 2023-24</h1>
+            <h1>CLASS REUNIONS 2024-25</h1>
             <p> The Office of Alumni Relations and Alumni Association at IIT Ropar have been organizing reunions for different batches over the years. The institute feels immense pride in welcoming back and hosting alumni again on the campus. Reunions for various batches have been planned in the year 2023-24 at IIT Ropar. We encourage alumni to attend these events and meet fellow batchmates.
                 <br/>The Reunions are typically held in Ropar with an Institute Day at the IIT Ropar Campus. Batches plan the events over a 2-3 day period with fun engagement activities at Campus or Off-Site, plans are customized by each batch as per their preferences.
                 <br/>Some batches who could not celebrate their designated reunions during Covid impacted year(s) are also planning to organize their reunions this year.

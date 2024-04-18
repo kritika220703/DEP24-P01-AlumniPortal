@@ -203,7 +203,7 @@ const GivingBack = () => {
       </div>
       <div className='main-cont-1'>
         <div className='G_container-1'>
-          <img src="/images/giveback.png" alt="Giving Back" />
+          <img src="/images/i4.webp" alt="Giving Back" />
           <div className='Text_box'>
             <h1>Give Back In Kind - Volunteering Form</h1>
             <p> Dear IIT Ropar Alumnus,
@@ -267,7 +267,7 @@ const GivingBack = () => {
               </label>
               <br />
               <label>
-                Your Phone/WhatsApp Numbers:
+                Your Phone/WhatsApp Number:
                 <br/>
                 <input 
                   type="tel" 

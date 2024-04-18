@@ -20,7 +20,7 @@ const Donate = () => {
 
   // Update the numbers over time when the component is mounted
   useEffect(() => {
-    const interval = 10; // Update every 10 milliseconds
+    const interval = 25; // Update every 10 milliseconds
 
     const goalInterval = setInterval(() => {
       setGoal((prevGoal) => {
