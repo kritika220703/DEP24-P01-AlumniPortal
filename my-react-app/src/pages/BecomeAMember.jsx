@@ -42,11 +42,12 @@ const BecomeAMember = () => {
       department: '',
       passingYear: '',
       joiningYear: '',
-      work_exp: [{}], // Store work experience as an array
-      higherEducation: [{}], // Store work experience as an array
+      work_exp: [{}], 
+      higherEducation: [{}],// Store work experience as an array
       others: '',
       profileURL: '',
-      email: ''
+      email: '',
+      approved:false
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -55,6 +56,10 @@ const BecomeAMember = () => {
 
   const checkLoggedIn = () => {
     setIsLoggedIn(localStorage.getItem("userId") !== null);
+  };
+
+  const notifySuccess = (message) => {
+    toast.success(message, toastOptions);
   };
 
   const navigate = useNavigate(); 
@@ -295,8 +300,9 @@ const BecomeAMember = () => {
                     const updatedEditedUser = { ...editedUser, profileURL: url };
                     console.log(updatedEditedUser);
                     await updateDoc(docRef, updatedEditedUser);
-                    localStorage.setItem("userId", userId);
+                    // localStorage.setItem("userId", userId);
                     console.log('Document successfully updated!');
+                    notifySuccess("Request Send for Approval");
                     navigate('/home');
                 }
             ); 
@@ -305,8 +311,9 @@ const BecomeAMember = () => {
         else{
           console.log(editedUser);
           await updateDoc(docRef, editedUser);
-          localStorage.setItem("userId", userId);
+          // localStorage.setItem("userId", userId);
           console.log('Document successfully updated!');
+          notifySuccess("Request Send for Approval");
           navigate('/home');
         }
     } else {
