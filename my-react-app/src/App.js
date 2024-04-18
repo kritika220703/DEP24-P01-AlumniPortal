@@ -74,7 +74,7 @@ function App() {
             <Route exact path="/events" element={<Events/>} />
           </Route>
           <Route exact path="/Jobs" element={<Jobs/>} />
-          <Route exact path= "/FundraisingPages" element={<FundraisingPages/>} />
+          <Route path="/FundraisingPages/:id" element={<FundraisingPages />} />
         </Routes>
       </AuthProvider>
     </div>
