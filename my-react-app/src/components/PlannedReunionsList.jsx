@@ -4,6 +4,14 @@ import 'firebase/firestore';
 import { auth, db } from "../firebase.js";
 import { query, where, getDocs, collection } from 'firebase/firestore';
 import {motion} from 'framer-motion'
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 const PlannedReunionsList = () => {
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -74,7 +82,7 @@ const PlannedReunionsList = () => {
         return (
           <div className="relative inline ml-2">
             <button
-              className="p-1 border rounded-md bg-gray-100 hover:bg-gray-200"
+              className="p-1 border rounded-md bg-gray-600 hover:bg-gray-400"
               onClick={toggleDropdown}
             >
               <svg
@@ -93,7 +101,7 @@ const PlannedReunionsList = () => {
               
             </button>
             {isOpen && (
-              <div className="absolute top-10 bg-white border rounded-md p-2">
+              <div className="absolute top-10 bg-white border rounded-md p-2 z-10">
                 {uniqueOptions.map((option) => (
                   <label key={option} className="flex items-center space-x-2">
                     <input
@@ -111,6 +119,26 @@ const PlannedReunionsList = () => {
         );
       };
 
+      const StyledTableCell = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+          backgroundColor: theme.palette.common.black,
+          color: theme.palette.common.white,
+        },
+        [`&.${tableCellClasses.body}`]: {
+          fontSize: 14,
+        },
+      }));
+      
+      const StyledTableRow = styled(TableRow)(({ theme }) => ({
+        
+         '& td, & th': {
+          border: 0,
+        },
+        '&:hover': {
+          backgroundColor: theme.palette.background.slate300, // Change this to the desired hover color
+        },
+      }));
+
     return (
         <div className="container mx-auto px-8">
             <div className='flex justify-center'>
@@ -122,42 +150,35 @@ const PlannedReunionsList = () => {
                 <h2 className="text-[25px] text-white border bg-indigo-700 p-2 mt-5 w-[300px] text-center mx-auto rounded-full font-bold mb-8">Planned Reunions</h2>
                 </motion.div>
             </div>
-            <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: '500px' }}>
-                <table className="w-full border-collapse border-3xl border-gray-400 rounded-lg">
-                    <thead>
-                        <tr>
-                            <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                                Batch  <FilterDropdown options={users.map(user => user.batch)} columnName="batch" />
-                            </th>
-                            <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                                Date <FilterDropdown options={users.map(user => user.date)} columnName="date" />
-                            </th>
-                            <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                                Title  <FilterDropdown options={users.map(user => user.title)} columnName="title" />
-                            </th>
-                            <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                                Description
-                            </th>
-                            <th className="sticky top-0 z-10 p-3 font-bold bg-gray-400 text-gray-800 border border-gray-700">
-                                Image URL
-                            </th>
-                            {/* Add more headers as needed */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredUsers.map((user, index) => (
-                            <tr key={index}>
-                                <td className="p-3 border border-gray-400 bg-white">{user.batch}</td>
-                                <td className="p-3 border border-gray-400 bg-white">{user.date}</td>
-                                <td className="p-3 border border-gray-400 bg-white">{user.title}</td>
-                                <td className="p-3 border border-gray-400 bg-white">{user.description}</td>
-                                <td className="p-3 border border-gray-400 bg-white">{user.imageUrl}</td>
-                                {/* Add more cells as needed */}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            
+            <TableContainer component={Paper} className='mb-[60px]'>
+      <Table sx={{ minWidth: 700 }} aria-label="customized table" className='shadow-3xl '>
+        <TableHead>
+          <TableRow hover>
+            <StyledTableCell style={{width:"10%"}}> Batch  <FilterDropdown options={users.map(user => user.batch)} columnName="batch" /></StyledTableCell>
+            <StyledTableCell align="right" style={{width:"10%"}}> Date <FilterDropdown options={users.map(user => user.date)} columnName="date" /></StyledTableCell>
+            <StyledTableCell align="right" style={{width:"10%"}}> Title  <FilterDropdown options={users.map(user => user.title)} columnName="title" /></StyledTableCell>
+            <StyledTableCell align="right"> Description</StyledTableCell>
+            <StyledTableCell align="right" style={{width:"10%"}}>Image URL</StyledTableCell>
+            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        {filteredUsers.map((user, index) => (
+            <StyledTableRow key={index} hover sx={{cursor:"pointer"}}>
+              
+              
+              <StyledTableCell  >{user.batch}</StyledTableCell>
+              <StyledTableCell align="right">{user.date}</StyledTableCell>
+              <StyledTableCell align="right">{user.title}</StyledTableCell>
+              <StyledTableCell align="right">{user.description}</StyledTableCell>
+              <StyledTableCell align="right">{user.imageUrl}</StyledTableCell>
+              
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
         </div>
     )
 }
