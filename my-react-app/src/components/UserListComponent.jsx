@@ -14,6 +14,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { motion } from "framer-motion";
 import { FaArrowDown } from "react-icons/fa6";
+import ApprovalUpdatePopUp from "./ApprovalUpdatePopUp.jsx";
+
 const SmoothTransitionOption = ({ text, isSelected, onClick }) => {
   return (
     <motion.p
@@ -32,6 +34,9 @@ const SmoothTransitionOption = ({ text, isSelected, onClick }) => {
 const UserListComponent = () => {
   const [users, setUsers] = useState([]);
   const [selectedOption, setSelectedOption] = useState("Registered Alumni");
+  const [showPopup, setShowPopup] = useState({ show: false, userId: null });
+  const [userId, setUserId] = useState('');
+  console.log("userid: ", userId);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -44,6 +49,7 @@ const UserListComponent = () => {
     department: [],
     entryNo: [],
     phone: [],
+    approved: []
   });
 
   useEffect(() => {
@@ -74,6 +80,7 @@ const UserListComponent = () => {
           department: [],
           entryNo: [],
           phone: [],
+          approved: []
         });
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -176,26 +183,41 @@ const UserListComponent = () => {
     },
   }));
 
+  // Function to convert boolean value to text
+  const getStatusText = (approved) => {
+    return approved ? 'Approved' : 'Pending';
+  };
+
+  const getStatusButton = (approved, uid) => {
+    if (approved) {
+      return (
+        <button className="button bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 flex items-center justify-center">
+          <span className="mr-2">✅</span>
+          Approved
+        </button>
+      );
+    } else {
+      return (
+        <button 
+          className="button bg-red-500 hover:bg-green-500 text-white rounded-full px-6 py-3 flex items-center justify-center"
+          onClick={() => setShowPopup({ show: true, userId: uid })}
+        >
+          <span className="mr-2">⏳</span>
+          Pending Approval
+        </button>
+      );
+    }
+  };
+
   return (
     <div className="flex flex-row gap-[80px]">
       {/* <SidebarProfile /> */}
       <div className="flex flex-col gap-[15px] container mx-auto ">
-        <div className="w-[500px] ml-[450px] h-[40px] bg-gray-200 text-indigo-600 text-[20px] rounded-full mt-5 flex flex-row">
-          <SmoothTransitionOption
-            text="Registered Alumni"
-            isSelected={selectedOption === "Registered Alumni"}
-            onClick={() => handleOptionSelect("Registered Alumni")}
-          />
-          <SmoothTransitionOption
-            text="Pending Approval"
-            isSelected={selectedOption === "Pending Approval"}
-            onClick={() => handleOptionSelect("Pending Approval")}
-          />
-        </div>
+        
         <div className="container mx-auto px-8">
           {selectedOption === "Registered Alumni" && (
             <>
-              <div className="flex justify-center">
+              <div className="flex justify-center pt-6">
                 <motion.div
                   initial={{ opacity: 0, y: -50 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -260,105 +282,11 @@ const UserListComponent = () => {
                           columnName="phone"
                         />
                       </StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {filteredUsers.map((user, index) => (
-                      <StyledTableRow
-                        key={index}
-                        hover
-                        sx={{ cursor: "pointer" }}
-                      >
-                        <StyledTableCell>{user.name}</StyledTableCell>
-                        <StyledTableCell align="right">
-                          {user.email}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {user.degree}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {user.department}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {user.entryNo}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {user.phone}
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </>
-          )}
-          {selectedOption === "Pending Approval" && (
-            ////////////////////Sample Pending Approval////////////////////////
-            /////////// this has to be changed to the actual pending approval list/////////////
-            <>
-              <div className="flex justify-center">
-                <motion.div
-                  initial={{ opacity: 0, y: -50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <h2 className="text-[25px] text-white border rounded-full bg-indigo-700 p-3 w-[300px]  mx-auto text-center font-bold mb-8">
-                    Pending Approval list
-                  </h2>
-                </motion.div>
-              </div>
-
-              <TableContainer component={Paper}>
-                <Table
-                  sx={{ minWidth: 700 }}
-                  aria-label="customized table"
-                  className="shadow-3xl"
-                >
-                  <TableHead>
-                    <TableRow hover>
-                      <StyledTableCell>
-                        {" "}
-                        Name{" "}
-                        <FilterDropdown
-                          options={users.map((user) => user.name)}
-                          columnName="name"
-                          className="text-black"
-                        />
-                      </StyledTableCell>
                       <StyledTableCell align="right">
-                        Email{" "}
+                        Approval Status{" "}
                         <FilterDropdown
-                          options={users.map((user) => user.email)}
-                          columnName="email"
-                        />
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        Degree{" "}
-                        <FilterDropdown
-                          options={users.map((user) => user.degree)}
-                          columnName="degree"
-                        />
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {" "}
-                        Department{" "}
-                        <FilterDropdown
-                          options={users.map((user) => user.department)}
-                          columnName="department"
-                        />
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        Entry No{" "}
-                        <FilterDropdown
-                          options={users.map((user) => user.entryNo)}
-                          columnName="entryNo"
-                        />
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        Phone{" "}
-                        <FilterDropdown
-                          options={users.map((user) => user.phone)}
-                          columnName="phone"
+                          options={users.map((user) => getStatusText(user.approved))}
+                          columnName="approved"
                         />
                       </StyledTableCell>
                     </TableRow>
@@ -386,11 +314,24 @@ const UserListComponent = () => {
                         <StyledTableCell align="right">
                           {user.phone}
                         </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {getStatusButton(user.approved, user.uid)}
+                        </StyledTableCell>
                       </StyledTableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
+              {showPopup.show && (
+                <ApprovalUpdatePopUp
+                  userId={showPopup.userId}
+                  newApprovalStatus={true}
+                  handleClose={() => {
+                    setShowPopup({ show: false, userId: null });
+                    window.location.reload(); // Reload the page
+                  }}
+                />
+              )}
             </>
           )}
         </div>
