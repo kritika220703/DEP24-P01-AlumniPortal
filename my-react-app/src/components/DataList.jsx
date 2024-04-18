@@ -70,63 +70,7 @@ const DataList = () => {
                     </div>
                 )}
             </div>
-        {/* <div >
-        <div className='bg-none w-full h-[130px] flex flex-row items-center justify-center'>
-        <motion.div
-            className='w-[1200px] h-[70px] flex flex-row items-center justify-between text-[26px] font-bold'
-            initial={{ borderRadius: 35 }}
-            animate={{ borderRadius: toggle ? 0 : 35 }}
-            transition={{ duration: 0.5 }}
-            onClick={handleChangeClick}
-        >
-
-             {/* {['Alumni', 'Give Back In Kind', 'Past Reunions', 'Planned Reunions'].map((option) => (
-                    <motion.p
-                        key={option}
-                        className={`w-[250px] h-[50px] hover:bg-blue-400 flex items-center justify-center hover:rounded-3xl hover:text-white cursor-pointer ${toggle === option ? 'bg-blue-400 text-white rounded-3xl' : ''} `}
-                        onClick={() => handleToggleClick(option)}
-                        initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                
-                    >
-                        {option}
-                    </motion.p>
-                ))} 
-            
-           
-        </motion.div>
-        </div>
-
-        {/* <div className='flex flex-col'>
-            {toggle === 'Alumni' && (
-                <React.Fragment>
-                     <UserListComponent />
-                    <PdfDownloadComponent />
-                </React.Fragment>
-            )}
-            {toggle === 'Give Back In Kind' && (
-                <React.Fragment>
-                    <GivingBackInKindListComponent />
-                    <PdfKindDownloadComponent />
-                </React.Fragment>
-            )}
-            {toggle === 'Past Reunions' && (
-                <React.Fragment>
-                     <PastReunionsList/>
-                    <PastReunionslistDownload />
-                </React.Fragment>
-            )}
-            {toggle === 'Planned Reunions' && (
-                <React.Fragment>
-                     <PlannedReunionsList/>
-
-                    <PlannedReunionsListDownload />
-                </React.Fragment>
-            )}
-            
-        </div> 
-        </div> */}
+       
     </div>
   )
 }
