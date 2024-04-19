@@ -484,6 +484,33 @@ const sendEventsHackathonsmail = async (req, res) => {
     }
 };
 
+const sendRejectionEmail = async (req, res) => {
+    try {
+        console.log("in send reject approval api")
+        console.log(req.body);
+        const Email = req.body.email;
+        const Name = req.body.name;
+
+        if(!Email)return res.status(400).send("email is required");
+        if(!Name)return res.status(400).send("name is required");
+        
+        const messageSubject = `Application to become member of IIT Ropar's Alumni Network Rejected\n\n`;
+        const messageBody= `Hi ${Name},\n\nYour application to become member of IIT Ropar's Alumni Network has been rejected.\n\nRegards\nAlumni Cell\nIIT Ropar`;
+
+        const recipientEmail = Email;
+
+        await sendEmail(recipientEmail, messageSubject, messageBody);
+
+        console.log("rejection mail sent");
+        
+        res.status(200).send("rejection mail Sent");
+
+    } catch(error) {
+        console.error("Error sending rejection mail:", error);
+        res.status(400).send(error.message);
+    }
+};
+
 module.exports = {
     sendOTPmail,
     verifyOTPmail,
@@ -497,6 +524,7 @@ module.exports = {
     sendEventsStartupPresentationsmail,
     sendMentorshipProgramsmail,
     sendCommunityServiceProjectsmail,
-    sendEventsHackathonsmail
+    sendEventsHackathonsmail,
+    sendRejectionEmail
 };
 

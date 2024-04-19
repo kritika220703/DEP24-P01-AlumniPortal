@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { auth, db } from "../firebase.js";
-import { query, where, getDocs, collection } from "firebase/firestore";
+import {
+  query,
+  where,
+  getDocs,
+  collection,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 // import SidebarProfile from "./SidebarProfile"
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -15,6 +22,8 @@ import Paper from "@mui/material/Paper";
 import { motion } from "framer-motion";
 import { FaArrowDown } from "react-icons/fa6";
 import ApprovalUpdatePopUp from "./ApprovalUpdatePopUp.jsx";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
 const SmoothTransitionOption = ({ text, isSelected, onClick }) => {
   return (
@@ -35,7 +44,7 @@ const UserListComponent = () => {
   const [users, setUsers] = useState([]);
   const [selectedOption, setSelectedOption] = useState("Registered Alumni");
   const [showPopup, setShowPopup] = useState({ show: false, userId: null });
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   console.log("userid: ", userId);
 
   const handleOptionSelect = (option) => {
@@ -49,8 +58,21 @@ const UserListComponent = () => {
     department: [],
     entryNo: [],
     phone: [],
-    approved: []
+    approved: [],
   });
+
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
+
+let errorMessage = "";
+const notifySuccess = (message) => {
+    toast.success(message, toastOptions);
+};
 
   useEffect(() => {
     // Fetch data from Firebase Firestore
@@ -80,7 +102,7 @@ const UserListComponent = () => {
           department: [],
           entryNo: [],
           phone: [],
-          approved: []
+          approved: [],
         });
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -148,7 +170,11 @@ const UserListComponent = () => {
         {isOpen && (
           <div className="absolute top-10 bg-white border rounded-md p-2">
             {uniqueOptions.map((option) => (
-              <label key={option} className="flex items-center space-x-2" style={{ color: 'black' }}>
+              <label
+                key={option}
+                className="flex items-center space-x-2"
+                style={{ color: "black" }}
+              >
                 <input
                   type="checkbox"
                   value={option}
@@ -185,10 +211,57 @@ const UserListComponent = () => {
 
   // Function to convert boolean value to text
   const getStatusText = (approved) => {
-    return approved ? 'Approved' : 'Pending';
+    return approved ? "Approved" : "Pending";
   };
 
-  const getStatusButton = (approved, uid) => {
+  const getStatusButton = (approved, uid, email, name) => {
+    const handleDenyApproval = async () => {
+      try {
+        // Delete the user entry from Firebase Firestore
+        // const userRef = doc(db, "Users", uid);
+        const colRef = collection(db, "Users");
+        console.log(colRef);
+        const q = query(colRef, where("uid", "==", uid));
+        const snapshot = await getDocs(q);
+        console.log(snapshot);
+        const docRef = doc(db, "Users", snapshot.docs[0].id);
+        console.log(docRef);
+        await deleteDoc(docRef);
+
+        const data = {
+          email: email,
+          name: name
+        };
+
+        // Send rejection email to the user
+        // Implement your email sending logic here
+        const response = await fetch(`http://localhost:3000/email/rejection`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        console.log(response.status);
+
+        if(response.status !== 200) {
+          errorMessage = "Failed to send mail.";
+          toast.error(errorMessage, toastOptions);
+          return;
+        } 
+
+        notifySuccess("Mail sent successfully to applicant!")
+        console.log('Form submitted:');
+
+
+        // Reload the page
+        window.location.reload();
+      } catch (error) {
+        console.error("Error denying approval:", error);
+        alert("Failed to deny approval. Please try again later.");
+      }
+    };
+
     if (approved) {
       return (
         <button className="button bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 flex items-center justify-center">
@@ -198,13 +271,23 @@ const UserListComponent = () => {
       );
     } else {
       return (
-        <button 
-          className="button bg-red-500 hover:bg-green-500 text-white rounded-full px-6 py-3 flex items-center justify-center"
-          onClick={() => setShowPopup({ show: true, userId: uid })}
-        >
-          <span className="mr-2">⏳</span>
-          Pending Approval
-        </button>
+        <div className="flex items-center">
+          <button
+            className="button bg-red-500 hover:bg-green-500 text-white rounded-full px-6 py-3 flex items-center justify-center"
+            onClick={() => setShowPopup({ show: true, userId: uid })}
+          >
+            <span className="mr-2">⏳</span>
+            Pending Approval
+          </button>
+          <div style={{ width: '10px' }}></div> {/* Add gap */}
+          <button
+            className="button bg-red-500 hover:bg-green-500 text-white rounded-full px-6 py-3 flex items-center justify-center"
+            onClick={handleDenyApproval}
+          >
+            <span className="mr-2">❌</span>
+            Deny Approval
+          </button>
+        </div>
       );
     }
   };
@@ -213,7 +296,6 @@ const UserListComponent = () => {
     <div className="flex flex-row gap-[80px]">
       {/* <SidebarProfile /> */}
       <div className="flex flex-col gap-[15px] container mx-auto ">
-        
         <div className="container mx-auto px-8">
           {selectedOption === "Registered Alumni" && (
             <>
@@ -285,7 +367,9 @@ const UserListComponent = () => {
                       <StyledTableCell align="right">
                         Approval Status{" "}
                         <FilterDropdown
-                          options={users.map((user) => getStatusText(user.approved))}
+                          options={users.map((user) =>
+                            getStatusText(user.approved)
+                          )}
                           columnName="approved"
                         />
                       </StyledTableCell>
@@ -315,7 +399,7 @@ const UserListComponent = () => {
                           {user.phone}
                         </StyledTableCell>
                         <StyledTableCell align="right">
-                          {getStatusButton(user.approved, user.uid)}
+                          {getStatusButton(user.approved, user.uid, user.email, user.name)}
                         </StyledTableCell>
                       </StyledTableRow>
                     ))}
@@ -336,6 +420,7 @@ const UserListComponent = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

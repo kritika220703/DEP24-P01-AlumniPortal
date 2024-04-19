@@ -33,6 +33,7 @@ import Jobs from './pages/Jobs';
 import UserListComponent from './components/UserListComponent';
 import GivingBackInKindListComponent from './components/GivingBackInKindList';
 import FundraisingPages from './pages/FundraisingPages';
+import RegistrationsPage from './components/RegistrationsPage';
 
 function App() {
   return (
@@ -70,11 +71,11 @@ function App() {
           {/* <Route exact path="/alumni" element={<UserListComponent/>} />
           <Route exact path="/givebackinkind" element={<GivingBackInKindListComponent/>} /> */}
           <Route exact path='/events' element={<PrivateRoute/>}>
-           
             <Route exact path="/events" element={<Events/>} />
           </Route>
           <Route exact path="/Jobs" element={<Jobs/>} />
           <Route path="/FundraisingPages/:id" element={<FundraisingPages />} />
+          <Route path="/registrations/:batch" element={<RegistrationsPage/>} />
         </Routes>
       </AuthProvider>
     </div>
