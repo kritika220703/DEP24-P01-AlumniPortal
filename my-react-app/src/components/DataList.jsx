@@ -196,9 +196,9 @@ const DataList = () => {
                 return (
                     <>
                         <PlannedReunionsList />
-                        <button style={buttonStyle} onClick={handleDownloadClick}>
+                        {/* <button style={buttonStyle} onClick={handleDownloadClick}>
                             Download Excel
-                        </button>
+                        </button> */}
                     </>
                 );
             default:
