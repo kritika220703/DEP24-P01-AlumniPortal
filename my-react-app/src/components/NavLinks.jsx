@@ -54,7 +54,7 @@ const NavLinks = () => {
                         </a>
                         {link.submenu && (
                             <div
-                                className="absolute top-full border border-gray-400 rounded left-0 hidden group-hover:block bg-gray-100 w-[100px] z-10"
+                                className="absolute top-full border border-gray-400 rounded left-0 hidden group-hover:block bg-gray-100 w-[110px] z-10"
                             >
                                 {/* <div className="py-2">
                                     <div className="w-4 h-4 -mt-1 ml-3 bg-gray-100 transform rotate-45 absolute"></div>
@@ -67,7 +67,7 @@ const NavLinks = () => {
                                             <a
                                                 key={sublink.path}
                                                 href={sublink.path}
-                                                className="text-sm text-gray-600 my-1  duration-300 w-[80px] h-[45px] hover:bg-blue-300 hover:text-white rounded flex items-center " 
+                                                className="text-sm text-gray-600 my-1  duration-300 w-[90px] h-[45px] hover:bg-blue-300 hover:text-white rounded flex items-center " 
                                             >
                                                 <div className='ml-2'>
                                                 {sublink.name}

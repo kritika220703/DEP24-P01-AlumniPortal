@@ -11,6 +11,7 @@ import { MdEvent } from 'react-icons/md';
 import { UserIcon } from '@heroicons/react/solid';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+// import {  AnimatePresence } from 'framer-motion';
 import { MdOutlinePhone } from "react-icons/md";
 import { AiOutlineLinkedin } from "react-icons/ai";
 import { IoLocationOutline } from "react-icons/io5";
@@ -29,6 +30,8 @@ import DataList from '../components/DataList.jsx';
 import image from '../assets/profile_bck.png'
 
 const Section = ({ title, children }) => {
+
+    
     const controls = useAnimation();
     const { ref, inView } = useInView();
   
@@ -296,17 +299,7 @@ const Profile = () => {
         // Add more options as needed
     ];
 
-    // const handleStartDateChange = (date, index) => {
-    //     const updatedHigherEducation = [...editedUser.higherEducation];
-    //     updatedHigherEducation[index].startDate = date;
-    //     setEditedUser({ ...editedUser, higherEducation: updatedHigherEducation });
-    // };
-    
-    // const handleEndDateChange = (date, index) => {
-    //     const updatedHigherEducation = [...editedUser.higherEducation];
-    //     updatedHigherEducation[index].endDate = date;
-    //     setEditedUser({ ...editedUser, higherEducation: updatedHigherEducation });
-    // };      
+         
 
     function stringToColor(string) {
         let hash = 0;
@@ -371,78 +364,7 @@ const Profile = () => {
                       </div>
 
                       <div className='flex items-center justify-center border-2 border-gray-200 w-[1300px] h-0 ml-[120px] mt-8'></div>
-                      {/* <div className='ml-[230px] mt-5'>
-                        <p className='font-bold text-[35px]'>Basic Details</p>
-                        <div className='flex flex-row gap-[50px]'>
-                            <div className='flex flex-row gap-2 text-[21px] ml-[30px]'>
-                                <p className='font-semibold'>Entry Number:</p>
-                                <p className='font-normal'>{userData.entryNo}</p>
-                            </div>
-                            <div className='flex flex-row gap-2 text-[21px] ml-[30px]'>
-                                    <p className='font-semibold'>Degree:</p>
-                                    <p className='font-normal'>{userData.degree}</p>
-                            </div>
-                       </div>
-                       <div className='flex flex-row gap-[160px]'>
-                            <div className='flex flex-row gap-2 text-[21px] ml-[30px]'>
-                                    <p className='font-semibold'>Department:</p>
-                                    <p className='font-normal'>{userData.department}</p>
-                            </div>
-                            <div className='flex flex-row gap-2 text-[21px] ml-[30px]'>
-                                    <p className='font-semibold'>Passing Year:</p>
-                                    <p className='font-normal'>{userData.passingYear}</p>
-                            </div>
-                       </div>
-                      </div>
-
-                      <div className='flex items-center justify-center border-2 border-gray-200 w-[1300px] h-0 ml-[120px] mt-8'></div>
-
-                      <div  className='ml-[230px]'>
-                        <p className='font-bold text-[35px] mt-5 mb-3'>Higher Education</p>
-                        {Array.isArray(userData.higherEducation) && userData.higherEducation.length > 0 ? (
-                                    <ul className="list-disc pl-4">
-                                        {userData.higherEducation.map((highEdu, index) => (
-                                            <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between mr-[170px]">
-                                                <div>
-                                                    <h3 className="text-lg font-semibold">{highEdu.course}</h3>
-                                                    <h4 className="text-sm text-gray-500">{highEdu.specialization}</h4>
-                                                    <p className="text-sm text-gray-500">{highEdu.institute}</p>
-                                                </div>
-                                                <div className="flex flex-row justify-center items-center">
-                                                    <h5>
-                                                        {highEdu.startYear}-{highEdu.endYear}
-                                                    </h5>
-                                                </div>                                                
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <p>No higher Education available</p>
-                                )}
-                      </div>
-
-                      <div className='flex items-center justify-center border-2 border-gray-200 w-[1300px] h-0 ml-[120px] mt-8'></div>
-
-                      <div  className='ml-[230px]'>
-                        <p className='font-bold text-[35px] mt-5 mb-3'>Work Exprience</p>
-                        {Array.isArray(userData.work_exp) && userData.work_exp.length > 0 ? (
-                                <ul className="list-disc pl-4">
-                                    {userData.work_exp.map((workExp, index) => (
-                                        <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between mr-[170px]">
-                                            <div>
-                                                <h4 className="text-lg font-semibold">{workExp.job_title}</h4>
-                                                <p className="text-sm text-gray-500">{workExp.company}</p>
-                                            </div>
-                                            <div className="flex flex-col justify-center items-end">
-                                                <p className="text-sm text-gray-500">{workExp.duration}</p>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No work experience available</p>
-                            )}
-                      </div> */}
+                      
 
     <Section title="Basic Details">
         <div className="flex flex-row gap-[50px]">
@@ -531,137 +453,10 @@ const Profile = () => {
               
 
             </div>
-            // <div className="p-6 mt-0">
-            //     <div className="text-center mb-4 flex items-center justify-center">
-            //         <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md w-[200px]">Profile</h1>
-            //         {/* Use the UserIcon component */}
-            //         {/* <UserIcon className="h-8 w-8 text-blue-500" /> */}
-            //     </div>
-
-            //     {userData ? (
-            //         <div className='flex flex-row justify-between auto-rows-fr'>
-            //             <div className='flex flex-col items-center justify-center'>
-            //                 <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[270px]">
-            //                     {/* <img src={`https://console.firebase.google.com/u/0/project/alumni-portal-df4f5/storage/alumni-portal-df4f5.appspot.com/${profileURL}`} className="rounded-full w-36 h-36 mx-auto mb-2" alt="Profile"/> */}
-            //                     <img src={profileURL} className="rounded-full w-36 h-36 mx-auto mb-2" alt={dp}/>
-            //                     <h1 className="text-2xl font-bold text-gray-800 mb-1">{userData.name}</h1>
-            //                     <p className="text-gray-500">{userData.email}</p>
-            //                 </div>
-            //                 <div className="text-center mb-4 flex flex-col bg-slate-100 rounded-md overflow-hidden shadow-md w-[300px] p-6 min-h-[300px]">
-            //                     <h3 className='text-2xl font-bold text-gray-800 mb-4'>Contact Details</h3>
-            //                     <div className="flex items-center mb-2">
-            //                         <AiOutlineMail className="text-gray-500 mr-2" />
-            //                         <p className="text-gray-500">{userData.email}</p>
-            //                     </div>
-            //                     <div className="flex items-center mb-2">
-            //                         <AiOutlinePhone className="text-gray-500 mr-2" />
-            //                         <p className="text-gray-500">{userData.phone}</p>
-            //                     </div>
-            //                     <div className="flex items-center mb-2">
-            //                         <AiFillLinkedin className="text-gray-500 mr-2" />
-            //                         <p className="text-gray-500">{userData.linkedin}</p>
-            //                     </div>
-            //                     <div className="flex items-center">
-            //                         <AiOutlineHome className="text-gray-500 mr-2" />
-            //                         <p className="text-gray-500">{userData.address}</p>
-            //                     </div>
-            //                 </div>
-            //             </div>
-                        
-            //             <div className='flex flex-col items-center justify-center'>
-            //                 <div className='flex flex-col border-l border-r border-gray-300 bg-slate-100 w-[600px] p-8 mb-4 rounded-md overflow-hidden shadow-md'>
-            //                     <h2 className="text-2xl font-bold text-gray-800 mb-6">Basic Details</h2>
-            //                     <div className="mb-5">
-            //                         <p className="text-gray-600 flex flex-row">
-            //                             <FaEnvelope className="text-lg text-gray-400 mr-4" />
-            //                             <strong className='mr-3'>Email Id:</strong> {userData.email}
-            //                         </p>
-            //                     </div>
-
-            //                     <div className="mb-4">
-            //                         <p className="text-gray-600 flex flex-row">
-            //                             <AiOutlineNumber className="text-lg text-gray-400 mr-4" />
-            //                             <strong className='mr-3'>Entry Number:</strong> {userData.entryNo}
-            //                         </p>
-            //                     </div>
-
-            //                     <div className="mb-4">
-            //                         <p className="text-gray-600 flex flex-row">
-            //                             <SchoolIcon className="text-lg text-gray-400 mr-4" />
-            //                             <strong className='mr-3'>Degree:</strong> {userData.degree}
-            //                         </p>
-            //                     </div>
-
-            //                     <div className="mb-4">
-            //                         <p className="text-gray-600 flex flex-row">
-            //                             <IoIosBusiness className="text-lg text-gray-400 mr-4" />
-            //                             <strong className='mr-3'>Department:</strong> {userData.department}
-            //                         </p>
-            //                     </div>
-
-            //                     <div className="mb-4">
-            //                         <p className="text-gray-600 flex flex-row">
-            //                             <MdEvent className="text-lg text-gray-400 mr-4" />
-            //                             <strong className='mr-3'>Year of Passing:</strong> {userData.passingYear}
-            //                         </p>
-            //                     </div>
-            //                 </div>
-
-            //                 <div className='flex flex-col border-l border-r border-gray-300 bg-slate-100 w-[600px] p-8 rounded-md overflow-hidden shadow-md'>
-            //                     <h2 className="text-2xl font-bold text-gray-800 mb-6">Higher Education</h2>
-            //                     {Array.isArray(userData.higherEducation) && userData.higherEducation.length > 0 ? (
-            //                         <ul className="list-disc pl-4">
-            //                             {userData.higherEducation.map((highEdu, index) => (
-            //                                 <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between">
-            //                                     <div>
-            //                                         <h3 className="text-lg font-semibold">{highEdu.course}</h3>
-            //                                         <h4 className="text-sm text-gray-500">{highEdu.specialization}</h4>
-            //                                         <p className="text-sm text-gray-500">{highEdu.institute}</p>
-            //                                     </div>
-            //                                     <div className="flex flex-row justify-center items-center">
-            //                                         <h5>
-            //                                             {highEdu.startYear}-{highEdu.endYear}
-            //                                         </h5>
-            //                                     </div>                                                
-            //                                 </li>
-            //                             ))}
-            //                         </ul>
-            //                     ) : (
-            //                         <p>No higher Education available</p>
-            //                     )}
-            //                 </div>
-
-            //             </div>
-                        
-                        
-            //             <div className='flex flex-col w-[400px] p-8 bg-slate-100 rounded-md overflow-hidden shadow-md '>
-            //                 <h3 className="text-2xl font-bold text-gray-800 mb-2">Work Experience</h3>
-            //                 {Array.isArray(userData.work_exp) && userData.work_exp.length > 0 ? (
-            //                     <ul className="list-disc pl-4">
-            //                         {userData.work_exp.map((workExp, index) => (
-            //                             <li key={index} className="mb-6 border border-gray-200 rounded-md p-4 flex flex-row justify-between">
-            //                                 <div>
-            //                                     <h4 className="text-lg font-semibold">{workExp.job_title}</h4>
-            //                                     <p className="text-sm text-gray-500">{workExp.company}</p>
-            //                                 </div>
-            //                                 <div className="flex flex-col justify-center items-end">
-            //                                     <p className="text-sm text-gray-500">{workExp.duration}</p>
-            //                                 </div>
-            //                             </li>
-            //                         ))}
-            //                     </ul>
-            //                 ) : (
-            //                     <p>No work experience available</p>
-            //                 )}
-            //             </div>
-            //         </div>
-                        
-            //     ) : (
-            //         <p>Loading user data...</p>
-            //     )}
-            // </div>
         );
     };
+
+    
 
     const renderEditProfileForm = () => {
         return (
@@ -673,7 +468,7 @@ const Profile = () => {
                 
                     
                     <div className='flex flex-col flex-grow mb-8 md:w-1/3 '>
-
+                    
                     <div className='shadow-xl w-[1250px] ml-[140px] mt-[30px] flex flex-col items-center bg-slate-300 rounded-3xl'>
                         <div className="flex flex-row items-center  justify-center mb-2 mt-5 w-[220px] h-[50px] rounded-full bg-indigo-900 text-white">
                             <h3 className="text-3xl font-bold ">Basic Details</h3>
@@ -763,7 +558,8 @@ const Profile = () => {
                             />
                         </div>
                     </div>
-
+                  
+       
                     <div className='shadow-xl w-[950px] ml-[290px] mt-[30px] flex flex-col items-center bg-slate-300 rounded-3xl'>
                         <div className="flex flex-row items-center  justify-center mb-2 mt-5 w-[320px] h-[50px] rounded-full bg-indigo-900 text-white">
                             <h3 className="text-3xl font-bold ">Contact Information</h3>
@@ -803,9 +599,11 @@ const Profile = () => {
                             />
                         </div>
                    </div>
+                  
+
                     </div>
                     
-                   
+                    
                         <div className='flex flex-row'>
                         <div className='flex flex-col flex-grow'>
                         <div className='shadow-xl w-[600px] ml-[140px] mt-[30px] flex flex-col items-center bg-slate-300 rounded-3xl'>
@@ -955,6 +753,8 @@ const Profile = () => {
                             </div>
                         </div>
                         </div>
+                        
+
                     
                     <div className="mb-4 p-1 flex justify-center mt-10">
                         <button
