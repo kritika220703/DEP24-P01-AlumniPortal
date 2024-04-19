@@ -105,7 +105,11 @@ const PlannedReunionsList = () => {
         {isOpen && (
           <div className="absolute top-10 bg-white border rounded-md p-2 z-10">
             {uniqueOptions.map((option) => (
-              <label key={option} className="flex items-center space-x-2">
+              <label 
+                key={option} 
+                className="flex items-center space-x-2"
+                style={{ color: "black" }}
+              >
                 <input
                   type="checkbox"
                   value={option}

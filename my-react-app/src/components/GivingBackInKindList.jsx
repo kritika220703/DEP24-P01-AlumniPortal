@@ -81,7 +81,7 @@ const GivingBackInKindListComponent = () => {
 
   const FilterDropdown = ({ options, columnName }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const uniqueOptions = [...new Set(options)]; // Filter out duplicates
+    const uniqueOptions = [...new Set(options.filter(option => option !== ''))]; // Filter out empty values
   
     const toggleDropdown = () => {
       setIsOpen(!isOpen);
@@ -122,7 +122,11 @@ const GivingBackInKindListComponent = () => {
         {isOpen && (
           <div className="absolute top-10 bg-white border rounded-md p-2">
             {uniqueOptions.map((option) => (
-              <label key={option} className="flex items-center space-x-2">
+              <label 
+                key={option} 
+                className="flex items-center space-x-2"
+                style={{ color: "black" }}
+              >
                 <input
                   type="checkbox"
                   value={option}
@@ -180,10 +184,10 @@ const GivingBackInKindListComponent = () => {
           <TableRow hover>
             <StyledTableCell> Name  <FilterDropdown options={users.map(user => user.name)} columnName="name" className="text-black"/></StyledTableCell>
             <StyledTableCell align="right">Email <FilterDropdown options={users.map(user => user.email)} columnName="email" /></StyledTableCell>
-            <StyledTableCell align="right">Degree  <FilterDropdown options={users.map(user => user.degree)} columnName="degree" /></StyledTableCell>
-            <StyledTableCell align="right"> Department  <FilterDropdown options={users.map(user => user.department)} columnName="department" /></StyledTableCell>
-            <StyledTableCell align="right">Entry No  <FilterDropdown options={users.map(user => user.entryNo)} columnName="entryNo" /></StyledTableCell>
             <StyledTableCell align="right">Phone <FilterDropdown options={users.map(user => user.phone)} columnName="phone" /></StyledTableCell>
+            <StyledTableCell align="right">Year of Passing  <FilterDropdown options={users.map(user => user.passingYear)} columnName="passingYear" /></StyledTableCell>
+            <StyledTableCell align="right">Item Name  <FilterDropdown options={users.map(user => user.itemName)} columnName="itemName" /></StyledTableCell>
+            <StyledTableCell align="right"> Duration  <FilterDropdown options={users.map(user => user.duration)} columnName="duration" /></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -194,10 +198,10 @@ const GivingBackInKindListComponent = () => {
               {user.name}
               </StyledTableCell>
               <StyledTableCell align="right" >{user.email}</StyledTableCell>
-              <StyledTableCell align="right">{user.degree}</StyledTableCell>
-              <StyledTableCell align="right">{user.department}</StyledTableCell>
-              <StyledTableCell align="right">{user.entryNo}</StyledTableCell>
               <StyledTableCell align="right">{user.phone}</StyledTableCell>
+              <StyledTableCell align="right">{user.passingYear}</StyledTableCell>
+              <StyledTableCell align="right">{user.itemName}</StyledTableCell>
+              <StyledTableCell align="right">{user.duration}</StyledTableCell>
               
             </StyledTableRow>
           ))}
