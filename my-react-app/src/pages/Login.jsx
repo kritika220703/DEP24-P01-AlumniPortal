@@ -132,8 +132,20 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
+
+    if(email === ""){
+      errorMessage = "Email is required.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+    if(selectedOption === ""){
+      errorMessage = "Choose Admin/Alumni.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
     e.preventDefault();
     console.log(selectedOption);
+
     if(selectedOption === "Admin"){
       
       const colRef = collection(db, 'admin');
@@ -144,47 +156,27 @@ const Login = () => {
       try {
         const snapshot = await getDocs(q);
       
-        if (snapshot.size == 0) {
-          // Documents satisfying query does not exist
-
-            const colRef1 = collection(db, 'Users');
-            console.log(colRef1);
-            const q1 = query(colRef1, where('email', '==', email));
-
-            try {
-              const snapshot1 = await getDocs(q1);
-            
-              if (snapshot1.size > 0) {
-                // Documents satisfying the query exist
-                  errorMessage = "Entered email is waiting for Admin's approval.";
-                  toast.error(errorMessage, toastOptions);
-                  return;
-                }
-        
-                console.log("snap:  ", snapshot1);
-          
-              } catch (error) {
-                console.error('Error getting documents:', error);
-            }
-          
-            errorMessage = "Invalid Email ID for Admin. Please use different email ID.";
+        if (snapshot.size > 0) {
+          const doc = snapshot.docs[0];
+          const data = doc.data();
+          if(data.approved == false){
+            errorMessage = "Email Pending for Admin Approval";
             toast.error(errorMessage, toastOptions);
             return;
           }
-  
+        }
+        else{
+          errorMessage = "Entered email is not in use. Please sign up or use different email id.";
+          toast.error(errorMessage, toastOptions);
+          return;
+        }
           console.log("snap:  ", snapshot);
     
         } catch (error) {
           console.error('Error getting admin documents:', error);
       }
-
-      // if( email !== "2021csb1184@iitrpr.ac.in"){
-      //   toast.error("Invalid Email ID for Admin.", toastOptions);
-      //   return;
-      // }
     }
     else{
-
       const colRef = collection(db, 'Users');
       const q = query(colRef, where('email', '==', email));
       try {
@@ -200,34 +192,14 @@ const Login = () => {
             return;
           }
         }
-      } catch (error) {
-        console.error('Error getting admin documents:', error);
-      }
-    }
-    
-    if(email === ""){
-      errorMessage = "Email is required.";
-      toast.error(errorMessage, toastOptions);
-      return;
-    }
-
-    const colRef = collection(db, 'Users');
-    console.log(colRef);
-    const q = query(colRef, where('email', '==', email));
-
-    try {
-      const snapshot = await getDocs(q);
-    
-      if (snapshot.size == 0) {
+        else{
           errorMessage = "Entered email is not in use. Please sign up or use different email id.";
           toast.error(errorMessage, toastOptions);
           return;
         }
-
-        console.log("snap:  ", snapshot);
-  
       } catch (error) {
-        console.error('Error getting documents:', error);
+        console.error('Error getting admin documents:', error);
+      }
     }
 
     setIsLoading(true);
