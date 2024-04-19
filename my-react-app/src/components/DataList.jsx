@@ -4,6 +4,7 @@ import UserListComponent from './UserListComponent';
 import PlannedReunionsList from './PlannedReunionsList';
 import PastReunionsList from './PastReunionsList';
 import SidebarProfile from "./SidebarProfile";
+import AdminList from "./AdminList";
 import * as XLSX from 'xlsx';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
@@ -19,6 +20,15 @@ const DataList = () => {
             data.push({ id: doc.id, ...doc.data() });
         });
         return filterAlumniData(data);
+    };
+
+    const fetchDataForAdmin = async () => {
+        const data = [];
+        const querySnapshot = await getDocs(collection(db, "admin"));
+        querySnapshot.forEach((doc) => {
+            data.push({...doc.data() });
+        });
+        return filterAdminData(data);
     };
 
     const fetchDataForGiveBack = async () => {
@@ -65,6 +75,13 @@ const DataList = () => {
             approved: item.approved,
             address: item.address,
             linkedin: item.linkedin,
+        }));
+    };
+
+    const filterAdminData = (data) => {
+        return data.map((item) => ({
+            email: item.email,
+            approved: item.approved,
         }));
     };
 
@@ -144,6 +161,9 @@ const DataList = () => {
                 case 'Planned Reunions':
                     data = await fetchDataForPlannedReunions();
                     break;
+                case 'Admin':
+                    data = await fetchDataForAdmin();
+                    break;
                 default:
                     return null;
             }
@@ -201,6 +221,16 @@ const DataList = () => {
                         </button> */}
                     </>
                 );
+            case 'Admin':
+                return (
+                    <>
+                        <AdminList/>
+                        <button style={buttonStyle} onClick={handleDownloadClick}>
+                            Download Excel
+                        </button>
+
+                    </>
+                )
             default:
                 return null;
         }
