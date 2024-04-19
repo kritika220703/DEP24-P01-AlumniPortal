@@ -670,20 +670,16 @@ const Profile = () => {
                     Edit Profile
                 </div>
 
-                {/* <div className="text-center mb-4 flex items-center justify-center">
-                    <h1 className="text-3xl font-bold text-white p-4 mb-4 mr-2 bg-blue-900 py-2 rounded-md shadow-md">Edit Profile</h1>
-                   
-                </div> */}
-
-                {/* <div className="p-10 flex flex-col bg-slate-200 bg-opacity-60 rounded-md mx-10 mt-2 mb-3 md:flex-row md:space-x-8 md:justify-between"> */}
+                
                     
-                    <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
+                    <div className='flex flex-col flex-grow mb-8 md:w-1/3 '>
 
-                        <div className="flex flex-row justify-center mb-2 mt-3">
-                            <h3 className="text-3xl font-bold text-gray-800 mb-1">Basic Details</h3>
+                    <div className='shadow-xl w-[1250px] ml-[140px] mt-[30px] flex flex-col items-center bg-slate-300 rounded-3xl'>
+                        <div className="flex flex-row items-center  justify-center mb-2 mt-5 w-[220px] h-[50px] rounded-full bg-indigo-900 text-white">
+                            <h3 className="text-3xl font-bold ">Basic Details</h3>
                         </div>
 
-                        <div className='ml-[150px]  flex flex-row mt-4'>
+                        <div className='  flex flex-row mt-4 '>
                             <form>
                                 <h2 className='ml-[20px]'>Upload Profile Photo</h2>
                                 <input 
@@ -691,7 +687,7 @@ const Profile = () => {
                                     type="file" 
                                     accept="image/*" 
                                     onChange={handleProfilePictureChange} 
-                                    className='border border-gray-500 ml-[20px] w-[400px]'
+                                    className='border border-gray-500 ml-[20px] w-[400px] bg-slate-100'
                                 />
                             </form>
                             <div className="mb-1">
@@ -701,12 +697,12 @@ const Profile = () => {
                                     placeholder="Name"
                                     value={editedUser.name}
                                     onChange={handleInputChange}
-                                    className="w-[450px] px-4 py-2 mb-4 text-[20px] font-normal border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 ml-[200px] mt-5"
+                                    className="w-[450px] px-4 py-2 mb-4 text-[20px] font-normal border border-gray-500 bg-slate-100 rounded-md focus:outline-none focus:border-indigo-500 ml-[200px] mt-5"
                                 />
                             </div>
                         </div>
                         
-                        <div className='ml-[150px]  flex flex-row '>
+                        <div className='  flex flex-row '>
                         <div className="mb-1">
                             <input
                                 type="text"
@@ -714,7 +710,7 @@ const Profile = () => {
                                 placeholder="Entry Number"
                                 value={editedUser.entryNo}
                                 onChange={handleInputChange}
-                                className="w-[400px] ml-[20px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[20px]"
+                                className="w-[400px] ml-[20px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[20px] bg-slate-100"
                             />
                         </div>
 
@@ -725,12 +721,12 @@ const Profile = () => {
                                 placeholder="Degree"
                                 value={editedUser.degree}
                                 onChange={handleInputChange}
-                                className="w-[450px] ml-[200px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px]"
+                                className="w-[450px] ml-[200px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px] bg-slate-100"
                             />
                         </div>
                         </div>
 
-                        <div className='ml-[150px]  flex flex-row '>
+                        <div className='  flex flex-row '>
                         <div className="mb-1">
                             <input
                                 type="text"
@@ -738,7 +734,7 @@ const Profile = () => {
                                 placeholder="Department"
                                 value={editedUser.department}
                                 onChange={handleInputChange}
-                                className="w-[400px] ml-[20px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px]"
+                                className="w-[400px] ml-[20px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px] bg-slate-100"
                             />
                         </div>
 
@@ -748,7 +744,7 @@ const Profile = () => {
                                 name="passingYear"
                                 value={editedUser.passingYear}
                                 onChange={handleInputChange}
-                                className="w-[450px] ml-[200px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[20px]"
+                                className="w-[450px] ml-[200px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[20px] bg-slate-100"
                             >
                                 <option value="">Select Year of Passing</option>
                                 {renderYearOptions()}
@@ -763,19 +759,21 @@ const Profile = () => {
                                 placeholder="LinkedIN URL"
                                 value={editedUser.linkedin}
                                 onChange={handleInputChange}
-                                className="w-[400px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px] ml-[170px]"
+                                className="w-[400px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 overflow-y-auto font-normal text-[20px] bg-slate-100 "
                             />
                         </div>
+                    </div>
 
-                        <div className="flex flex-row justify-center mb-2 mt-3">
-                            <h3 className="text-3xl font-bold text-gray-800 mb-1 ml-[100px]">Contact Information</h3>
+                    <div className='shadow-xl w-[950px] ml-[290px] mt-[30px] flex flex-col items-center bg-slate-300 rounded-3xl'>
+                        <div className="flex flex-row items-center  justify-center mb-2 mt-5 w-[320px] h-[50px] rounded-full bg-indigo-900 text-white">
+                            <h3 className="text-3xl font-bold ">Contact Information</h3>
                         </div>
-                        <div className="flex flex-row mb-1 ml-[170px]">
+                        <div className="flex flex-row mb-1 ">
                             <select
                                 name="countryCode"
                                 value={editedUser.countryCode}
                                 onChange={handleInputChange}
-                                className="w-1/1.5 px-4 py-2 mr-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-1/1.5 px-4 py-2 mr-2 border border-gray-500 bg-slate-100 rounded-md focus:outline-none focus:border-indigo-500"
                             >
                                 <option value="">Country Code</option>
                                 {countryCodeOptions.map(option => (
@@ -790,7 +788,7 @@ const Profile = () => {
                                 placeholder="Phone No."
                                 value={editedUser.phone}
                                 onChange={handleInputChange}
-                                className="w-[400px] px-4 py-2 border border-gray-500 font-normal text-[20px] rounded-md focus:outline-none focus:border-indigo-500"
+                                className="w-[400px] px-4 bg-slate-100 py-2 border border-gray-500 font-normal text-[20px] rounded-md focus:outline-none focus:border-indigo-500 "
                             />
                         </div>
 
@@ -801,168 +799,172 @@ const Profile = () => {
                                 placeholder="Address"
                                 value={editedUser.address}
                                 onChange={handleInputChange}
-                                className="w-[700px] h-[100px] px-4 py-2 ml-[170px] mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[15px] "
+                                className="w-[700px] h-[100px] px-4 py-2 mb-4 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500 font-normal text-[15px] bg-slate-100 "
                             />
                         </div>
-
+                   </div>
                     </div>
                     
-                    <div className='flex flex-row'>
-                    <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
-
-                        <div className="flex flex-row justify-center mb-2">
-                            <h3 className="  text-gray-800 mb-1 ml-[100px] font-bold text-[30px]">Higher Education</h3>
+                   
+                        <div className='flex flex-row'>
+                        <div className='flex flex-col flex-grow'>
+                        <div className='shadow-xl w-[600px] ml-[140px] mt-[30px] flex flex-col items-center bg-slate-300 rounded-3xl'>
+                        <div className="flex flex-row items-center  justify-center mb-2 mt-5 w-[320px] h-[50px] rounded-full bg-indigo-900 text-white">
+                            <h3 className="text-3xl font-bold ">Higher Education</h3>
                         </div>
-                        {editedUser.higherEducation.map((highEdu, index) => (
-                            <div key={index} className="mb-4   bg-opacity-0.8 rounded-md p-4">
+                            {editedUser.higherEducation.map((highEdu, index) => (
+                                <div key={index} className="mb-4   bg-opacity-0.8 rounded-md p-4 mr-[50px]">
+                                    
+                                    <input
+                                        type="text"
+                                        name="institute"
+                                        placeholder="Name of Institute"
+                                        value={highEdu.institute || ''}
+                                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                        className="w-[400px] ml-[100px] px-4 py-2 mb-2 border bg-slate-100 border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
+                                    />
+                                    <div className="flex flex-row mb-2 space-x-4 mt-3">
+                                        <input
+                                            type="text"
+                                            name="startYear"
+                                            placeholder='Start Year'
+                                            value={highEdu.startYear || ''}
+                                            onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                            className="w-[200px] ml-[100px] px-4 py-2 mb-2 border bg-slate-100 border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
+                                        />
+                                        <input
+                                            type="text"
+                                            name="endYear"
+                                            placeholder='Start Year'
+                                            value={highEdu.endYear || ''}
+                                            onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                            className="w-[200px] px-4 py-2 mb-2 border border-gray-500 bg-slate-100 rounded-md focus:outline-none focus:border-indigo-500 ml-[100px]"
+                                        />
+                                    </div>
                                 
-                                <input
-                                    type="text"
-                                    name="institute"
-                                    placeholder="Name of Institute"
-                                    value={highEdu.institute || ''}
-                                    onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                    className="w-[400px] ml-[170px] px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
-                                />
-                                <div className="flex flex-row mb-2 space-x-4 mt-3">
-                                    <input
-                                        type="text"
-                                        name="startYear"
-                                        placeholder='Start Year'
-                                        value={highEdu.startYear || ''}
-                                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-[200px] ml-[170px] px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="endYear"
-                                        placeholder='Start Year'
-                                        value={highEdu.endYear || ''}
-                                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-[200px] px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
-                                    />
-                                </div>
-                               
 
-                                <div className='flex flex-row space-x-1 ml-[170px]'>
-                                    <select
-                                        name="degree"
-                                        value={highEdu.degree || ''}
-                                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-1/1.5 px-4 py-2 mb-2 border border-gray-500 rounded-md focus:outline-none focus:border-indigo-500"
+                                    <div className='flex flex-row space-x-1 ml-[100px]'>
+                                        <select
+                                            name="degree"
+                                            value={highEdu.degree || ''}
+                                            onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                            className="w-1/1.5 px-4 py-2 mb-2 border border-gray-500 bg-slate-100 rounded-md focus:outline-none focus:border-indigo-500"
+                                        >
+                                            <option value="">Course</option>
+                                            {courseOptions.map((option, i) => (
+                                                <option key={i} value={option}>
+                                                    {option}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <select
+                                            name="department"
+                                            value={highEdu.department || ''}
+                                            onChange={(e) => handleInputChangeHigherEdu(e, index)}
+                                            className="w-[350px] px-4 py-2 mb-2 border border-gray-500 bg-slate-100 rounded-md focus:outline-none focus:border-indigo-500 "
+                                        >
+                                            <option value="">Department</option>
+                                            {specializationOptions.map((option, i) => (
+                                                <option key={i} value={option}>
+                                                    {option}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    
+                                    <button
+                                        onClick={() => handleRemoveHighEdu(index)}
+                                        className="px-4 py-2  mt-3 hover:bg-slate-300 text-slate-700 rounded-md focus:outline-none border-4 border-indigo-900 transition duration-200 hover:rounded-full ml-[100px]"
                                     >
-                                        <option value="">Course</option>
-                                        {courseOptions.map((option, i) => (
-                                            <option key={i} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <select
-                                        name="department"
-                                        value={highEdu.department || ''}
-                                        onChange={(e) => handleInputChangeHigherEdu(e, index)}
-                                        className="w-[450px] px-4 py-2 mb-2 border border-gray-500  rounded-md focus:outline-none focus:border-indigo-500"
-                                    >
-                                        <option value="">Department</option>
-                                        {specializationOptions.map((option, i) => (
-                                            <option key={i} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        Remove
+                                    </button>
                                 </div>
+                            ))}
+
+                            <div className='flex flex-row justify-center'>
                                 
-                                <button
-                                    onClick={() => handleRemoveHighEdu(index)}
-                                    className="px-4 py-2 ml-[170px] mt-3 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
+                                <button 
+                                    onClick={handleAddHighEdu}
+                                    className="px-4 py-2 mb-[30px] ml-[35px] border-4 border-indigo-900  text-slate-700 rounded-md focus:outline-none  transition duration-200 hover:rounded-full hover:bg-slate-300"
                                 >
-                                    Remove
+                                    Add Higher Education
                                 </button>
                             </div>
-                        ))}
-                        <div className='flex flex-row justify-center'>
-                            {/* Button to add new work experience */}
-                            <button 
-                                onClick={handleAddHighEdu}
-                                className="px-4 py-2 ml-[50px] bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200"
-                            >
-                                Add Higher Education
-                            </button>
-                        </div>
-                        
-                    </div>
 
-                    <div className='flex flex-col flex-grow mb-8 md:w-1/3'>
-                        <div className="flex flex-row justify-center mb-2">
-                            <h3 className="text-[35px] font-bold text-gray-800 mb-1 ml-[130px] ">Work Experience</h3>
                         </div>
-                        {editedUser.work_exp.map((workExp, index) => (
-                            <div key={index} className="mb-4 ml-[170px] bg-opacity-0.8 rounded-md p-4">
-                                <input
-                                    type="text"
-                                    name="job_title"
-                                    placeholder="Job Title"
-                                    value={workExp.job_title || ''}
-                                    onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                    className="w-[450px] border-gray-500 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                />
-                                <input
-                                    type="text"
-                                    name="company"
-                                    placeholder="Company"
-                                    value={workExp.company || ''}
-                                    onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                    className="w-[450px] border-gray-500  px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500 mt-3"
-                                />
-                                <div className="flex flex-row mb-2 space-x-4 mt-3">
-                                    <input
-                                        type="text"
-                                        name="startYear"
-                                        placeholder='Start Year'
-                                        value={workExp.startYear || ''}
-                                        onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                        className="w-[200px]  border-gray-500  px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="endYear"
-                                        placeholder='Start Year'
-                                        value={workExp.endYear || ''}
-                                        onChange={(e) => handleInputChangeWorkExp(e, index)}
-                                        className="w-[200px] border-gray-500  px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                    />
+                        </div>
+
+                        <div className='shadow-xl w-[600px] mr-[120px] mt-[30px] flex flex-col items-center bg-slate-300 rounded-3xl'>
+                            <div className='flex flex-col  '>
+                            <div className="flex flex-row items-center ml-[150px]  justify-center mt-5 w-[320px] h-[50px] rounded-full bg-indigo-900 text-white">
+                            <h3 className="text-3xl font-bold ">Work Experience</h3>
+                        </div>
+                                {editedUser.work_exp.map((workExp, index) => (
+                                    <div key={index} className=" ml-[70px] bg-opacity-0.8 rounded-md p-4">
+                                        <input
+                                            type="text"
+                                            name="job_title"
+                                            placeholder="Job Title"
+                                            value={workExp.job_title || ''}
+                                            onChange={(e) => handleInputChangeWorkExp(e, index)}
+                                            className="w-[450px] border-gray-500 bg-slate-100 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        />
+                                        <input
+                                            type="text"
+                                            name="company"
+                                            placeholder="Company"
+                                            value={workExp.company || ''}
+                                            onChange={(e) => handleInputChangeWorkExp(e, index)}
+                                            className="w-[450px] border-gray-500 bg-slate-100 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500 mt-3"
+                                        />
+                                        <div className="flex flex-row mb-2 space-x-4 mt-3">
+                                            <input
+                                                type="text"
+                                                name="startYear"
+                                                placeholder='Start Year'
+                                                value={workExp.startYear || ''}
+                                                onChange={(e) => handleInputChangeWorkExp(e, index)}
+                                                className="w-[200px]  border-gray-500 bg-slate-100 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="endYear"
+                                                placeholder='Start Year'
+                                                value={workExp.endYear || ''}
+                                                onChange={(e) => handleInputChangeWorkExp(e, index)}
+                                                className="w-[200px] border-gray-500  bg-slate-100 px-4 py-2 mb-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+                                        <button
+                                            onClick={() => handleRemoveWorkExp(index)}
+                                            className="px-4 py-2 hover:bg-slate-300 text-slate-700 rounded-md focus:outline-none   hover:rounded-full transition duration-200 mt-3 border-4 border-indigo-900"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))}
+                                <div className='flex flex-row justify-center'>
+                                   
+                                    <button 
+                                        onClick={handleAddWorkExp}
+                                        className="px-4 py-2 mb-[30px] ml-[35px] border-4 border-indigo-900  text-slate-700 rounded-md focus:outline-none  transition duration-200 hover:rounded-full hover:bg-slate-300"
+                                    >
+                                        Add Work Experience
+                                    </button>
                                 </div>
-                                <button
-                                    onClick={() => handleRemoveWorkExp(index)}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200 mt-3"
-                                >
-                                    Remove
-                                </button>
                             </div>
-                        ))}
-                        <div className='flex flex-row justify-center'>
-                            {/* Button to add new work experience */}
-                            <button 
-                                onClick={handleAddWorkExp}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md focus:outline-none hover:bg-blue-900 transition duration-200 ml-[50px]"
-                            >
-                                Add Work Experience
-                            </button>
                         </div>
+                        </div>
+                    
+                    <div className="mb-4 p-1 flex justify-center mt-10">
+                        <button
+                            className="bg-slate-100 text-slate-700 px-6 py-3 border-4 border-indigo-900 rounded-lg hover:rounded-full hover:bg-indigo-950 text-lg font-semibold hover:text-white"
+                            onClick={handleSaveChanges}
+                        >
+                            Save Changes
+                        </button>
                     </div>
-                    </div>
-
-                {/* </div> */}
-
-                <div className="mb-4 p-1 flex justify-center">
-                    <button
-                        className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-semibold"
-                        onClick={handleSaveChanges}
-                    >
-                        Save Changes
-                    </button>
-                </div>
+                
             </>
             
         );
