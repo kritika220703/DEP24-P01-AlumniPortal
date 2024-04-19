@@ -18,6 +18,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import image from '.././assets/Spiraliitropar.jpg'
 import {motion} from 'framer-motion'
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 const toastOptions = {
     position: "bottom-right",
@@ -222,32 +223,43 @@ const SignUp = () => {
             toast.error(errorMessage, toastOptions);
             return;
         }
+
+        if(selectedOption=="Alumni"){
         
-        const colRef = collection(db, 'Users');
-        console.log(colRef);
-        const q = query(colRef, where('email', '==', email));
+          const colRef = collection(db, 'Users');
+          const q = query(colRef, where('email', '==', email));
 
-        try {
-            console.log("in signup try part")
-            const snapshot = await getDocs(q);
-          
-            if (snapshot.size > 0) {
-              // Documents satisfying the query exist
-                errorMessage = "Entered email is already in use. Please log in or use different email id.";
-                toast.error(errorMessage, toastOptions);
-                return;
-            } 
-        } catch (error) {
-            console.error('Error getting documents:', error);
+          try {
+              console.log("in signup try part")
+              const snapshot = await getDocs(q);
+            
+              if (snapshot.size > 0) {
+                // Documents satisfying the query exist
+                  errorMessage = "Entered email is already in use. Please log in or use different email id.";
+                  toast.error(errorMessage, toastOptions);
+                  return;
+              } 
+          } catch (error) {
+              console.error('Error getting documents:', error);
+          }
         }
+        else{
+          const colRef = collection(db, 'admin');
+          const q = query(colRef, where('email', '==', email));
 
-        // if (selectedOption==="Alumni" && (!editedUser || editedUser['entryNo'] === '')) {
-        //     errorMessage = "User is not a Member";
-        //     toast.error(errorMessage, toastOptions);
-        //     navigate("/BecomeAMember");
-        //     return;
-        // }
-
+          try {
+              console.log("in signup try part")
+              const snapshot = await getDocs(q);
+            
+              if (snapshot.size > 0) {
+                  errorMessage = "Entered email is already in use. Please log in or use different email id.";
+                  toast.error(errorMessage, toastOptions);
+                  return;
+              } 
+          } catch (error) {
+              console.error('Error getting documents:', error);
+          }
+        }
         setIsLoading(true);
         try {
             const data = {
@@ -288,16 +300,17 @@ const SignUp = () => {
         setIsLoading(true);
         try {
             if(otp ==="000000"){
-                await signup(email, "666666", name);
-                console.log("signup done");
-                notifySuccess("OTP verified successfully");
-
-                const userId = auth.currentUser.uid;
-                if(selectedOption === "Alumni"){
+              if(selectedOption === "Alumni"){
+                  await signup(email, "666666", name);
+                  console.log("signup done");
+                  notifySuccess("OTP verified successfully");
+  
+                  const userId = auth.currentUser.uid;
                     localStorage.setItem("isAdmin", "false");
                     navigate('/becomeamember', { state: { userId, email } });
                 }
                 if(selectedOption === "Admin"){
+                    notifySuccess("OTP verified successfully");
                     console.log("in dens admin mail frontend")
                     const data = {
                         email: email,
@@ -317,7 +330,13 @@ const SignUp = () => {
                         return;
                     }
                     notifySuccess("Email sent to Admin for approval.")
+                    const docRef = await addDoc(collection(db, "admin"), {
+                      approved: false,
+                      email: email,
+                    });
+                    console.log(docRef);
                     navigate("/login");
+                    return;
                 }
                 setIsOtpSent(false);
                 return;
@@ -343,19 +362,21 @@ const SignUp = () => {
                 navigate("/signup");
                 return;
             } else {
-                await signup(email, "666666", name);
-                console.log("signup done");
-                notifySuccess("OTP verified successfully");
-
-                const userId = auth.currentUser.uid;
-                // Storing user ID in local storage
-                if(selectedOption === "Alumni"){
+              if(selectedOption === "Alumni"){
+                  await signup(email, "666666", name);
+                  console.log("signup done");
+                  notifySuccess("OTP verified successfully");
+  
+                  const userId = auth.currentUser.uid;
+                  // Storing user ID in local storage
                     // localStorage.setItem("userId", userId);
                     localStorage.setItem("isAdmin", "false");
                     navigate('/becomeamember', { state: { userId, email } });
+                    return;
                 }
                 
                 if(selectedOption === "Admin"){
+                    notifySuccess("OTP verified successfully");
                     console.log("in dens admin mail frontend")
                     const data = {
                         email: email,
@@ -377,7 +398,13 @@ const SignUp = () => {
                         return;
                     }
                     notifySuccess("Email sent to Admin for approval.")
+                    const docRef = await addDoc(collection(db, "admin"), {
+                      approved: false,
+                      email: email,
+                    });
+                    console.log(docRef);
                     navigate("/login");
+                    return;
                 }
                 // if(email === "2021csb1184@iitrpr.ac.in"){
                 //     setIsAdmin(true);
