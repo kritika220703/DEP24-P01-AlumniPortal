@@ -1,12 +1,10 @@
-
 import React, {useContext, useState, useEffect} from 'react'
-
 import StateContext from '../StateContext.js';
 import NewsUpdate from "../components/NewsUpdate";
 import BecomeMember from '../components/BecomeMember';
 import TextSlider from '../components/TextSlider';
 import { useNavigate  } from 'react-router-dom';
-import image1 from '.././assets/a1.jpg'
+import image1 from '.././assets/a4.jpg'
 import image4 from '.././assets/a4.jpeg'
 import image3 from '.././assets/fund6.png'
 import {motion} from 'framer-motion'
@@ -23,10 +21,10 @@ const Home = () => {
     });
     const Slides = [
         {
-          url:image1,
+          url:image3,
         },
         {
-            url:image3,
+            url:image1,
         },
         {
             url:image4,
@@ -81,7 +79,6 @@ const Home = () => {
                 console.error('Error fetching professor messages:', error);
             }
         };
-
         fetchProfessorMessages();
     }, []);
 
@@ -128,7 +125,8 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className='text-[70px] text-black font-semibold mb-4 mt-10'
+            className={`text-[70px] ${currentIndex === 1 ? 'text-white' : 'text-black'} font-semibold mb-4 mt-10`}
+            // className='text-[70px] text-black font-semibold mb-4 mt-10'
           >
             Welcome to Alumni Relations
           </motion.h1>
@@ -139,7 +137,8 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className='text-[70px] text-black font-semibold mb-4'
+            className={`text-[70px] ${currentIndex === 1 ? 'text-white' : 'text-black'} font-semibold mb-4`}
+            // className='text-[70px] text-black font-semibold mb-4'
           >
             Welcome to Alumni Relations
           </motion.h1>
@@ -148,7 +147,8 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1 }}
-              className='text-[25px]  text-black mb-8 w-full whitespace-nowrap'
+              className={`text-[25px] ${currentIndex === 1 ? 'text-white' : 'text-black'} mb-8 w-full whitespace-nowrap`}
+              // className='text-[25px]  text-black mb-8 w-full whitespace-nowrap'
             >
               Register now and become a member of Alumni Association of IIT Ropar.
             </motion.p>
@@ -157,7 +157,8 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.5 }}
-            className='bg-transparent border-blue-900 border-[4px] rounded-full text-black text-[27px] font-bold py-2 px-3'
+            className={`text-[27px] ${currentIndex === 1 ? 'text-white' : 'text-black'} bg-transparent border-blue-900 border-[4px] rounded-full font-bold py-2 px-3`}
+            // className='bg-transparent border-blue-900 border-[4px] rounded-full text-black text-[27px] font-bold py-2 px-3'
             onClick={() => { navigate('/BecomeAMember') }}
           >
             Register Now
