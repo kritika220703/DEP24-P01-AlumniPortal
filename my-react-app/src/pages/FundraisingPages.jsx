@@ -72,8 +72,8 @@ const FundraisingPages = () => {
                 </div>
             </div>
 
-            <div className="flex flex-row w-[1100px] h-[800px] gap-[25px] mb-8">
-                <div className="w-[730px] h-[700px] flex flex-col shadow-lg rounded-xl bg-white">
+            <div className="flex flex-row w-[1100px] gap-[25px] mb-8">
+                <div className="w-[730px] flex flex-col shadow-lg rounded-xl bg-white">
                     <p className="text-gray-600 px-8 pt-8">{cardData.shortDescription}</p>
                     <p className="text-gray-600 px-8 pt-4">
                         To donate using your Credit Card or PayPal, please click the{' '}
@@ -85,7 +85,7 @@ const FundraisingPages = () => {
                             donate in INR or other non-USD currencies.
                         </span>
                     </p>
-                    <div className="w-full h-[320px] bg-[#E3FEF7] px-8 pt-4">
+                    <div className="bg-[#E3FEF7] px-8 py-6 mx-5 my-5 ">
                         <p className="text-gray-600">{cardData.longDescription}</p>
                     </div>
                     <div className="p-8 ml-[250px]">

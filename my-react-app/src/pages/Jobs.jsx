@@ -110,7 +110,7 @@ const Internship = () => {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-[560px] h-[600px] mt-[20px] mb-[40px] mx-auto bg-slate-200 p-8 shadow-2xl rounded-lg "
+        className="w-[560px] mt-[20px] mb-[40px] mx-auto bg-slate-200 p-8 shadow-2xl rounded-lg "
       >
           <h1 className="text-[30px] font-bold mb-5 text-center">Fill the Form Here</h1>
           <form onSubmit={handleSubmit}>
