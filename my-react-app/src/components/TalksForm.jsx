@@ -67,11 +67,8 @@ const TalksForm = () => {
             toast.error(errorMessage, toastOptions);
             return;
         }
-        console.log(new Date());
         setCurrentDate(new Date());
         const currdate = formatDate(currentDate);
-        console.log(currdate);
-        console.log(date);
         if(date < currdate){
             errorMessage  = "Please provide Valid date.";
             toast.error(errorMessage, toastOptions);
