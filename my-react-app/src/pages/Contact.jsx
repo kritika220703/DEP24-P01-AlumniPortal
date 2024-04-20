@@ -1,9 +1,10 @@
 import React from 'react'
 import admin from '.././assets/admin.png'
 import image from '.././assets/img4.jpg'
-import { useState } from 'react';
+import { useState, } from 'react';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
 
 // import Captcha from 'react-captcha-code';
 import Captcha from '../components/captcha';
@@ -17,6 +18,7 @@ const toastOptions = {
 };
 
 const Contact = () => {
+  const navigate = useNavigate();
   const [organisation, setOrganisation] = useState('');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -73,7 +75,7 @@ const Contact = () => {
       return;
     }
 
-    if(phone.length!==10){
+    if(phone.length!==10 || isNaN(phone)){
       errorMessage = "Enter a valid Phone Number.";
       toast.error(errorMessage, toastOptions);
       return;
@@ -188,7 +190,7 @@ const Contact = () => {
       </div>
 
       <div className='flex flex-row'>
-        <div className="w-[700px] h-[700px] mt-[50px] mx-auto bg-white p-8 border border-gray-300 rounded-lg">
+        <div className="w-[700px] mt-[50px] mb-[50px] mx-auto bg-white p-8 border border-gray-300 rounded-lg">
           <h1 className="text-xl font-bold mb-4 text-center">Call Back or Mail to</h1>
           <form onSubmit={handleSubmit}>
             <div className="relative inline-block text-left">
@@ -306,7 +308,7 @@ const Contact = () => {
             it's an investment in the leaders, thinkers, and innovators of tomorrow. Together, we can make a difference. 
             Donate today.
           </p>
-          <button className='bg-indigo-800 w-[80px] mt-10 h-[50px] rounded-xl cursor-pointer text-white ml-[300px] '>
+          <button className='bg-indigo-800 w-[80px] mt-10 h-[50px] rounded-xl cursor-pointer text-white ml-[300px] ' onClick={() => navigate("/donate")}>
            Donate
           </button>
         </div>

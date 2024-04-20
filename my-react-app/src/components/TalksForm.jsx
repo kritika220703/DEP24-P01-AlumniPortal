@@ -14,7 +14,10 @@ const TalksForm = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const userId = localStorage.getItem("userId")
+    const userId = localStorage.getItem("userId");
+    const [currentDate, setCurrentDate] = useState(new Date());
+
+
     console.log(userId);
     
     const toastOptions = {
@@ -28,6 +31,13 @@ const TalksForm = () => {
     let errorMessage = "";
     const notifySuccess = (message) => {
         toast.success(message, toastOptions);
+    };
+
+    const formatDate = (date) => {
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear().toString();
+        return `${year}-${month}-${day}`;
     };
 
     const handleSubmit = async (e) => {
@@ -54,6 +64,13 @@ const TalksForm = () => {
 
         if(date === ""){
             errorMessage  = "Please provide date.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+        setCurrentDate(new Date());
+        const currdate = formatDate(currentDate);
+        if(date < currdate){
+            errorMessage  = "Please provide Valid date.";
             toast.error(errorMessage, toastOptions);
             return;
         }
@@ -125,6 +142,10 @@ const TalksForm = () => {
 
                 notifySuccess("Mail sent successfully to admin!")
                 console.log('Form submitted:', { topic, type, content, date });
+                // Reload the page
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000); // Reload after 3 seconds
 
             });
 
@@ -132,11 +153,6 @@ const TalksForm = () => {
             errorMessage = "Error submitting form!";
             toast.error(errorMessage, toastOptions);
         }
-
-        // Reload the page
-        setTimeout(() => {
-            window.location.reload();
-        }, 5000); // Reload after 3 seconds
 
     };
 

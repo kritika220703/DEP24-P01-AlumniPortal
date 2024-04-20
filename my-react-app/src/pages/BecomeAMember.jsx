@@ -119,7 +119,7 @@ const BecomeAMember = () => {
     const currentYear = new Date().getFullYear();
     const inputYear = parseInt(editedUser["passingYear"], 10);
     if (currentYear < inputYear) {
-      setErrorMessage("Passing year should be less than input year");
+      setErrorMessage("Passing year should be less than current year");
       return;
     }
     if (editedUser["phone"].length !== 10 || isNaN(editedUser["phone"])) {
@@ -157,9 +157,9 @@ const BecomeAMember = () => {
         return (
           workExp &&
           !isNaN(workExp.startYear) &&
-          !isNaN(workExp.endYear) &&
+          (!isNaN(workExp.endYear) || workExp.endYear === "Present" || workExp.endYear === "present") &&
           workExp.startYear.length === 4 &&
-          workExp.endYear.length === 4
+          (workExp.endYear.length === 4|| workExp.endYear === "Present" || workExp.endYear === "present")
         );
       });
 
@@ -167,8 +167,8 @@ const BecomeAMember = () => {
         return (
           workExp &&
           !isNaN(workExp.startYear) &&
-          !isNaN(workExp.endYear) &&
-          parseInt(workExp.startYear, 10) < parseInt(workExp.endYear, 10)
+          (!isNaN(workExp.endYear)|| workExp.endYear === "Present" || workExp.endYear === "present") &&
+          (parseInt(workExp.startYear, 10) < parseInt(workExp.endYear, 10) || workExp.endYear === "Present" || workExp.endYear === "present" )
         );
       });
 
@@ -202,22 +202,24 @@ const BecomeAMember = () => {
           highEdu.endYear
         );
       });
+
+      
       const isEduYear = editedUser.higherEducation.every((highEdu) => {
         return (
           highEdu &&
-          !isNaN(highEdu.endYear) &&
+          (!isNaN(highEdu.endYear)||  highEdu.endYear==="Present"  || highEdu.endYear==="present") &&
           !isNaN(highEdu.startYear) &&
           highEdu.startYear.length === 4 &&
-          highEdu.endYear.length === 4
+          (highEdu.endYear.length === 4 ||  highEdu.endYear==="Present"  || highEdu.endYear==="present")
         );
       });
 
       const joining_passing = editedUser.higherEducation.every((highEdu) => {
         return (
           highEdu &&
-          !isNaN(highEdu.endYear) &&
+          (!isNaN(highEdu.endYear) ||  highEdu.endYear==="Present"  || highEdu.endYear==="present" ) &&
           !isNaN(highEdu.startYear) &&
-          parseInt(highEdu.startYear, 10) < parseInt(highEdu.endYear, 10)
+          (parseInt(highEdu.startYear, 10) < parseInt(highEdu.endYear, 10)||  highEdu.endYear==="Present"  || highEdu.endYear==="present")
         );
       });
 
@@ -799,7 +801,7 @@ const BecomeAMember = () => {
                       <option value="chenab">Chenab</option>
                       <option value="ravi">Ravi</option>
                       <option value="satluj">Satluj</option>
-                      <option value="bhramputra">Bhramputra</option>
+                      <option value="bhramputra">Brahmaputra</option>
                       <option value="beas">Beas</option>
                       {/* Add more options as needed */}
                     </select>
@@ -823,7 +825,7 @@ const BecomeAMember = () => {
                   </label>
 
                   <label>
-                    Your Phone/WhatsApp Numbers*
+                    Your Phone/WhatsApp Number*
                     <br />
                     <select
                       id="country-code"

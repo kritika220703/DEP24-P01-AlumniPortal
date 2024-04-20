@@ -333,7 +333,7 @@ const GivingBack = () => {
                   value="30-60 Days" 
                   onChange={(e) => setDuration(e.target.value)}
                 /> 
-                  30-60 Days
+                 &nbsp;30-60 Days
                 <br />
                 <input 
                   type="checkbox" 
@@ -341,7 +341,7 @@ const GivingBack = () => {
                   value="15-30 Days"
                   onChange={(e) => setDuration(e.target.value)} 
                 /> 
-                  15-30 Days
+                  &nbsp;15-30 Days
                 <br />
                 <input 
                   type="checkbox" 
@@ -349,7 +349,7 @@ const GivingBack = () => {
                   value="7-15 Days" 
                   onChange={(e) => setDuration(e.target.value)}
                 /> 
-                  7-15 Days
+                  &nbsp;7-15 Days
                 <br />
                 <input 
                   type="checkbox"   
@@ -357,7 +357,7 @@ const GivingBack = () => {
                   value="Within a Week" 
                   onChange={(e) => setDuration(e.target.value)}
                 /> 
-                  Within a Week
+                  &nbsp;Within a Week
               </label>
               <br />
               <div className="mb-4">

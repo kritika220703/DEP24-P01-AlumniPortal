@@ -15,6 +15,7 @@ const WorkshopsForm = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [currentDate, setCurrentDate] = useState(new Date());
     const userId = localStorage.getItem("userId")
     console.log(userId);
 
@@ -29,6 +30,13 @@ const WorkshopsForm = () => {
     let errorMessage = "";
     const notifySuccess = (message) => {
         toast.success(message, toastOptions);
+    };
+
+    const formatDate = (date) => {
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear().toString();
+        return `${year}-${month}-${day}`;
     };
 
     const handleSubmit = async (e) => {
@@ -55,6 +63,13 @@ const WorkshopsForm = () => {
 
         if(date === ""){
             errorMessage  = "Please provide date.";
+            toast.error(errorMessage, toastOptions);
+            return;
+        }
+        setCurrentDate(new Date());
+        const currdate = formatDate(currentDate);
+        if(date < currdate){
+            errorMessage  = "Please provide Valid date.";
             toast.error(errorMessage, toastOptions);
             return;
         }

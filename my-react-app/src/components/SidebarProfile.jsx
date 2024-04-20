@@ -10,7 +10,8 @@ const SidebarProfile = ({ setSelectedOption }) => {
     { name: "Alumni",  margin: true },
     { name: "Give Back in Kind" },
     { name: "Past Reunions" },
-    { name: "Planned Reunions" }
+    { name: "Planned Reunions" },
+    {name : "Admin"}
   ];
 
   const [open, setOpen] = useState(false);
