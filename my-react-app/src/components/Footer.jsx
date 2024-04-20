@@ -40,6 +40,8 @@ const Footer = () => {
             <li className='hover:text-white'><Link to="/Donate">Donate</Link></li>
             <li className='hover:text-white'><Link to="/BecomeAMember">Become a member</Link></li>
             <li className='hover:text-white'><Link to="/givingback">Give Back</Link></li>
+            <li className='hover:text-white'><Link to="/fund">Fundraising</Link></li>
+            <li className='hover:text-white'><Link to="/Jobs">Intern & Full-time Opportunities</Link></li>
         </ul>
     </div>
 

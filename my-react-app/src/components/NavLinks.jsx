@@ -11,7 +11,7 @@ const NavLinks = () => {
                 // { name: "Gallery", path: "/pages/Gallery" },
                 { name: "Become A member", path: "/BecomeAMember" },
                 // { name: "Counter", path: "/pages/Counter" },
-                { name: "Messages", path: "/Messages" },
+                // { name: "Messages", path: "/Messages" },
             ]
         },
         {
@@ -54,22 +54,22 @@ const NavLinks = () => {
                         </a>
                         {link.submenu && (
                             <div
-                                className="absolute top-full border border-gray-400 rounded left-0 hidden group-hover:block bg-gray-100 w-[110px] z-10"
+                                className="absolute top-full border-2 border-indigo-950 rounded-lg left-0 hidden group-hover:block bg-gray-100 w-[110px] z-10 shadow-xl"
                             >
                                 {/* <div className="py-2">
                                     <div className="w-4 h-4 -mt-1 ml-3 bg-gray-100 transform rotate-45 absolute"></div>
                                 </div> */}
-                                <div className="bg-gray-300 ">
-                                <div className="ml-3">
+                                <div className="bg-slate-200 rounded-lg ">
+                                <div className="">
                                     <div className="flex flex-col gap-[5px] ">
                                         {link.sublinks.map((sublink) => (
 
                                             <a
                                                 key={sublink.path}
                                                 href={sublink.path}
-                                                className="text-sm text-gray-600 my-1  duration-300 w-[90px] h-[45px] hover:bg-blue-300 hover:text-white rounded flex items-center " 
+                                                className="text-sm text-gray-600 my-1  duration-300  h-[45px] hover:bg-blue-300 hover:text-white flex items-center  " 
                                             >
-                                                <div className='ml-2'>
+                                                <div className='ml-3'>
                                                 {sublink.name}
                                                 </div>
                                             </a>
