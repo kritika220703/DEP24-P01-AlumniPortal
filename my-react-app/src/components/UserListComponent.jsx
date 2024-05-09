@@ -24,6 +24,7 @@ import { FaArrowDown } from "react-icons/fa6";
 import ApprovalUpdatePopUp from "./ApprovalUpdatePopUp.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const SmoothTransitionOption = ({ text, isSelected, onClick }) => {
   return (
@@ -46,6 +47,8 @@ const UserListComponent = () => {
   const [showPopup, setShowPopup] = useState({ show: false, userId: null });
   const [userId, setUserId] = useState("");
   console.log("userid: ", userId);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -399,6 +402,9 @@ const notifySuccess = (message) => {
                           columnName="approved"
                         />
                       </StyledTableCell>
+                      <StyledTableCell align="right">
+                        User Profile{" "}
+                      </StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -427,6 +433,18 @@ const notifySuccess = (message) => {
                         <StyledTableCell align="right">
                           {getStatusButton(user.approved, user.uid, user.email, user.name)}
                         </StyledTableCell>
+                        <StyledTableCell align="right">
+                        <Link
+                          className="text-blue-500 hover:underline"
+                          onClick={(e) => {
+                              e.preventDefault();
+                              navigate(`/profile2adminside`, { state: { userId: user.uid } });
+                          }}
+                      >
+                          Show User Profile
+                      </Link>
+
+                      </StyledTableCell>
                       </StyledTableRow>
                     ))}
                   </TableBody>

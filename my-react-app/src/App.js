@@ -35,6 +35,7 @@ import GivingBackInKindListComponent from './components/GivingBackInKindList';
 import FundraisingPages from './pages/FundraisingPages';
 import RegistrationsPage from './components/RegistrationsPage';
 import TableComponent from './pages/TableComponent';
+import Profile2adminside from './pages/Profile2adminside';
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
           <Route exact path="/Jobs" element={<Jobs/>} />
           <Route path="/FundraisingPages/:id" element={<FundraisingPages />} />
           <Route path="/registrations/:batch" element={<RegistrationsPage/>} />
+          <Route exact path="/profile2adminside" element={<Profile2adminside />} />
         </Routes>
       </AuthProvider>
     </div>
