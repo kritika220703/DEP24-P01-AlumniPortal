@@ -68,19 +68,28 @@ const Profile = () => {
     const [profileURL, setProfileURL] = useState(dp);
     const [editedUser, setEditedUser] = useState({
         name: '',
-        email: '',
         phone: '',
-        institute: '',
+        contrycode: '',
         entryNo: '',
+        country: '',
+        hostel: '',
         linkedin: '',
-        address: '',
         degree: '',
         department: '',
         passingYear: '',
-        work_exp: [{}], // Store work experience as an array
-        higherEducation: [{}], // Store work experience as an array
-        profilepic: '',
-        profileURL: ''
+        joiningYear: '',
+        work_exp: [{}], 
+        higherEducation: [{}],// Store work experience as an array
+        others: '',
+        profileURL: '',
+        email: '',
+        approved:false,
+        primaryemail:"",
+        additional_degree:"",
+        por:"",
+        placeofposting:"",
+        suggestions:""
+  
     });
     
     const navigate = useNavigate(); 
@@ -141,14 +150,17 @@ const Profile = () => {
             institute: userData?.institute || '',
             entryNo: userData?.entryNo || '',
             linkedin: userData?.linkedin || '',
-            address: userData?.address || '',
             degree: userData?.degree || '',
             department: userData?.department || '',
             passingYear: userData?.passingYear || '',
             work_exp: userData?.work_exp || [{}],
             higherEducation: userData?.higherEducation || [{}],
             profilepic: userData?.profilePicture || '',
-            profileURL: userData.profileURL || ''
+            profileURL: userData?.profileURL || '',
+            primaryemail: userData?.primaryemail || '',
+            additional_degree: userData?.additional_degree || '',
+            por: userData?.por || '',
+            placeofposting: userData?.placeofposting || '',
         });
     };
 
@@ -359,7 +371,7 @@ const Profile = () => {
                         </div>
                         <div className='flex flex-row gap-[35px]'>
                         <p className='font-semibold text-[20px] flex flex-row gap-2'><AiOutlineLinkedin className='mt-1.5'/>{userData.linkedin}</p>
-                        <p className='font-semibold text-[20px] flex flex-row gap-2'><IoLocationOutline className='mt-1.5'/>{userData.address}</p>
+                        <p className='font-semibold text-[20px] flex flex-row gap-2'><IoLocationOutline className='mt-1.5'/>{userData.placeofposting}</p>
                         </div>
                       </div>
 
