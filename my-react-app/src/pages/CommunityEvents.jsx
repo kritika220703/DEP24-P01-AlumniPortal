@@ -84,9 +84,10 @@ const CommunityEvents = () => {
       confirm1();
     }
   }, [currtitle]);
-  
+
 
   const accept = async () => {
+
     try {
         // Get the userId from localStorage
         const userId = localStorage.getItem("userId");
@@ -110,12 +111,27 @@ const CommunityEvents = () => {
                     const isAlreadyRegistered = data.registeredCandidates?.some(candidate => candidate.email === email);
 
                     if (!isAlreadyRegistered) {
-                        const updatedCandidates = [...(data.registeredCandidates || []), { name, email, entryNo }];
-                        updateDoc(doc(db, 'plannedReunions', reunionDoc.id), { registeredCandidates: updatedCandidates }, { merge: true });
-                        toast.current.show({ severity: 'info', summary: 'Confirmed', detail: `You are Successfully Registered `, life: 3000 });
-                        setTimeout(() => {
-                          window.location.reload();
-                        }, 1000); // Reload after 3 seconds
+                        confirmDialog({
+                          message: 'Please pay the fees amount:',
+                          header: 'Fees Confirmation',
+                          icon: 'pi pi-info-circle',
+                          acceptLabel: 'Continue to pay',
+                          rejectLabel: 'Cancel',
+                          style: { width: '350px' , display: 'flex',justifyContent: 'space-between' },
+                          accept: (fees) => {
+                              console.log('Fees accepted:', fees);
+                              const updatedCandidates = [...(data.registeredCandidates || []), { name, email, entryNo }];
+                              updateDoc(doc(db, 'plannedReunions', reunionDoc.id), { registeredCandidates: updatedCandidates }, { merge: true });
+                              toast.current.show({ severity: 'info', summary: 'Confirmed', detail: `You are Successfully Registered `, life: 3000 });
+                              setTimeout(() => {
+                                  window.location.reload();
+                              }, 1000); // Reload after 3 seconds
+                          },
+                          reject: () => {
+                              console.log('Fees rejected');
+                              // You can handle rejection here if needed
+                          },
+                      });
                     } else {
                         console.log('Already registered');
                         toast.current.show({ severity: 'error', summary: 'Error', detail: 'User Already Registered', life: 3000 });
@@ -152,11 +168,13 @@ const CommunityEvents = () => {
       });
   };
 
-  const renderPlannedReunionRow = (batch, year, date, title) => {
+
+  const renderPlannedReunionRow = (batch, year, date,fees, title) => {
     const isRegistered = userregistered.includes(title);
 
     const registerButtonClickHandler = () => {
       if (!isRegistered) {
+
         setCurrtitle(title);
         confirm1();
       }
@@ -166,6 +184,7 @@ const CommunityEvents = () => {
         <td>{batch}</td>
         <td>{date}</td>
         <td>{title}</td>
+        <td>{fees}</td>
         <td>
           {isLoggedIn ? (
             <Button
@@ -207,7 +226,7 @@ const CommunityEvents = () => {
       <Toast ref={toast} />
       <ConfirmDialog />
       <div className='community-events-heading'>
-        <h1>  <FontAwesomeIcon icon={faHandshake } />  Community Events</h1>
+        <h1>  <FontAwesomeIcon icon={faHandshake } />  Reunions</h1>
       </div>
       <Gallery/>
 
@@ -233,12 +252,13 @@ const CommunityEvents = () => {
               <th>Batch</th>
               <th>Date</th>
               <th>Title</th>
+              <th>Fees</th>
               <th>Register </th>
             </tr>
           </thead>
           <tbody>
             {plannedReunions.map(reunion => (
-              renderPlannedReunionRow(reunion.batch, reunion.year, reunion.date, reunion.title)
+              renderPlannedReunionRow(reunion.batch, reunion.year, reunion.date,reunion.fees, reunion.title)
             ))}
           </tbody>
         </table>
