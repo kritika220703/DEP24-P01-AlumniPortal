@@ -23,6 +23,10 @@ const PlannedReunionsList = () => {
     batch: [],
   });
 
+  const [searchBatch, setSearchBatch] = useState('');
+  
+  const [searchTitle, setSearchTitle] = useState('');
+
   useEffect(() => {
     // Fetch data from Firebase Firestore
     const fetchData = async () => {
@@ -49,7 +53,7 @@ const PlannedReunionsList = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [filters]);
+  }, [filters, searchBatch, searchTitle]);
 
   const applyFilter = () => {
     let filtered = [...users];
@@ -61,7 +65,27 @@ const PlannedReunionsList = () => {
         );
       }
     });
+    if (searchBatch !== '') {
+      filtered = filtered.filter(user => user.batch && user.batch.includes(searchBatch));
+    }
+    
+    if (searchTitle !== '') {
+      filtered = filtered.filter(user => user.title.toLowerCase().includes(searchTitle.toLowerCase()));
+    }
     setFilteredUsers(filtered);
+  };
+
+  const handleSearchBatchChange = (e) => {
+    const value = e.target.value;
+   
+      setSearchBatch(value);
+    
+  };
+
+ 
+
+  const handleSearchTitleChange = (e) => {
+    setSearchTitle(e.target.value);
   };
 
   const FilterDropdown = ({ options, columnName }) => {
@@ -156,6 +180,23 @@ const PlannedReunionsList = () => {
             Planned Reunions
           </h2>
         </motion.div>
+      </div>
+
+      <div className="w-[1000px] flex flex-row gap-[30px]">
+      <input
+        type="text"
+        placeholder="Search by Batch Number"
+        value={searchBatch}
+        onChange={handleSearchBatchChange}
+        className="p-2 border-2 border-gray-700 w-[300px] rounded-md bg-slate-200 focus:outline-none mb-4"
+      />
+      <input
+        type="text"
+        placeholder="Search by Title"
+        value={searchTitle}
+        onChange={handleSearchTitleChange}
+        className="p-2 border-2 border-gray-700 rounded-md bg-slate-200 w-[700px] focus:outline-none mb-4"
+      />
       </div>
 
       <TableContainer component={Paper} className="mb-[60px]">

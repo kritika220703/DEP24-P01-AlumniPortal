@@ -28,6 +28,9 @@ const GivingBackInKindListComponent = () => {
     duration: []
   });
 
+  const [searchNameEmail, setSearchNameEmail] = useState('');
+  const [searchPassingYear, setSearchPassingYear] = useState('');
+
   useEffect(() => {
     // Fetch data from Firebase Firestore
     const fetchData = async () => {
@@ -66,10 +69,19 @@ const GivingBackInKindListComponent = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [filters]);
+  }, [filters, searchNameEmail, searchPassingYear]);
 
   const applyFilter = () => {
     let filtered = [...users];
+    if (searchNameEmail !== '') {
+      filtered = filtered.filter(user => 
+        (user.name && user.name.toLowerCase().includes(searchNameEmail.toLowerCase())) || 
+        (user.email && user.email.toLowerCase().includes(searchNameEmail.toLowerCase()))
+      );
+    }
+    if (searchPassingYear !== '') {
+      filtered = filtered.filter(user => user.passingYear && user.passingYear.includes(searchPassingYear));
+    }
     Object.keys(filters).forEach(key => {
       const selectedFilters = filters[key];
       if (selectedFilters.length > 0) {
@@ -77,6 +89,14 @@ const GivingBackInKindListComponent = () => {
       }
     });
     setFilteredUsers(filtered);
+  };
+
+  const handleSearchNameEmailChange = (e) => {
+    setSearchNameEmail(e.target.value);
+  };
+
+  const handleSearchPassingYearChange = (e) => {
+    setSearchPassingYear(e.target.value);
   };
 
   const FilterDropdown = ({ options, columnName }) => {
@@ -176,7 +196,25 @@ const GivingBackInKindListComponent = () => {
       </h2>
     </motion.div>
       </div>
-      
+
+<div className='w-[1000px] flex flex-row gap-[30px]'>
+      <input
+        type="text"
+        placeholder="Search by Name or Email"
+        value={searchNameEmail}
+        onChange={handleSearchNameEmailChange}
+        className="p-2 border-2 border-gray-700 rounded-md w-[700px] bg-slate-200 focus:outline-none mb-4"
+      />
+
+      {/* Search bar for Year of Passing */}
+      <input
+        type="text"
+        placeholder="Search by Year of Passing"
+        value={searchPassingYear}
+        onChange={handleSearchPassingYearChange}
+        className="p-2 border-2 border-gray-700 rounded-md w-[260px] bg-slate-200 focus:outline-none mb-4"
+      />
+  </div>
 
 <TableContainer component={Paper} className='mb-[60px]'>
       <Table sx={{ minWidth: 700 }} aria-label="customized table" className='shadow-3xl '>
