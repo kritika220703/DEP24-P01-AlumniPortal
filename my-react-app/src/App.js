@@ -34,6 +34,7 @@ import UserListComponent from './components/UserListComponent';
 import GivingBackInKindListComponent from './components/GivingBackInKindList';
 import FundraisingPages from './pages/FundraisingPages';
 import RegistrationsPage from './components/RegistrationsPage';
+import TableComponent from './pages/TableComponent';
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
           <Route exact path="/faculty-program" element={<FacultyProgram/>} />
           <Route exact path="/hostel-project" element={<HostelProject/>} />
           <Route exact path="/project/:id" element={<ProjectDetails />} />
+          <Route exact path="/table" element={<TableComponent />} />
           {/* <Route exact path="/alumni" element={<UserListComponent/>} />
           <Route exact path="/givebackinkind" element={<GivingBackInKindListComponent/>} /> */}
           <Route exact path='/events' element={<PrivateRoute/>}>

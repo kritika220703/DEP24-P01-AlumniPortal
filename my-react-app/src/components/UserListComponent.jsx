@@ -292,6 +292,18 @@ const notifySuccess = (message) => {
     }
   };
 
+  const handleSearchEntryNo = (event) => {
+    const value = event.target.value.toLowerCase();
+    const filtered = users.filter(user => user.entryNo.toLowerCase().includes(value));
+    setFilteredUsers(filtered);
+  };
+
+  const handleSearchNameEmail = (event) => {
+    const value = event.target.value.toLowerCase();
+    const filtered = users.filter(user => user.name.toLowerCase().includes(value) || user.email.toLowerCase().includes(value));
+    setFilteredUsers(filtered);
+  };
+
   return (
     <div className="flex flex-row gap-[80px]">
       {/* <SidebarProfile /> */}
@@ -310,7 +322,21 @@ const notifySuccess = (message) => {
                   </h2>
                 </motion.div>
               </div>
-
+              <div className=" w-[1000px] flex flex-row mb-5 gap-[30px]">
+              <input
+                  type="text"
+                  placeholder="Search Name & Email"
+                  onChange={handleSearchNameEmail}
+                  className="w-[700px] p-2 border-2 rounded-md bg-slate-200 border-gray-700"
+                />
+                <input
+                  type="text"
+                  placeholder="Search Entry No."
+                  onChange={handleSearchEntryNo}
+                  className="p-2 border-2 rounded-md w-[300px] bg-slate-200 border-gray-700"
+                />
+               
+              </div>
               <TableContainer component={Paper}>
                 <Table
                   sx={{ minWidth: 700 }}
