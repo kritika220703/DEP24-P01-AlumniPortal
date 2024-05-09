@@ -53,7 +53,11 @@ const BecomeAMember = () => {
       profileURL: '',
       email: '',
       approved:false,
-      primaryemail:""
+      primaryemail:"",
+      additional_degree:"",
+      por:"",
+      placeofposting:"",
+      suggestions:""
 
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -170,6 +174,8 @@ const BecomeAMember = () => {
       "department",
       "passingYear",
       "joiningYear",
+      "placeofposting"
+
     ];
     const missingFields = mandatoryFields.filter((field) => !editedUser[field]);
     if (missingFields.length > 0) {
@@ -594,7 +600,7 @@ const BecomeAMember = () => {
                     </label>
                     <br />
                     <label>
-                      End Year:
+                      End Year: (Write Present if currently going on)
                       <br />
                       <input
                         type="text"
@@ -671,7 +677,7 @@ const BecomeAMember = () => {
                     </label>
                     <br />
                     <label>
-                      End Year:
+                      End Year: (Write Present if currently going on)
                       <br />
                       <input
                         type="text"
@@ -891,6 +897,30 @@ const BecomeAMember = () => {
                       {/* Add more options as needed */}
                     </select>
                   </label>
+                  <label>
+                    Place of Posting*
+                    <br />
+                    <input
+                      type="text"
+                      name="placeofposting"
+                      className="text_input-member"
+                      placeholder="Place of Posting"
+                      value={editedUser.placeofposting}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                  <label>
+                  Admin Positions held at IIT Ropar
+                    <br />
+                    <input
+                      type="text"
+                      name="por"
+                      className="text_input-member"
+                      placeholder="Position of Responsibility"
+                      value={editedUser.por}
+                      onChange={handleInputChange}
+                    />
+                  </label>
                 </div>
                 <div className="member-column2">
                   <label>
@@ -980,6 +1010,37 @@ const BecomeAMember = () => {
                       onChange={handleInputChange}
                     />
                   </label>
+                  <label>
+                    Additional Degree
+                    <br />
+                    <select
+                      name="additional_degree"
+                      className="text_input-member"
+                      value={editedUser.additional_degree}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Choose</option>
+                      <option value="minor">Minor</option>
+                      <option value="concentration">Conc.</option>
+                      <option value="honors">Honors</option>
+                      <option value="additional internship">Additional Intern</option>
+                      <option value="dual">Dual Degree</option>
+                    </select>
+                  </label>
+                  <label>
+                  Any Inputs/Suggestions
+                    <br />
+                    <input
+                      type="text"
+                      name="suggestions"
+                      className="text_input-member"
+                      placeholder="Suggestions"
+                      value={editedUser.suggestions}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+
+
                 </div>
               </div>
               <br />
