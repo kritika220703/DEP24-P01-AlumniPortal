@@ -36,6 +36,7 @@ import FundraisingPages from './pages/FundraisingPages';
 import RegistrationsPage from './components/RegistrationsPage';
 import TableComponent from './pages/TableComponent';
 import Profile2adminside from './pages/Profile2adminside';
+import UploadForm from './components/UploadForm';
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
           <Route path="/FundraisingPages/:id" element={<FundraisingPages />} />
           <Route path="/registrations/:batch" element={<RegistrationsPage/>} />
           <Route exact path="/profile2adminside" element={<Profile2adminside />} />
+          <Route path="/upload" element={<UploadForm/>} />
         </Routes>
       </AuthProvider>
     </div>
