@@ -24,6 +24,7 @@ function CommunityEventsAdmin() {
     const [batch, setBatch] = useState('');
     const [date, setDate] = useState('');
     const [title, setTitle] = useState('');
+    const [fees, setFees] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
 
@@ -64,7 +65,7 @@ function CommunityEventsAdmin() {
     };
 
     const handleAddReunion = async () => {
-        if (!batch || !date || !title || !description || !image) {
+        if (!batch || !date || !title || !description || !fees|| !image) {
             alert('Please fill in all fields');
             return;
         }
@@ -89,6 +90,7 @@ function CommunityEventsAdmin() {
                             date,
                             title,
                             description,
+                            fees,
                             imageUrl: url,
                         };
 
@@ -142,6 +144,7 @@ function CommunityEventsAdmin() {
             setDate('');
             setTitle('');
             setDescription('');
+            setFees('');
             setImage(null);
         } catch (error) {
             console.error('Error adding reunion: ', error);
@@ -178,6 +181,12 @@ function CommunityEventsAdmin() {
                     placeholder="Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                />
+                <input
+                    type="text"
+                    placeholder="Fees"
+                    value={fees}
+                    onChange={(e) => setFees(e.target.value)}
                 />
                 <textarea
                     placeholder="Description"

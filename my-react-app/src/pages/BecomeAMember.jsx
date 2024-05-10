@@ -15,6 +15,8 @@ import {
   doc,
   updateDoc,
   addDoc,
+  getDoc,
+  setDoc
 } from "firebase/firestore";
 
 const toastOptions = {
@@ -33,9 +35,9 @@ const BecomeAMember = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [paymantoption, setpaymentoption] = useState("");
   const { userId, email } = location.state || {};
+  const isAdmin = localStorage.getItem("isAdmin");
   const [editedUser, setEditedUser] = useState({
       name: '',
-      role: '',
       phone: '',
       contrycode: '',
       entryNo: '',
@@ -50,32 +52,119 @@ const BecomeAMember = () => {
       others: '',
       profileURL: '',
       email: '',
-      approved:false
+      approved:false,
+      primaryemail:"",
+      additional_degree:"",
+      por:"",
+      placeofposting:"",
+      suggestions:""
+
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [yearlyMembership, setYearlyMembership] = useState("");
+  const [lifetimeMembership, setLifetimeMembership] = useState("");
+  const [yearlyMembershipFee, setYearlyMembershipFee] = useState("");
+  const [lifetimeMembershipFee, setLifetimeMembershipFee] = useState("");
+
   useEffect(() => {
     checkLoggedIn();
+    fetchMembershipFees();
   });
 
   const checkLoggedIn = () => {
     setIsLoggedIn(localStorage.getItem("userId") !== null);
   };
 
+  const fetchMembershipFees = async () => {
+    const docRef = doc(db, "membership", "options");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      setLifetimeMembershipFee(data.lifetimeMembership);
+      setYearlyMembershipFee(data.yearlyMembership);
+    }
+  };
+
   const notifySuccess = (message) => {
     toast.success(message, toastOptions);
   };
+  let errormsg = "";
+
+  const handleAdminFormSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      // Update the database with the new membership values
+      await updateMembershipOptions(yearlyMembership, lifetimeMembership);
+  
+      // Show success message
+      notifySuccess("Membership options updated successfully!");
+      setYearlyMembership("");
+      setLifetimeMembership("");
+    } catch (error) {
+      console.error("Error updating membership options:", error);
+      // Show error message
+      let errormsg = "Error updating membership options";
+      toast.error(errormsg,toastOptions);
+    }
+  };
+  
+  const updateMembershipOptions = async (yearlyMembership, lifetimeMembership) => {
+    const membershipRef = doc(db, "membership", "options");
+  
+    // Check if the document exists
+    const docSnap = await getDoc(membershipRef);
+    if (docSnap.exists()) {
+      // Document exists, update it
+      await updateDoc(membershipRef, {
+        yearlyMembership,
+        lifetimeMembership,
+      });
+    } else {
+      // Document does not exist, create it
+      await setDoc(membershipRef, {
+        yearlyMembership,
+        lifetimeMembership,
+      });
+    }
+  };
+  
+  
 
   const navigate = useNavigate();
-
+  if(isAdmin==="true"){
+    return (
+      <div className="admin-form">
+        <h1>Admin Dashboard</h1>
+        <form onSubmit={handleAdminFormSubmit}>
+          <label htmlFor="yearlyMembership">Yearly Membership:</label>
+          <input
+            type="text"
+            id="yearlyMembership"
+            value={yearlyMembership}
+            onChange={(e) => setYearlyMembership(e.target.value)}
+          />
+          <label htmlFor="lifetimeMembership">Lifetime Membership:</label>
+          <input
+            type="text"
+            id="lifetimeMembership"
+            value={lifetimeMembership}
+            onChange={(e) => setLifetimeMembership(e.target.value)}
+          />
+          <button type="submit">Update Memberships</button>
+        </form>
+      </div>
+    );
+  }
   if (isLoggedIn) {
     navigate("/home");
   }
-  let errormsg = "";
   const handleSubmit = async (e) => {
     e.preventDefault();
     const mandatoryFields = [
       "name",
-      "role",
+      "primaryemail",
       "phone",
       "contrycode",
       "entryNo",
@@ -85,6 +174,8 @@ const BecomeAMember = () => {
       "department",
       "passingYear",
       "joiningYear",
+      "placeofposting"
+
     ];
     const missingFields = mandatoryFields.filter((field) => !editedUser[field]);
     if (missingFields.length > 0) {
@@ -509,7 +600,7 @@ const BecomeAMember = () => {
                     </label>
                     <br />
                     <label>
-                      End Year:
+                      End Year: (Write Present if currently going on)
                       <br />
                       <input
                         type="text"
@@ -586,7 +677,7 @@ const BecomeAMember = () => {
                     </label>
                     <br />
                     <label>
-                      End Year:
+                      End Year: (Write Present if currently going on)
                       <br />
                       <input
                         type="text"
@@ -668,11 +759,11 @@ const BecomeAMember = () => {
                 <br />
                 <div className="membership-card-box">
                   <div className="membership-card">
-                    <h3> Yearly Membership 750 Rs</h3>
+                    <h3> Yearly Membership <br/> {yearlyMembershipFee} Rs</h3>
                   </div>
                   <br />
                   <div className="membership-card">
-                    <h3> Lifetime Membership 3000 Rs</h3>
+                    <h3> Lifetime Membership <br/> {lifetimeMembershipFee} Rs</h3>
                   </div>
                 </div>
                 <label>
@@ -806,22 +897,43 @@ const BecomeAMember = () => {
                       {/* Add more options as needed */}
                     </select>
                   </label>
+                  <label>
+                    Place of Posting*
+                    <br />
+                    <input
+                      type="text"
+                      name="placeofposting"
+                      className="text_input-member"
+                      placeholder="Place of Posting"
+                      value={editedUser.placeofposting}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                  <label>
+                  Admin Positions held at IIT Ropar
+                    <br />
+                    <input
+                      type="text"
+                      name="por"
+                      className="text_input-member"
+                      placeholder="Position of Responsibility"
+                      value={editedUser.por}
+                      onChange={handleInputChange}
+                    />
+                  </label>
                 </div>
                 <div className="member-column2">
                   <label>
-                    Role*
+                    Primary Email*
                     <br />
-                    <select
-                      name="role"
+                    <input
+                      type="text"
                       className="text_input-member"
-                      value={editedUser.role}
+                      name="primaryemail"
+                      placeholder="Primary Email"
+                      value={editedUser.primaryemail}
                       onChange={handleInputChange}
-                    >
-                      <option value="">Choose</option>
-                      <option value="alumni">Alumni</option>
-                      {/* <option value="student">Student</option> */}
-                      <option value="staff">Staff</option>
-                    </select>
+                    />
                   </label>
 
                   <label>
@@ -898,6 +1010,37 @@ const BecomeAMember = () => {
                       onChange={handleInputChange}
                     />
                   </label>
+                  <label>
+                    Additional Degree
+                    <br />
+                    <select
+                      name="additional_degree"
+                      className="text_input-member"
+                      value={editedUser.additional_degree}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Choose</option>
+                      <option value="minor">Minor</option>
+                      <option value="concentration">Conc.</option>
+                      <option value="honors">Honors</option>
+                      <option value="additional internship">Additional Intern</option>
+                      <option value="dual">Dual Degree</option>
+                    </select>
+                  </label>
+                  <label>
+                  Any Inputs/Suggestions
+                    <br />
+                    <input
+                      type="text"
+                      name="suggestions"
+                      className="text_input-member"
+                      placeholder="Suggestions"
+                      value={editedUser.suggestions}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+
+
                 </div>
               </div>
               <br />
