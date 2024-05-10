@@ -29,7 +29,7 @@ const toastOptions = {
 
 const BecomeAMember = () => {
   const location = useLocation();
-  const [isFormSubmitted, setIsFormSubmitted] = useState(3);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(0);
   const [ischeckbox, setIsWorkingProfessional] = useState(0);
   const [profilePicture, setProfilePicture] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");

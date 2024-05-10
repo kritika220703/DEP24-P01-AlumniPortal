@@ -1,6 +1,11 @@
 import React from 'react';
 
+
 const NavLinks = () => {
+    let isadmin = false;
+    if(localStorage.getItem("isAdmin") === "true"){
+        isadmin = true;
+    }
     const links = [
         {
             name: "Home",
@@ -8,10 +13,7 @@ const NavLinks = () => {
             submenu: true,
             sublinks: [
                 { name: "News and Updates", path: "/News" },
-                // { name: "Gallery", path: "/pages/Gallery" },
-                { name: "Become A member", path: "/signup" },
-                // { name: "Executive Committee", path: "/Executivecommittee" },
-                // { name: "Messages", path: "/Messages" },
+                { name: "Become A member", path: (isadmin ? "/becomeamember" : "/signup" )},       
             ]
         },
         {

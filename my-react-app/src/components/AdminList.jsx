@@ -257,7 +257,7 @@ const notifySuccess = (message) => {
                   transition={{ duration: 0.5 }}
                 >
                   <h2 className="text-[25px] text-white border rounded-full bg-indigo-700 p-2 w-[300px]  mx-auto text-center font-bold mb-8">
-                    Registered Alumni List
+                    Registered Admin List
                   </h2>
                 </motion.div>
               </div>
