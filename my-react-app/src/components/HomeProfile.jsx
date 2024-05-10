@@ -18,7 +18,7 @@ import { axisClasses } from '@mui/x-charts';
 const chartSetting = {
   yAxis: [
     {
-      label: 'Registrations in Last 24 months',
+      label: 'Registrations in Last 24 Months',
     },
   ],
   width: 800,
