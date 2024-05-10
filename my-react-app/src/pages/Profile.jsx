@@ -782,6 +782,8 @@ const Profile = () => {
         );
     };
 
+    const [selectedOption, setSelectedOption] = useState('Home');
+
     return (
         
        
@@ -790,7 +792,7 @@ const Profile = () => {
             
                 {isAdmin==="true" ? (
                     <>
-                        <DataList/>
+                        <DataList selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
                     </>
                 ) : (
                     
