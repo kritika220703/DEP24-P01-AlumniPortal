@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { db, storage } from '../firebase'; // Import Firestore and Firebase Storage instances
-import { collection, getDocs, addDoc } from 'firebase/firestore'; // Import Firestore functions
+import { collection, getDocs, addDoc, deleteDoc, doc, where, query } from 'firebase/firestore'; // Import Firestore functions
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'; // Import storage functions
 import { motion } from "framer-motion";
 import StateContext from '../StateContext.js'; // Import StateContext for managing user login status
@@ -104,13 +104,50 @@ const ExecutiveCommittee = () => {
       console.error('Error adding document: ', error);
     }
   };
-
+  
+  const handleDeleteMember = async (name) => {
+    try {
+        const colRef = collection(db, "Executive Committee");
+        // console.log(colRef);
+        console.log(name);
+        const q = query(colRef, where("Name", "==", name));
+        const snapshot = await getDocs(q);
+        console.log(snapshot);
+        if (snapshot.size > 0) {
+            const doc = snapshot.docs[0];
+            await deleteDoc(doc.ref);
+            // Reload the page
+            // window.location.reload();
+        } else {
+            console.error("No document found with id:", name);
+        }
+      // Delete member's data from Firestore
+    //   await deleteDoc(doc(db, 'Executive Committee', id));
+  
+      // Update the local state to remove the deleted member
+     
+      // Show success toast
+      toast.success(`Member deleted successfully!`, toastOptions);
+      setTimeout(() => {
+        window.location.reload();
+    }, 1000); // Reload after 3 seconds
+    } catch (error) {
+      console.error('Error deleting member: ', error);
+      toast.error('Failed to delete member!', toastOptions);
+    }
+  };
+  
+  
+  
+  
   // Sort committeeMembers based on Title
   const sortedMembers = committeeMembers.sort((a, b) => {
-    const order = ['Current', 'Ex-Officio', 'Council Members', 'Batch Evangelists'];
-    return order.indexOf(a.Title) - order.indexOf(b.Title);
+    const order = ['Director', 'Dean IR & AA', 'President', 'Vice President'];
+    const aIndex = order.indexOf(a.Position);
+    const bIndex = order.indexOf(b.Position);
+    return aIndex - bIndex;
   });
-
+  
   const closeModal = () => {
     setShowForm(false);
     setNewMemberData({
@@ -137,6 +174,15 @@ const ExecutiveCommittee = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             {sortedMembers.filter(member => member.Title === 'Current').map((member, index) => (
               <div key={index} className="bg-white rounded-md shadow-md overflow-hidden">
+                {isAdmin === 'true' && (
+                <button onClick={() => handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            )}
+                 
+
                 <img
                   className="rounded-full h-32 w-32 mx-auto mt-4"
                   src={member.image}
@@ -158,6 +204,14 @@ const ExecutiveCommittee = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             {sortedMembers.filter(member => member.Title === 'Ex-Officio').map((member, index) => (
               <div key={index} className="bg-white rounded-md shadow-md overflow-hidden">
+                  {isAdmin === 'true' && (
+                <button onClick={() => handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            )}
+
                 <img
                   className="rounded-full h-32 w-32 mx-auto mt-4"
                   src={member.image}
@@ -179,6 +233,17 @@ const ExecutiveCommittee = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             {sortedMembers.filter(member => member.Title === 'Council Members').map((member, index) => (
               <div key={index} className="bg-white rounded-md shadow-md overflow-hidden">
+
+            {isAdmin === 'true' && (
+                <button onClick={() => handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            )}
+
+
+
                 <img
                   className="rounded-full h-32 w-32 mx-auto mt-4"
                   src={member.image}
@@ -200,6 +265,14 @@ const ExecutiveCommittee = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             {sortedMembers.filter(member => member.Title === 'Batch Evangelists').map((member, index) => (
               <div key={index} className="bg-white rounded-md shadow-md overflow-hidden">
+            {isAdmin === 'true' && (
+                <button onClick={() => handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            )}
+
                 <img
                   className="rounded-full h-32 w-32 mx-auto mt-4"
                   src={member.image}
