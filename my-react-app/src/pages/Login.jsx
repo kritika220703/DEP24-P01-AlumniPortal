@@ -25,6 +25,7 @@ const toastOptions = {
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [Iemail, setIEmail] = useState("");
   // const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -108,7 +109,7 @@ const Login = () => {
           password
       );
 
-      // console.log("user: ", user);
+      console.log("user: ", user);
 
       login(user);
     } catch (error) {
@@ -131,21 +132,7 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-
-    if(email === ""){
-      errorMessage = "Email is required.";
-      toast.error(errorMessage, toastOptions);
-      return;
-    }
-    if(selectedOption === ""){
-      errorMessage = "Choose Admin/Alumni.";
-      toast.error(errorMessage, toastOptions);
-      return;
-    }
-    e.preventDefault();
-    console.log(selectedOption);
-
+  const handleSubmit2 = async (e) => {
     if(selectedOption === "Admin"){
       
       const colRef = collection(db, 'admin');
@@ -178,7 +165,7 @@ const Login = () => {
     }
     else{
       const colRef = collection(db, 'Users');
-      const q = query(colRef, where('email', '==', email));
+      const q = query(colRef, where('email', '==', Iemail));
       try {
         const snapshot = await getDocs(q);
         console.log(snapshot.size);
@@ -234,6 +221,40 @@ const Login = () => {
     setIsLoading(false);
   }
 
+
+  const handleSubmit = async (e) => {
+
+    if(email === ""){
+      errorMessage = "Email is required.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+    if(selectedOption === ""){
+      errorMessage = "Choose Admin/Alumni.";
+      toast.error(errorMessage, toastOptions);
+      return;
+    }
+    e.preventDefault();
+    console.log(selectedOption);
+
+    const colRef = collection(db, 'Users');
+    const q = query(colRef, where('primaryemail', '==', email));
+    const snapshot1 = await getDocs(q);
+    if (snapshot1.size > 0) {
+      console.log("primary exists");
+      const doc1 = snapshot1.docs[0];
+      const data1 = doc1.data();
+      console.log(data1.email);
+      setIEmail(data1.email);
+      if (Iemail== data1.email) {
+        handleSubmit2();
+      }
+    }
+    else{
+      handleSubmit2();
+    }    
+  }
+
   const handleOTPSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -244,11 +265,12 @@ const Login = () => {
             otp: otp,
         };
         if(otp==="000000"){
-          await handleLogin(email, "666666");
+          await handleLogin(Iemail, "666666");
             console.log("login done");
             notifySuccess("OTP verified successfully");
             setIsOtpVerified(true);
             const userId = auth.currentUser.uid;
+            console.log(userId);
             localStorage.setItem("userId", userId);
             localStorage.setItem("isAdmin", false);
             if(selectedOption === "Admin"){
@@ -274,7 +296,7 @@ const Login = () => {
             navigate("/login");
             return;
         } else {
-            await handleLogin(email, "666666");
+            await handleLogin(Iemail, "666666");
             console.log("login done");
             notifySuccess("OTP verified successfully");
             setIsOtpVerified(true);
@@ -353,7 +375,8 @@ const Login = () => {
               name="email"
               placeholder="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => (setEmail(e.target.value), 
+                              setIEmail(e.target.value))}
               className="w-full px-4 py-2 mb-4 border-2 border-blue-800 rounded-md bg-white focus:outline-none focus:border-indigo-900"
             />
   {showVerifyButton ? (

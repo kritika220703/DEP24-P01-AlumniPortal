@@ -24,6 +24,7 @@ import { FaArrowDown } from "react-icons/fa6";
 import ApprovalUpdatePopUp from "./ApprovalUpdatePopUp.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const SmoothTransitionOption = ({ text, isSelected, onClick }) => {
   return (
@@ -46,6 +47,8 @@ const UserListComponent = () => {
   const [showPopup, setShowPopup] = useState({ show: false, userId: null });
   const [userId, setUserId] = useState("");
   console.log("userid: ", userId);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -292,6 +295,18 @@ const notifySuccess = (message) => {
     }
   };
 
+  const handleSearchEntryNo = (event) => {
+    const value = event.target.value.toLowerCase();
+    const filtered = users.filter(user => user.entryNo.toLowerCase().includes(value));
+    setFilteredUsers(filtered);
+  };
+
+  const handleSearchNameEmail = (event) => {
+    const value = event.target.value.toLowerCase();
+    const filtered = users.filter(user => user.name.toLowerCase().includes(value) || user.email.toLowerCase().includes(value));
+    setFilteredUsers(filtered);
+  };
+
   return (
     <div className="flex flex-row gap-[80px]">
       {/* <SidebarProfile /> */}
@@ -310,7 +325,21 @@ const notifySuccess = (message) => {
                   </h2>
                 </motion.div>
               </div>
-
+              <div className=" w-[1000px] flex flex-row mb-5 gap-[30px]">
+              <input
+                  type="text"
+                  placeholder="Search Name & Email"
+                  onChange={handleSearchNameEmail}
+                  className="w-[700px] p-2 border-2 rounded-md bg-slate-200 border-gray-700"
+                />
+                <input
+                  type="text"
+                  placeholder="Search Entry No."
+                  onChange={handleSearchEntryNo}
+                  className="p-2 border-2 rounded-md w-[300px] bg-slate-200 border-gray-700"
+                />
+               
+              </div>
               <TableContainer component={Paper}>
                 <Table
                   sx={{ minWidth: 700 }}
@@ -373,6 +402,9 @@ const notifySuccess = (message) => {
                           columnName="approved"
                         />
                       </StyledTableCell>
+                      <StyledTableCell align="right">
+                        User Profile{" "}
+                      </StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -401,6 +433,18 @@ const notifySuccess = (message) => {
                         <StyledTableCell align="right">
                           {getStatusButton(user.approved, user.uid, user.email, user.name)}
                         </StyledTableCell>
+                        <StyledTableCell align="right">
+                        <Link
+                          className="text-blue-500 hover:underline"
+                          onClick={(e) => {
+                              e.preventDefault();
+                              navigate(`/profile2adminside`, { state: { userId: user.uid } });
+                          }}
+                      >
+                          Show User Profile
+                      </Link>
+
+                      </StyledTableCell>
                       </StyledTableRow>
                     ))}
                   </TableBody>

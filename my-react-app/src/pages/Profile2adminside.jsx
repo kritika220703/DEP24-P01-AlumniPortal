@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate , useLocation  } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaPhone, FaBuilding } from 'react-icons/fa';
 import { GiDiploma } from 'react-icons/gi';
 import { db, auth } from "../firebase";
@@ -26,7 +26,6 @@ import {
     getDownloadURL 
   } from "firebase/storage";
 import {storage} from "../firebase.js"
-import DataList from '../components/DataList.jsx';
 import image from '../assets/profile_bck.png'
 
 const Section = ({ title, children }) => {
@@ -57,8 +56,8 @@ const Section = ({ title, children }) => {
     );
   };
 
-const Profile = () => {
-  
+const Profile2adminside = () => {
+    const location = useLocation();
     const [isEditing, setIsEditing] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -66,6 +65,7 @@ const Profile = () => {
     const [profilePicture, setProfilePicture] = useState(null);
     let dp = "/images/profile.jpeg";
     const [profileURL, setProfileURL] = useState(dp);
+    const { userId } = location.state || {};
     const [editedUser, setEditedUser] = useState({
         name: '',
         phone: '',
@@ -91,19 +91,16 @@ const Profile = () => {
         suggestions:""
   
     });
-    
-    const navigate = useNavigate(); 
-    const isAdmin = localStorage.getItem("isAdmin");
-    console.log(isAdmin);
+    console.log(userId);
     useEffect(() => {
         console.log('Updated userData:', userData);
     }, [userData]);
 
     useEffect(() => {
+
         const fetchUserData = async () => {
             try {
                 console.log("trying to fetch");
-                const userId = auth.currentUser.uid;
                 console.log("userid:  ", userId);
                 
                 const colRef = collection(db, 'Users');
@@ -782,47 +779,25 @@ const Profile = () => {
         );
     };
 
-    return (
-        
-       
-            <div >
-            {/* <div className="w-[100%] max-w-[10000px] h-full mx-auto mt-0 p-6 bg-none rounded-md overflow-hidden shadow-md flex flex-col"> */}
-            
-                {isAdmin==="true" ? (
-                    <>
-                        <DataList/>
-                    </>
-                ) : (
-                    
-                    <>
-                
-                        {isEditing ? renderEditProfileForm() : renderProfileDetails()};
+    return (           
+        <>
+            {isEditing ? renderEditProfileForm() : renderProfileDetails()};
 
-                        {!isEditing && (
-                            <div className="p-2 flex justify-center">
-                                <button
-                                    className="bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold mr-10"
-                                    onClick={handleEditClick}
-                                    disabled={isEditing}
-                                >
-                                    Edit Profile
-                                </button>
-                                <button
-                                    className="bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold"
-                                    onClick={() => navigate("/AlumniCard")} // Wrap navigate function call in an arrow function
-                                >
-                                    Smart ID Card
-                                </button>
-                            </div>
-                        )};
+            {!isEditing && (
+                <div className="p-2 flex justify-center">
+                    <button
+                        className="bg-blue-900 text-white px-6 py-3 rounded-lg text-lg font-semibold mr-10"
+                        onClick={handleEditClick}
+                        disabled={isEditing}
+                    >
+                        Edit Profile
+                    </button>
+                </div>
+            )};
 
-                    </>
-
-                )}
-
-            </div>
+        </>
        
     );
 }
 
-export default Profile
+export default Profile2adminside;

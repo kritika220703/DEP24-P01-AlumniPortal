@@ -34,6 +34,9 @@ import UserListComponent from './components/UserListComponent';
 import GivingBackInKindListComponent from './components/GivingBackInKindList';
 import FundraisingPages from './pages/FundraisingPages';
 import RegistrationsPage from './components/RegistrationsPage';
+import TableComponent from './pages/TableComponent';
+import Profile2adminside from './pages/Profile2adminside';
+import UploadForm from './components/UploadForm';
 import ExecutiveCommittee from './pages/ExecutiveCommittee';
 
 function App() {
@@ -69,6 +72,7 @@ function App() {
           <Route exact path="/faculty-program" element={<FacultyProgram/>} />
           <Route exact path="/hostel-project" element={<HostelProject/>} />
           <Route exact path="/project/:id" element={<ProjectDetails />} />
+          <Route exact path="/table" element={<TableComponent />} />
           <Route exact path="/ExecutiveCommittee" element={<ExecutiveCommittee />} />
           {/* <Route exact path="/alumni" element={<UserListComponent/>} />
           <Route exact path="/givebackinkind" element={<GivingBackInKindListComponent/>} /> */}
@@ -78,6 +82,8 @@ function App() {
           <Route exact path="/Jobs" element={<Jobs/>} />
           <Route path="/FundraisingPages/:id" element={<FundraisingPages />} />
           <Route path="/registrations/:batch" element={<RegistrationsPage/>} />
+          <Route exact path="/profile2adminside" element={<Profile2adminside />} />
+          <Route path="/upload" element={<UploadForm/>} />
         </Routes>
       </AuthProvider>
     </div>

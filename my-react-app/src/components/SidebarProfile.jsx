@@ -11,7 +11,14 @@ const SidebarProfile = ({ setSelectedOption }) => {
     { name: "Give Back in Kind" },
     { name: "Past Reunions" },
     { name: "Planned Reunions" },
-    {name : "Admin"}
+    { name : "Admin"},
+    { name : "Talks"},
+    { name : "Workshops"},
+    { name : "Startup Presentations"},
+    { name : "Hackathons"},
+    { name: "Community Service Projects" },
+    { name: "Mentorship Programs"},
+    { name: "Internships"},
   ];
 
   const [open, setOpen] = useState(false);

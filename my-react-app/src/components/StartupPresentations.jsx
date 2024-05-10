@@ -3,7 +3,6 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { auth, db } from "../firebase.js";
 import { query, where, getDocs, collection } from "firebase/firestore";
-import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,35 +11,49 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+// import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
-const PastReunionsList = () => {
+const StartupPresentationsListComponent = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [filters, setFilters] = useState({
-    title: [],
+    name: [],
+    email: [],
     date: [],
-    batch: [],
+    content: [],
+    problem: [],
+    phone: [],
+    idea: [],
+    additionalInfo: [],
+    presenter: [],
+    startup: []
   });
 
-  const [searchBatch, setSearchBatch] = useState('');
-  
-  const [searchTitle, setSearchTitle] = useState('');
+  const [searchNameEmail, setSearchNameEmail] = useState("");
 
   useEffect(() => {
     // Fetch data from Firebase Firestore
     const fetchData = async () => {
       try {
-        const Ref = collection(db, "pastReunions");
-        const Snapshot = await getDocs(Ref);
-        const Data = Snapshot.docs.map((doc) => doc.data());
+        const usersRef = collection(db, "Startup Presentations");
+        const usersSnapshot = await getDocs(usersRef);
+        const usersData = usersSnapshot.docs.map((doc) => doc.data());
 
-        setUsers(Data);
+        setUsers(usersData);
 
         // Reset filters to initial state
         setFilters({
-          title: [],
-          date: [],
-          batch: [],
+            name: [],
+            email: [],
+            date: [],
+            content: [],
+            problem: [],
+            phone: [],
+            idea: [],
+            additionalInfo: [],
+            presenter: [],
+            startup: []
         });
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -52,12 +65,19 @@ const PastReunionsList = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [filters, searchBatch, searchTitle]);
+  }, [filters, searchNameEmail]);
 
-
-
- const applyFilter = () => {
+  const applyFilter = () => {
     let filtered = [...users];
+    if (searchNameEmail !== "") {
+      filtered = filtered.filter(
+        (user) =>
+          (user.name &&
+            user.name.toLowerCase().includes(searchNameEmail.toLowerCase())) ||
+          (user.email &&
+            user.email.toLowerCase().includes(searchNameEmail.toLowerCase()))
+      );
+    }
     Object.keys(filters).forEach((key) => {
       const selectedFilters = filters[key];
       if (selectedFilters.length > 0) {
@@ -66,32 +86,18 @@ const PastReunionsList = () => {
         );
       }
     });
-    if (searchBatch !== '') {
-      filtered = filtered.filter(user => user.batch && user.batch.includes(searchBatch));
-    }
-    
-    if (searchTitle !== '') {
-      filtered = filtered.filter(user => user.title.toLowerCase().includes(searchTitle.toLowerCase()));
-    }
     setFilteredUsers(filtered);
   };
 
-  const handleSearchBatchChange = (e) => {
-    const value = e.target.value;
-   
-      setSearchBatch(value);
-    
-  };
-
- 
-
-  const handleSearchTitleChange = (e) => {
-    setSearchTitle(e.target.value);
+  const handleSearchNameEmailChange = (e) => {
+    setSearchNameEmail(e.target.value);
   };
 
   const FilterDropdown = ({ options, columnName }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const uniqueOptions = [...new Set(options)]; // Filter out duplicates
+    const uniqueOptions = [
+      ...new Set(options.filter((option) => option !== "")),
+    ]; // Filter out empty values
 
     const toggleDropdown = () => {
       setIsOpen(!isOpen);
@@ -111,7 +117,7 @@ const PastReunionsList = () => {
     return (
       <div className="relative inline ml-2">
         <button
-          className="p-1 border rounded-md bg-gray-600 hover:bg-gray-400"
+          className="p-1 border rounded-md  bg-gray-600 hover:bg-gray-400"
           onClick={toggleDropdown}
         >
           <svg
@@ -130,8 +136,8 @@ const PastReunionsList = () => {
         {isOpen && (
           <div className="absolute top-10 bg-white border rounded-md p-2">
             {uniqueOptions.map((option) => (
-              <label 
-                key={option} 
+              <label
+                key={option}
                 className="flex items-center space-x-2"
                 style={{ color: "black" }}
               >
@@ -177,27 +183,20 @@ const PastReunionsList = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-[25px] text-white border bg-indigo-700 p-2 mt-5 w-[230px] text-center mx-auto rounded-full font-bold mb-8">
-            Past Reunions
+          <h2 className="text-3xl text-white border mt-5 rounded-full bg-indigo-700 p-3 w-[400px] text-center mx-auto font-bold mb-8">
+            Startup Presentations List
           </h2>
         </motion.div>
       </div>
 
       <div className="w-[1000px] flex flex-row gap-[30px]">
-      <input
-        type="text"
-        placeholder="Search by Batch Number"
-        value={searchBatch}
-        onChange={handleSearchBatchChange}
-        className="p-2 border-2 border-gray-700 w-[300px] rounded-md bg-slate-200 focus:outline-none mb-4"
-      />
-      <input
-        type="text"
-        placeholder="Search by Title"
-        value={searchTitle}
-        onChange={handleSearchTitleChange}
-        className="p-2 border-2 border-gray-700 rounded-md bg-slate-200 w-[700px] focus:outline-none mb-4"
-      />
+        <input
+          type="text"
+          placeholder="Search by Name or Email"
+          value={searchNameEmail}
+          onChange={handleSearchNameEmailChange}
+          className="p-2 border-2 border-gray-700 rounded-md w-[700px] bg-slate-200 focus:outline-none mb-4"
+        />
       </div>
 
       <TableContainer component={Paper} className="mb-[60px]">
@@ -208,15 +207,68 @@ const PastReunionsList = () => {
         >
           <TableHead>
             <TableRow hover>
-              <StyledTableCell style={{ width: "10%" }}>
+              <StyledTableCell>
                 {" "}
-                Batch{" "}
+                Name{" "}
                 <FilterDropdown
-                  options={users.map((user) => user.batch)}
-                  columnName="batch"
+                  options={users.map((user) => user.name)}
+                  columnName="name"
+                  className="text-black"
                 />
               </StyledTableCell>
-              <StyledTableCell align="right" style={{ width: "10%" }}>
+              <StyledTableCell align="right">
+                Email{" "}
+                <FilterDropdown
+                  options={users.map((user) => user.email)}
+                  columnName="email"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                Phone{" "}
+                <FilterDropdown
+                  options={users.map((user) => user.phone)}
+                  columnName="phone"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                Presenter{" "}
+                <FilterDropdown
+                  options={users.map((user) => user.presenter)}
+                  columnName="presenter"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                Problem{" "}
+                <FilterDropdown
+                  options={users.map((user) => user.problem)}
+                  columnName="problem"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {" "}
+                Idea{" "}
+                <FilterDropdown
+                  options={users.map((user) => user.idea)}
+                  columnName="idea"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {" "}
+                Startup{" "}
+                <FilterDropdown
+                  options={users.map((user) => user.startup)}
+                  columnName="startup"
+                />
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                {" "}
+                Content{" "}
+                <FilterDropdown
+                  options={users.map((user) => user.content)}
+                  columnName="content"
+                />
+                </StyledTableCell>
+              <StyledTableCell align="right">
                 {" "}
                 Date{" "}
                 <FilterDropdown
@@ -224,26 +276,30 @@ const PastReunionsList = () => {
                   columnName="date"
                 />
               </StyledTableCell>
-              <StyledTableCell align="right" style={{ width: "10%" }}>
+              <StyledTableCell align="right">
                 {" "}
-                Title{" "}
+                Duration{" "}
                 <FilterDropdown
-                  options={users.map((user) => user.title)}
-                  columnName="title"
+                  options={users.map((user) => user.duration)}
+                  columnName="duration"
                 />
               </StyledTableCell>
-              <StyledTableCell align="right"> Description</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredUsers.map((user, index) => (
               <StyledTableRow key={index} hover sx={{ cursor: "pointer" }}>
-                <StyledTableCell>{user.batch}</StyledTableCell>
+                <StyledTableCell>{user.name}</StyledTableCell>
+                <StyledTableCell align="right">{user.email}</StyledTableCell>
+                <StyledTableCell align="right">{user.phone}</StyledTableCell>
+                <StyledTableCell align="right">{user.presenter}</StyledTableCell>
+                <StyledTableCell align="right">{user.problem}</StyledTableCell>
+                <StyledTableCell align="right">{user.idea}</StyledTableCell>
+                <StyledTableCell align="right">{user.startup}</StyledTableCell>
+                <StyledTableCell align="right">{user.content}</StyledTableCell>
                 <StyledTableCell align="right">{user.date}</StyledTableCell>
-                <StyledTableCell align="right">{user.title}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {user.description}
-                </StyledTableCell>
+                <StyledTableCell align="right">{user.duration}</StyledTableCell>
+                
               </StyledTableRow>
             ))}
           </TableBody>
@@ -253,4 +309,4 @@ const PastReunionsList = () => {
   );
 };
 
-export default PastReunionsList;
+export default StartupPresentationsListComponent;

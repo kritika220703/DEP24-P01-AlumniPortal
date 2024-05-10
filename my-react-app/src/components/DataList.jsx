@@ -5,6 +5,13 @@ import PlannedReunionsList from './PlannedReunionsList';
 import PastReunionsList from './PastReunionsList';
 import SidebarProfile from "./SidebarProfile";
 import AdminList from "./AdminList";
+import TalksListComponent from './TalksList';
+import WorkshopsListComponent from './Workshops';
+import StartupPresentationsListComponent from './StartupPresentations';
+import HackathonsListComponent from './Hackathons';
+import CommunityServiceProjectsListComponent from './CommunityServiceProjects';
+import MentorshipProgramsListComponent from './MentorshipPrograms';
+import JobsListComponent from './JobLists';
 import * as XLSX from 'xlsx';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
@@ -52,6 +59,69 @@ const DataList = () => {
     const fetchDataForPlannedReunions = async () => {
         const data = [];
         const querySnapshot = await getDocs(collection(db, "plannedReunions"));
+        querySnapshot.forEach((doc) => {
+            data.push({ id: doc.id, ...doc.data() });
+        });
+        return filterDataForTalks(data);
+    };
+
+    const fetchDataForTalks = async () => {
+        const data = [];
+        const querySnapshot = await getDocs(collection(db, "Talks"));
+        querySnapshot.forEach((doc) => {
+            data.push({ id: doc.id, ...doc.data() });
+        });
+        return data;
+    };
+
+    const fetchDataForWorkshops = async () => {
+        const data = [];
+        const querySnapshot = await getDocs(collection(db, "Workshops"));
+        querySnapshot.forEach((doc) => {
+            data.push({ id: doc.id, ...doc.data() });
+        });
+        return data;
+    };
+
+    const fetchDataForStartupPresentations = async () => {
+        const data = [];
+        const querySnapshot = await getDocs(collection(db, "Startup Presentations"));
+        querySnapshot.forEach((doc) => {
+            data.push({ id: doc.id, ...doc.data() });
+        });
+        return data;
+    };
+
+    const fetchDataForHackathons = async () => {
+        const data = [];
+        const querySnapshot = await getDocs(collection(db, "Tech Talks and Hackathons"));
+        querySnapshot.forEach((doc) => {
+            data.push({ id: doc.id, ...doc.data() });
+        });
+        return data;
+    };
+
+    const fetchDataForCommunityServiceProjects = async () => {
+        const data = [];
+        const querySnapshot = await getDocs(collection(db, "Community Service Projects"));
+        querySnapshot.forEach((doc) => {
+            data.push({ id: doc.id, ...doc.data() });
+        });
+        return data;
+    };
+
+    const fetchDataForMentorshipPrograms = async () => {
+        const data = [];
+        const querySnapshot = await getDocs(collection(db, "Mentorship Programs"));
+        querySnapshot.forEach((doc) => {
+            data.push({ id: doc.id, ...doc.data() });
+        });
+        return data;
+    };
+
+    const fetchDataForInternships = async () => {
+        const data = [];
+        const querySnapshot = await getDocs(collection(db, "job"));
         querySnapshot.forEach((doc) => {
             data.push({ id: doc.id, ...doc.data() });
         });
@@ -112,6 +182,30 @@ const DataList = () => {
         }));
     };
 
+    const filterDataForTalks = (data) => {
+        return data.map((item) => ({
+            name: item.name,
+            date: item.date,
+            topic: item.topic,
+            type: item.type,
+            content: item.content,
+            phone: item.phone,
+            email: item.email,
+        }));
+    };
+
+    const filterDataForWorkshops = (data) => {
+        return data.map((item) => ({
+            name: item.name,
+            date: item.date,
+            topic: item.topic,
+            type: item.type,
+            duration: item.duration,
+            phone: item.phone,
+            email: item.email,
+        }));
+    };
+
     // Function to export data to Excel
     const exportToExcel = (data) => {
         // Convert the data to a worksheet
@@ -163,6 +257,27 @@ const DataList = () => {
                     break;
                 case 'Admin':
                     data = await fetchDataForAdmin();
+                    break;
+                case 'Talks' :
+                    data = await fetchDataForTalks();
+                    break;
+                case 'Workshops' :
+                    data = await fetchDataForWorkshops();
+                    break;
+                case 'Startup Presentations' :
+                    data = await fetchDataForStartupPresentations();
+                    break;
+                case 'Hackathons' :
+                    data = await fetchDataForHackathons();
+                    break;
+                case 'Community Service Projects' :
+                    data = await fetchDataForCommunityServiceProjects();
+                    break;
+                case 'Mentorship Programs' :
+                    data = await fetchDataForMentorshipPrograms();
+                    break;
+                case 'Internships' :
+                    data = await fetchDataForInternships();
                     break;
                 default:
                     return null;
@@ -225,6 +340,76 @@ const DataList = () => {
                 return (
                     <>
                         <AdminList/>
+                        <button style={buttonStyle} onClick={handleDownloadClick}>
+                            Download Excel
+                        </button>
+
+                    </>
+                )
+            case 'Talks':
+                return (
+                    <>
+                        <TalksListComponent/>
+                        <button style={buttonStyle} onClick={handleDownloadClick}>
+                            Download Excel
+                        </button>
+
+                    </>
+                )
+            case 'Workshops':
+                return (
+                    <>
+                        <WorkshopsListComponent/>
+                        <button style={buttonStyle} onClick={handleDownloadClick}>
+                            Download Excel
+                        </button>
+
+                    </>
+                )
+            case 'Startup Presentations':
+                return (
+                    <>
+                        <StartupPresentationsListComponent/>
+                        <button style={buttonStyle} onClick={handleDownloadClick}>
+                            Download Excel
+                        </button>
+
+                    </>
+                )
+            case 'Hackathons':
+                return (
+                    <>
+                        <HackathonsListComponent/>
+                        <button style={buttonStyle} onClick={handleDownloadClick}>
+                            Download Excel
+                        </button>
+
+                    </>
+                )
+            case 'Community Service Projects':
+                return (
+                    <>
+                        <CommunityServiceProjectsListComponent/>
+                        <button style={buttonStyle} onClick={handleDownloadClick}>
+                            Download Excel
+                        </button>
+
+                    </>
+                )
+            case 'Mentorship Programs':
+                return (
+                    <>
+                        <MentorshipProgramsListComponent/>
+                        <button style={buttonStyle} onClick={handleDownloadClick}>
+                            Download Excel
+                        </button>
+
+                    </>
+                )
+            case 'Internships':
+                return (
+                    <>
+                        <JobsListComponent/>
                         <button style={buttonStyle} onClick={handleDownloadClick}>
                             Download Excel
                         </button>

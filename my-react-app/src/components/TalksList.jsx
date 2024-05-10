@@ -14,50 +14,42 @@ import Paper from '@mui/material/Paper';
 // import { motion } from 'framer-motion';
 import {motion} from 'framer-motion'
 
-const GivingBackInKindListComponent = () => {
+const TalksListComponent = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [filters, setFilters] = useState({
     name: [],
     email: [],
-    degree: [],
-    department: [],
-    passingYear: [],
+    date: [],
+    content: [],
+    type: [],
     phone: [],
-    itemName: [],
-    duration: []
+    topic: [],
+    additionalInfo: []
   });
 
   const [searchNameEmail, setSearchNameEmail] = useState('');
-  const [searchPassingYear, setSearchPassingYear] = useState('');
 
   useEffect(() => {
     // Fetch data from Firebase Firestore
     const fetchData = async () => {
       try {
-        const usersRef = collection(db, "Giving Back In kind");
+        const usersRef = collection(db, "Talks");
         const usersSnapshot = await getDocs(usersRef);
         const usersData = usersSnapshot.docs.map(doc => doc.data());
-
-        const adminRef = collection(db, "Admin");
-        const adminSnapshot = await getDocs(adminRef);
-        const adminEmails = adminSnapshot.docs.map(doc => doc.data().email);
-
-        // Filter out users whose emails are also in the admin collection
-        const filteredUsers = usersData.filter(user => !adminEmails.includes(user.email));
         
-        setUsers(filteredUsers);
+        setUsers(usersData);
 
         // Reset filters to initial state
         setFilters({
-          name: [],
-          email: [],
-          degree: [],
-          department: [],
-          passingYear: [],
-          phone: [],
-          itemName: [],
-          duration: []
+            name: [],
+            email: [],
+            date: [],
+            content: [],
+            type: [],
+            phone: [],
+            topic: [],
+            additionalInfo: []
         });
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -69,7 +61,7 @@ const GivingBackInKindListComponent = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [filters, searchNameEmail, searchPassingYear]);
+  }, [filters, searchNameEmail]);
 
   const applyFilter = () => {
     let filtered = [...users];
@@ -78,9 +70,6 @@ const GivingBackInKindListComponent = () => {
         (user.name && user.name.toLowerCase().includes(searchNameEmail.toLowerCase())) || 
         (user.email && user.email.toLowerCase().includes(searchNameEmail.toLowerCase()))
       );
-    }
-    if (searchPassingYear !== '') {
-      filtered = filtered.filter(user => user.passingYear && user.passingYear.includes(searchPassingYear));
     }
     Object.keys(filters).forEach(key => {
       const selectedFilters = filters[key];
@@ -93,10 +82,6 @@ const GivingBackInKindListComponent = () => {
 
   const handleSearchNameEmailChange = (e) => {
     setSearchNameEmail(e.target.value);
-  };
-
-  const handleSearchPassingYearChange = (e) => {
-    setSearchPassingYear(e.target.value);
   };
 
   const FilterDropdown = ({ options, columnName }) => {
@@ -192,7 +177,7 @@ const GivingBackInKindListComponent = () => {
       transition={{ duration: 0.5 }}
     >
       <h2 className="text-3xl text-white border mt-5 rounded-full bg-indigo-700 p-3 w-[400px] text-center mx-auto font-bold mb-8">
-        Giving Back In Kind List
+        Talks List
       </h2>
     </motion.div>
       </div>
@@ -206,14 +191,7 @@ const GivingBackInKindListComponent = () => {
         className="p-2 border-2 border-gray-700 rounded-md w-[700px] bg-slate-200 focus:outline-none mb-4"
       />
 
-      {/* Search bar for Year of Passing */}
-      <input
-        type="text"
-        placeholder="Search by Year of Passing"
-        value={searchPassingYear}
-        onChange={handleSearchPassingYearChange}
-        className="p-2 border-2 border-gray-700 rounded-md w-[260px] bg-slate-200 focus:outline-none mb-4"
-      />
+      
   </div>
 
 <TableContainer component={Paper} className='mb-[60px]'>
@@ -223,9 +201,10 @@ const GivingBackInKindListComponent = () => {
             <StyledTableCell> Name  <FilterDropdown options={users.map(user => user.name)} columnName="name" className="text-black"/></StyledTableCell>
             <StyledTableCell align="right">Email <FilterDropdown options={users.map(user => user.email)} columnName="email" /></StyledTableCell>
             <StyledTableCell align="right">Phone <FilterDropdown options={users.map(user => user.phone)} columnName="phone" /></StyledTableCell>
-            <StyledTableCell align="right">Year of Passing  <FilterDropdown options={users.map(user => user.passingYear)} columnName="passingYear" /></StyledTableCell>
-            <StyledTableCell align="right">Item Name  <FilterDropdown options={users.map(user => user.itemName)} columnName="itemName" /></StyledTableCell>
-            <StyledTableCell align="right"> Duration  <FilterDropdown options={users.map(user => user.duration)} columnName="duration" /></StyledTableCell>
+            <StyledTableCell align="right">Topic  <FilterDropdown options={users.map(user => user.topic)} columnName="topic" /></StyledTableCell>
+            <StyledTableCell align="right">Type  <FilterDropdown options={users.map(user => user.type)} columnName="type" /></StyledTableCell>
+            <StyledTableCell align="right"> Date  <FilterDropdown options={users.map(user => user.date)} columnName="date" /></StyledTableCell>
+            <StyledTableCell align="right"> Content  <FilterDropdown options={users.map(user => user.content)} columnName="content" /></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -237,9 +216,10 @@ const GivingBackInKindListComponent = () => {
               </StyledTableCell>
               <StyledTableCell align="right" >{user.email}</StyledTableCell>
               <StyledTableCell align="right">{user.phone}</StyledTableCell>
-              <StyledTableCell align="right">{user.passingYear}</StyledTableCell>
-              <StyledTableCell align="right">{user.itemName}</StyledTableCell>
-              <StyledTableCell align="right">{user.duration}</StyledTableCell>
+              <StyledTableCell align="right">{user.topic}</StyledTableCell>
+              <StyledTableCell align="right">{user.type}</StyledTableCell>
+              <StyledTableCell align="right">{user.date}</StyledTableCell>
+              <StyledTableCell align="right">{user.content}</StyledTableCell>
               
             </StyledTableRow>
           ))}
@@ -250,4 +230,4 @@ const GivingBackInKindListComponent = () => {
   );
 };
 
-export default GivingBackInKindListComponent;
+export default TalksListComponent;
