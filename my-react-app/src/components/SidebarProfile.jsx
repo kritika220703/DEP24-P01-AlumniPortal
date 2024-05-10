@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; 
 import { HiMenuAlt3 } from "react-icons/hi";
 
-
-
-
 const SidebarProfile = ({ setSelectedOption }) => {
+
   const menus = [
     { name: "Alumni",  margin: true },
     { name: "Give Back in Kind" },
@@ -19,6 +17,7 @@ const SidebarProfile = ({ setSelectedOption }) => {
     { name: "Community Service Projects" },
     { name: "Mentorship Programs"},
     { name: "Internships"},
+    {name: "Upload Data from Excel"}
   ];
 
   const [open, setOpen] = useState(false);

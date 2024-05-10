@@ -15,9 +15,11 @@ import JobsListComponent from './JobLists';
 import * as XLSX from 'xlsx';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import UploadForm from './UploadForm';
+import HomeProfile from './HomeProfile';
 
 const DataList = () => {
-    const [selectedOption, setSelectedOption] = useState('Alumni');
+    const [selectedOption, setSelectedOption] = useState('Home');
 
     // Fetch data functions
     const fetchDataForAlumni = async () => {
@@ -300,6 +302,13 @@ const DataList = () => {
         };
 
         switch (selectedOption) {
+            case 'Home':
+                return (
+                    <>
+                        <HomeProfile />
+                        
+                    </>
+                );
             case 'Alumni':
                 return (
                     <>
@@ -416,6 +425,14 @@ const DataList = () => {
 
                     </>
                 )
+            case 'Upload Data from Excel':
+                return (
+                    <>
+                        <UploadForm/>
+                        
+
+                    </>
+                )
             default:
                 return null;
         }
@@ -423,7 +440,9 @@ const DataList = () => {
 
     return (
         <div className='flex flex-row'>
-            <SidebarProfile setSelectedOption={setSelectedOption} />
+            {/* <SidebarProfile setSelectedOption={setSelectedOption} /> */}
+            <div className="ml-4 w-full" style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 100px)' }}>
+            {/* <SidebarProfile setSelectedOption={setSelectedOption} /> */}
             <div className="ml-4 w-full">
                 {selectedOption && (
                     <div className='w-full'>
@@ -432,7 +451,9 @@ const DataList = () => {
                 )}
             </div>
         </div>
+        </div>
     );
+   
 };
 
 export default DataList;

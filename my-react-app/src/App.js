@@ -31,6 +31,9 @@ import HostelProject from './pages/HostelProject';
 import ProjectDetails from './pages/ProjectDetails';
 import Jobs from './pages/Jobs';
 import UserListComponent from './components/UserListComponent';
+import PastReunionsList from './components/PastReunionsList';
+import PlannedReunionsList from './components/PlannedReunionsList';
+import AdminList from './components/AdminList';
 import GivingBackInKindListComponent from './components/GivingBackInKindList';
 import FundraisingPages from './pages/FundraisingPages';
 import RegistrationsPage from './components/RegistrationsPage';
@@ -48,6 +51,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/login" element={<Login />} />
+          {/* <Route exact path="/homeprofile" element={<HomeProfile />} /> */}
           <Route exact path='/profile' element={<PrivateRoute/>}>
             <Route exact path='/profile' element={<Profile/>}/>
           </Route>

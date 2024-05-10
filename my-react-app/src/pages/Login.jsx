@@ -164,6 +164,7 @@ const Login = () => {
       }
     }
     else{
+      console.log(Iemail);
       const colRef = collection(db, 'Users');
       const q = query(colRef, where('email', '==', Iemail));
       try {
