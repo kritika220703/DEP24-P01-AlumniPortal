@@ -293,16 +293,32 @@ const notifySuccess = (message) => {
   };
 
   const handleSearchEntryNo = (event) => {
-    const value = event.target.value.toLowerCase();
-    const filtered = users.filter(user => user.entryNo.toLowerCase().includes(value));
-    setFilteredUsers(filtered);
+    const value = event.target.value;
+    if(value.length > 0){
+        const filtered = users.filter(user => user.entryNo.includes(value));
+        setFilteredUsers(filtered);
+    }
   };
 
   const handleSearchNameEmail = (event) => {
-    const value = event.target.value.toLowerCase();
-    const filtered = users.filter(user => user.name.toLowerCase().includes(value) || user.email.toLowerCase().includes(value));
-    setFilteredUsers(filtered);
+    const value = event.target.value;
+    if(value.length > 0){
+        const filtered = users.filter(user => user.name.includes(value) || user.email.includes(value));
+        setFilteredUsers(filtered);
+    }
   };
+
+// const handleSearchEntryNo = (event) => {
+//     const value = (event.target.value || '').toLowerCase(); // Add null check
+//     const filtered = users.filter(user => user.entryNo.toLowerCase().includes(value));
+//     setFilteredUsers(filtered);
+// };
+
+// const handleSearchNameEmail = (event) => {
+//     const value = (event.target.value || '').toLowerCase(); // Add null check
+//     const filtered = users.filter(user => user.name.toLowerCase().includes(value) || user.email.toLowerCase().includes(value));
+//     setFilteredUsers(filtered);
+// };
 
   return (
     <div className="flex flex-row gap-[80px]">

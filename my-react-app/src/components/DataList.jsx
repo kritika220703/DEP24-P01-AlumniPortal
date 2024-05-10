@@ -8,9 +8,10 @@ import AdminList from "./AdminList";
 import * as XLSX from 'xlsx';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import HomeProfile from './HomeProfile';
 
 const DataList = () => {
-    const [selectedOption, setSelectedOption] = useState('Alumni');
+    const [selectedOption, setSelectedOption] = useState('Home');
 
     // Fetch data functions
     const fetchDataForAlumni = async () => {
@@ -185,6 +186,13 @@ const DataList = () => {
         };
 
         switch (selectedOption) {
+            case 'Home':
+                return (
+                    <>
+                        <HomeProfile />
+                        
+                    </>
+                );
             case 'Alumni':
                 return (
                     <>
@@ -238,7 +246,7 @@ const DataList = () => {
 
     return (
         <div className='flex flex-row'>
-            <SidebarProfile setSelectedOption={setSelectedOption} />
+            {/* <SidebarProfile setSelectedOption={setSelectedOption} /> */}
             <div className="ml-4 w-full">
                 {selectedOption && (
                     <div className='w-full'>

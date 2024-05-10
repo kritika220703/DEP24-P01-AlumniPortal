@@ -31,10 +31,14 @@ import HostelProject from './pages/HostelProject';
 import ProjectDetails from './pages/ProjectDetails';
 import Jobs from './pages/Jobs';
 import UserListComponent from './components/UserListComponent';
+import PastReunionsList from './components/PastReunionsList';
+import PlannedReunionsList from './components/PlannedReunionsList';
+import AdminList from './components/AdminList';
 import GivingBackInKindListComponent from './components/GivingBackInKindList';
 import FundraisingPages from './pages/FundraisingPages';
 import RegistrationsPage from './components/RegistrationsPage';
 import TableComponent from './pages/TableComponent';
+// import HomeProfile from './pages/HomeProfile';
 
 function App() {
   return (
@@ -44,6 +48,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/login" element={<Login />} />
+          {/* <Route exact path="/homeprofile" element={<HomeProfile />} /> */}
           <Route exact path='/profile' element={<PrivateRoute/>}>
             <Route exact path='/profile' element={<Profile/>}/>
           </Route>
@@ -70,6 +75,11 @@ function App() {
           <Route exact path="/hostel-project" element={<HostelProject/>} />
           <Route exact path="/project/:id" element={<ProjectDetails />} />
           <Route exact path="/table" element={<TableComponent />} />
+          <Route exact path="/alumni" element={<UserListComponent />} />
+          <Route exact path="/givebackinkind" element={<GivingBackInKindListComponent/>} />
+          <Route exact path="/pastreunion" element={<PastReunionsList/>} />
+          <Route exact path="/plannedreunion" element={<PlannedReunionsList/>} />
+          <Route exact path="/admin" element={<AdminList/>} />
           {/* <Route exact path="/alumni" element={<UserListComponent/>} />
           <Route exact path="/givebackinkind" element={<GivingBackInKindListComponent/>} /> */}
           <Route exact path='/events' element={<PrivateRoute/>}>
