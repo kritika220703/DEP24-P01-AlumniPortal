@@ -302,10 +302,11 @@ const notifySuccess = (message) => {
 
 
   const handleSearch = (event) => {
-  const value = event.target.value.toLowerCase();
-  const filtered = users.filter(user => user[filterType].toLowerCase().includes(value));
-  setFilteredUsers(filtered);
-};
+    const value = event.target.value.toLowerCase();
+    if (!filterType) return; // Return early if filterType is not set
+    const filtered = users.filter(user => user[filterType]?.toLowerCase().includes(value));
+    setFilteredUsers(filtered);
+  };
 
 
   return (
@@ -329,35 +330,35 @@ const notifySuccess = (message) => {
               <div className=" w-[1000px] flex flex-col mb-5">
               <div className="flex flex-row">
                 <button
-                  className={`button ${filterType === "name" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-2 py-2 rounded mr-5`}
+                  className={`button ${filterType === "name" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-1 rounded-full mr-5`}
                   onClick={() => handleFilterTypeChange("name")}
                 >
                   Name
                 </button>
                 <button
-                  className={`button ${filterType === "entryNo" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-2 py-2 rounded mr-5`}
+                  className={`button ${filterType === "entryNo" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-1 rounded-full mr-5`}
                   onClick={() => handleFilterTypeChange("entryNo")}
                 >
                   Entry No
                 </button>
                 <button
-                  className={`button ${filterType === "degree" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-2 py-2 rounded mr-5`}
+                  className={`button ${filterType === "degree" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-1 rounded-full  mr-5`}
                   onClick={() => handleFilterTypeChange("degree")}
                 >
                   Degree
                 </button>
                 <button
-                  className={`button ${filterType === "phone" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-2 py-2 rounded mr-5`}
-                  onClick={() => handleFilterTypeChange("phone")}
+                  className={`button ${filterType === "placeofposting" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-1 rounded-full  mr-5`}
+                  onClick={() => handleFilterTypeChange("placeofposting")}
                 >
-                  Phone
+                  Location
                 </button>
               </div>
               <input
                   type="text"
-                  placeholder="Search"
+                  placeholder={`Search ${filterType}`}
                   onChange={handleSearch}
-                  className="w-[700px] p-2 border-2 rounded-md bg-slate-200 border-gray-700"
+                  className="w-[500px] p-2 mt-4 border-2 rounded-xl bg-slate-200 border-gray-700"
                 />
                 {/* <input
                   type="text"

@@ -19,7 +19,7 @@ import DataList from './DataList';
 const chartSetting = {
   yAxis: [
     {
-      label: 'Registrations in Last 24 months',
+      label: 'Registrations in Last 24 Months',
     },
   ],
   width: 800,
