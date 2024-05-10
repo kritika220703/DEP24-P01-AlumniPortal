@@ -10,7 +10,7 @@ const NavLinks = () => {
                 { name: "News and Updates", path: "/News" },
                 // { name: "Gallery", path: "/pages/Gallery" },
                 { name: "Become A member", path: "/BecomeAMember" },
-                { name: "Executive Committee", path: "/Executivecommittee" },
+                // { name: "Executive Committee", path: "/Executivecommittee" },
                 // { name: "Messages", path: "/Messages" },
             ]
         },
@@ -34,6 +34,10 @@ const NavLinks = () => {
                 { name: "Reunions", path: "/CommunityEvents" },
                 {name: "Interns/Full-Time", path: "/Jobs" },
             ]
+        },
+        {
+            name: "Executive Committee", 
+            path: "/Executivecommittee"
         },
         {
             name: "Contact us",
