@@ -63,6 +63,8 @@ const UserListComponent = () => {
     phone: [],
     approved: [],
   });
+  const [filterType, setFilterType] = useState("name");
+  const [searchText, setSearchText] = useState("");
 
   const toastOptions = {
     position: "bottom-right",
@@ -120,17 +122,24 @@ const notifySuccess = (message) => {
   }, [filters]);
 
   const applyFilter = () => {
+    console.log(searchText);
     let filtered = [...users];
-    Object.keys(filters).forEach((key) => {
-      const selectedFilters = filters[key];
-      if (selectedFilters.length > 0) {
-        filtered = filtered.filter((user) =>
-          selectedFilters.includes(user[key])
-        );
-      }
-    });
+    if (searchText.trim() !== "") {
+      filtered = filtered.filter((user) =>
+        user[filterType].toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
     setFilteredUsers(filtered);
   };
+
+  const handleButtonClick = (type) => {
+    setFilterType(type);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+  };
+
 
   const FilterDropdown = ({ options, columnName }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -325,21 +334,39 @@ const notifySuccess = (message) => {
                   </h2>
                 </motion.div>
               </div>
-              <div className=" w-[1000px] flex flex-row mb-5 gap-[30px]">
-              <input
-                  type="text"
-                  placeholder="Search Name & Email"
-                  onChange={handleSearchNameEmail}
-                  className="w-[700px] p-2 border-2 rounded-md bg-slate-200 border-gray-700"
-                />
-                <input
-                  type="text"
-                  placeholder="Search Entry No."
-                  onChange={handleSearchEntryNo}
-                  className="p-2 border-2 rounded-md w-[300px] bg-slate-200 border-gray-700"
-                />
-               
-              </div>
+              <div className="flex gap-4">
+              <button
+                className={`button ${filterType === "name" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-2 rounded`}
+                onClick={() => handleButtonClick("name")}
+              >
+                Name
+              </button>
+              <button
+                className={`button ${filterType === "entryNo" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-2 rounded`}
+                onClick={() => handleButtonClick("entryNo")}
+              >
+                Entry No
+              </button>
+              <button
+                className={`button ${filterType === "degree" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-2 rounded`}
+                onClick={() => handleButtonClick("degree")}
+              >
+                Degree
+              </button>
+              <button
+                className={`button ${filterType === "phone" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-2 rounded`}
+                onClick={() => handleButtonClick("phone")}
+              >
+                Phone
+              </button>
+            </div>
+            <input
+              type="text"
+              value={searchText}
+              onChange={handleSearchChange}
+              placeholder={`Search by ${filterType}`}
+              className="p-2 border-2 rounded-md w-full bg-slate-200 border-gray-700"
+            />
               <TableContainer component={Paper}>
                 <Table
                   sx={{ minWidth: 700 }}
