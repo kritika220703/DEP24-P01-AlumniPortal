@@ -18,8 +18,8 @@ import { db } from "../firebase";
 import UploadForm from './UploadForm';
 import HomeProfile from './HomeProfile';
 
-const DataList = () => {
-    const [selectedOption, setSelectedOption] = useState('Home');
+const DataList = ({ selectedOption, setSelectedOption }) => {
+    // const [selectedOption, setSelectedOption] = useState('Home');
 
     // Fetch data functions
     const fetchDataForAlumni = async () => {
@@ -340,9 +340,9 @@ const DataList = () => {
                 return (
                     <>
                         <PlannedReunionsList />
-                        {/* <button style={buttonStyle} onClick={handleDownloadClick}>
+                        <button style={buttonStyle} onClick={handleDownloadClick}>
                             Download Excel
-                        </button> */}
+                        </button>
                     </>
                 );
             case 'Admin':
