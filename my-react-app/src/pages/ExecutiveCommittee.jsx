@@ -174,11 +174,14 @@ const ExecutiveCommittee = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             {sortedMembers.filter(member => member.Title === 'Current').map((member, index) => (
               <div key={index} className="bg-white rounded-md shadow-md overflow-hidden">
-                 <button onClick={() => isAdmin === 'true' && handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
-  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-  </svg>
-</button>
+                {isAdmin === 'true' && (
+                <button onClick={() => handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            )}
+                 
 
                 <img
                   className="rounded-full h-32 w-32 mx-auto mt-4"
@@ -201,11 +204,13 @@ const ExecutiveCommittee = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             {sortedMembers.filter(member => member.Title === 'Ex-Officio').map((member, index) => (
               <div key={index} className="bg-white rounded-md shadow-md overflow-hidden">
-                  <button onClick={() => isAdmin === 'true' && handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
+                  {isAdmin === 'true' && (
+                <button onClick={() => handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
-                </button>
+            </button>
+            )}
 
                 <img
                   className="rounded-full h-32 w-32 mx-auto mt-4"
@@ -228,11 +233,14 @@ const ExecutiveCommittee = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             {sortedMembers.filter(member => member.Title === 'Council Members').map((member, index) => (
               <div key={index} className="bg-white rounded-md shadow-md overflow-hidden">
-                  <button onClick={() => isAdmin === 'true' && handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
+
+            {isAdmin === 'true' && (
+                <button onClick={() => handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
-                </button>
+            </button>
+            )}
 
 
 
@@ -257,11 +265,13 @@ const ExecutiveCommittee = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             {sortedMembers.filter(member => member.Title === 'Batch Evangelists').map((member, index) => (
               <div key={index} className="bg-white rounded-md shadow-md overflow-hidden">
-            <button onClick={() => isAdmin === 'true' && handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            {isAdmin === 'true' && (
+                <button onClick={() => handleDeleteMember(member.Name)} className="ml-[200px] text-red-500 hover:text-red-700">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+                </svg>
             </button>
+            )}
 
                 <img
                   className="rounded-full h-32 w-32 mx-auto mt-4"
