@@ -94,16 +94,15 @@ const SignUp = () => {
 
     // console.log(editedUser);
     const handleEmailChange = (e) => {
-        const newEmail = e.target.value;
-        setEmail(newEmail);
-    
-        // Validate email format using a regular expression
-        // const emailRegex = /^[a-zA-Z0-9._%+-]+@iitrpr\.ac\.signin$/;
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        const isValid = emailRegex.test(newEmail);
-        // const isValid = validator.isEmail(newEmail);
-        setIsValidEmail(isValid);
-    };
+      const newEmail = e.target.value;
+      setEmail(newEmail);
+  
+      // Validate email format using a regular expression
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@iitrpr\.ac\.in$/;
+      const isValid = emailRegex.test(newEmail);
+      setIsValidEmail(isValid);
+  };
+  
 
     let errorMessage = "";
     const notifySuccess = (message) => {

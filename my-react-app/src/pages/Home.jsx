@@ -159,7 +159,7 @@ const Home = () => {
             transition={{ duration: 1, delay: 1.5 }}
             className={`text-[27px] ${currentIndex === 1 ? 'text-white' : 'text-black'} bg-transparent border-blue-900 border-[4px] rounded-full font-bold py-2 px-3`}
             // className='bg-transparent border-blue-900 border-[4px] rounded-full text-black text-[27px] font-bold py-2 px-3'
-            onClick={() => { navigate('/BecomeAMember') }}
+            onClick={() => { navigate('/signup') }}
           >
             Register Now
           </motion.button>

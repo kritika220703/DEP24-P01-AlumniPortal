@@ -133,6 +133,7 @@ const GivingBack = () => {
     const colRef = collection(db, 'Giving Back In kind');
     console.log(colRef);
     const q = query(colRef, where('email', '==', email));
+    console.log(email);
 
     setIsLoading(true);
     try {
@@ -180,7 +181,7 @@ const GivingBack = () => {
       }
     } catch {
       errorMessage = "Failed to send mail";
-      toast.error(errorMessage, toastOptions);
+      // toast.error(errorMessage, toastOptions);
     }
 
     setName("");

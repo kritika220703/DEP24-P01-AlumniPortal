@@ -262,7 +262,7 @@ const notifySuccess = (message) => {
         window.location.reload();
       } catch (error) {
         console.error("Error denying approval:", error);
-        alert("Failed to deny approval. Please try again later.");
+        // alert("Failed to deny approval. Please try again later.");
       }
     };
 

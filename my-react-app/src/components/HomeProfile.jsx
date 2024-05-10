@@ -7,7 +7,6 @@ import { TiNews } from "react-icons/ti";
 import { MdEventAvailable } from "react-icons/md";
 import { GiStarMedal } from "react-icons/gi";
 import { MdOutlineApproval } from "react-icons/md";
-import { useHistory, Switch, Route, Link } from 'react-router-dom';
 import { PiStudentFill } from "react-icons/pi";
 import { FaHandHoldingHeart } from "react-icons/fa6";
 import { FaPeopleGroup } from "react-icons/fa6";

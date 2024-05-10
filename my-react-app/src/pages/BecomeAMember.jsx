@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Checkmark } from "react-checkmark";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers, faCheckSquare } from "@fortawesome/free-solid-svg-icons";
+import { faUsers, faCheckSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "./BecomeAMember.css"; // Assuming you have a CSS file for this component
@@ -29,7 +29,7 @@ const toastOptions = {
 
 const BecomeAMember = () => {
   const location = useLocation();
-  const [isFormSubmitted, setIsFormSubmitted] = useState(0);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(3);
   const [ischeckbox, setIsWorkingProfessional] = useState(0);
   const [profilePicture, setProfilePicture] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -37,27 +37,27 @@ const BecomeAMember = () => {
   const { userId, email } = location.state || {};
   const isAdmin = localStorage.getItem("isAdmin");
   const [editedUser, setEditedUser] = useState({
-      name: '',
-      phone: '',
-      contrycode: '',
-      entryNo: '',
-      country: '',
-      hostel: '',
-      degree: '',
-      department: '',
-      passingYear: '',
-      joiningYear: '',
-      work_exp: [{}], 
-      higherEducation: [{}],// Store work experience as an array
-      others: '',
-      profileURL: '',
-      email: '',
-      approved:false,
-      primaryemail:"",
-      additional_degree:"",
-      por:"",
-      placeofposting:"",
-      suggestions:""
+    name: '',
+    phone: '',
+    contrycode: '',
+    entryNo: '',
+    country: '',
+    hostel: '',
+    degree: '',
+    department: '',
+    passingYear: '',
+    joiningYear: '',
+    work_exp: [{}],
+    higherEducation: [{}],// Store work experience as an array
+    others: '',
+    profileURL: '',
+    email: '',
+    approved: false,
+    primaryemail: "",
+    additional_degree: "",
+    por: "",
+    placeofposting: "",
+    suggestions: ""
 
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -93,11 +93,11 @@ const BecomeAMember = () => {
 
   const handleAdminFormSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       // Update the database with the new membership values
       await updateMembershipOptions(yearlyMembership, lifetimeMembership);
-  
+
       // Show success message
       notifySuccess("Membership options updated successfully!");
       setYearlyMembership("");
@@ -106,13 +106,13 @@ const BecomeAMember = () => {
       console.error("Error updating membership options:", error);
       // Show error message
       let errormsg = "Error updating membership options";
-      toast.error(errormsg,toastOptions);
+      toast.error(errormsg, toastOptions);
     }
   };
-  
+
   const updateMembershipOptions = async (yearlyMembership, lifetimeMembership) => {
     const membershipRef = doc(db, "membership", "options");
-  
+
     // Check if the document exists
     const docSnap = await getDoc(membershipRef);
     if (docSnap.exists()) {
@@ -129,30 +129,36 @@ const BecomeAMember = () => {
       });
     }
   };
-  
-  
+
+
 
   const navigate = useNavigate();
-  if(isAdmin==="true"){
+  if (isAdmin === "true") {
     return (
-      <div className="admin-form">
-        <h1>Admin Dashboard</h1>
-        <form onSubmit={handleAdminFormSubmit}>
-          <label htmlFor="yearlyMembership">Yearly Membership:</label>
+      <div className="admin-form mb-2 mx-auto flex flex-col items-center bg-white rounded-lg shadow-lg">
+        <div className="community-events-heading animate__animated animate__fadeInUp w-full flex justify-center">
+          <h1 className="text-2xl font-bold mb-0 px-10 py-2 text-blue-700 flex items-center">
+            <FontAwesomeIcon icon={faUser} className="mr-2" /> Membership Fees
+          </h1>
+        </div>
+        <form onSubmit={handleAdminFormSubmit} className="items-center p-4 mt-2">
+          <label htmlFor="yearlyMembership" className="font-semibold block mb-1">Yearly Membership:</label>
           <input
             type="text"
             id="yearlyMembership"
             value={yearlyMembership}
             onChange={(e) => setYearlyMembership(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 mb-2 focus:outline-none focus:border-blue-500"
           />
-          <label htmlFor="lifetimeMembership">Lifetime Membership:</label>
+          <label htmlFor="lifetimeMembership" className="font-semibold block mb-1 mt-4">Lifetime Membership:</label>
           <input
             type="text"
             id="lifetimeMembership"
             value={lifetimeMembership}
             onChange={(e) => setLifetimeMembership(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 mb-2 focus:outline-none focus:border-blue-500"
           />
-          <button type="submit">Update Memberships</button>
+          <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4 mb-4">Update Memberships</button>
         </form>
       </div>
     );
@@ -250,7 +256,7 @@ const BecomeAMember = () => {
           !isNaN(workExp.startYear) &&
           (!isNaN(workExp.endYear) || workExp.endYear === "Present" || workExp.endYear === "present") &&
           workExp.startYear.length === 4 &&
-          (workExp.endYear.length === 4|| workExp.endYear === "Present" || workExp.endYear === "present")
+          (workExp.endYear.length === 4 || workExp.endYear === "Present" || workExp.endYear === "present")
         );
       });
 
@@ -258,8 +264,8 @@ const BecomeAMember = () => {
         return (
           workExp &&
           !isNaN(workExp.startYear) &&
-          (!isNaN(workExp.endYear)|| workExp.endYear === "Present" || workExp.endYear === "present") &&
-          (parseInt(workExp.startYear, 10) < parseInt(workExp.endYear, 10) || workExp.endYear === "Present" || workExp.endYear === "present" )
+          (!isNaN(workExp.endYear) || workExp.endYear === "Present" || workExp.endYear === "present") &&
+          (parseInt(workExp.startYear, 10) < parseInt(workExp.endYear, 10) || workExp.endYear === "Present" || workExp.endYear === "present")
         );
       });
 
@@ -294,23 +300,23 @@ const BecomeAMember = () => {
         );
       });
 
-      
+
       const isEduYear = editedUser.higherEducation.every((highEdu) => {
         return (
           highEdu &&
-          (!isNaN(highEdu.endYear)||  highEdu.endYear==="Present"  || highEdu.endYear==="present") &&
+          (!isNaN(highEdu.endYear) || highEdu.endYear === "Present" || highEdu.endYear === "present") &&
           !isNaN(highEdu.startYear) &&
           highEdu.startYear.length === 4 &&
-          (highEdu.endYear.length === 4 ||  highEdu.endYear==="Present"  || highEdu.endYear==="present")
+          (highEdu.endYear.length === 4 || highEdu.endYear === "Present" || highEdu.endYear === "present")
         );
       });
 
       const joining_passing = editedUser.higherEducation.every((highEdu) => {
         return (
           highEdu &&
-          (!isNaN(highEdu.endYear) ||  highEdu.endYear==="Present"  || highEdu.endYear==="present" ) &&
+          (!isNaN(highEdu.endYear) || highEdu.endYear === "Present" || highEdu.endYear === "present") &&
           !isNaN(highEdu.startYear) &&
-          (parseInt(highEdu.startYear, 10) < parseInt(highEdu.endYear, 10)||  highEdu.endYear==="Present"  || highEdu.endYear==="present")
+          (parseInt(highEdu.startYear, 10) < parseInt(highEdu.endYear, 10) || highEdu.endYear === "Present" || highEdu.endYear === "present")
         );
       });
 
@@ -427,41 +433,41 @@ const BecomeAMember = () => {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.size > 0) {
-        // Get the reference to the first matching document
-        const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
-        editedUser['email']= email;
-        console.log(profilePicture);
-        if (profilePicture) {
-            const storageRef = ref(storage,`/files/${editedUser['entryNo']}`)
-            console.log("stor ref: ",storageRef);
-            const uploadTask = uploadBytesResumable(storageRef, profilePicture);
-        
-            uploadTask.on(
-                "state_changed",
-                (snapshot) => {},
-                (err) => console.log(err),
-                async () => {
-                    console.log("innnn");
-                    const url = await getDownloadURL(uploadTask.snapshot.ref);
-                    const updatedEditedUser = { ...editedUser, profileURL: url };
-                    console.log(updatedEditedUser);
-                    await updateDoc(docRef, updatedEditedUser);
-                    // localStorage.setItem("userId", userId);
-                    console.log('Document successfully updated!');
-                    notifySuccess("Request Send for Approval");
-                    navigate('/home');
-                }
-            ); 
-            // console.log(profileURL);
-        }
-        else{
-          console.log(editedUser);
-          await updateDoc(docRef, editedUser);
-          // localStorage.setItem("userId", userId);
-          console.log('Document successfully updated!');
-          notifySuccess("Request Send for Approval");
-          navigate('/home');
-        }
+      // Get the reference to the first matching document
+      const docRef = doc(db, 'Users', querySnapshot.docs[0].id);
+      editedUser['email'] = email;
+      console.log(profilePicture);
+      if (profilePicture) {
+        const storageRef = ref(storage, `/files/${editedUser['entryNo']}`)
+        console.log("stor ref: ", storageRef);
+        const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => { },
+          (err) => console.log(err),
+          async () => {
+            console.log("innnn");
+            const url = await getDownloadURL(uploadTask.snapshot.ref);
+            const updatedEditedUser = { ...editedUser, profileURL: url };
+            console.log(updatedEditedUser);
+            await updateDoc(docRef, updatedEditedUser);
+            // localStorage.setItem("userId", userId);
+            console.log('Document successfully updated!');
+            notifySuccess("Request Send for Approval");
+            navigate('/home');
+          }
+        );
+        // console.log(profileURL);
+      }
+      else {
+        console.log(editedUser);
+        await updateDoc(docRef, editedUser);
+        // localStorage.setItem("userId", userId);
+        console.log('Document successfully updated!');
+        notifySuccess("Request Send for Approval");
+        navigate('/home');
+      }
     } else {
       console.log("No documents found for the given query.");
       errormsg = "User needs to signup first";
@@ -759,11 +765,11 @@ const BecomeAMember = () => {
                 <br />
                 <div className="membership-card-box">
                   <div className="membership-card">
-                    <h3> Yearly Membership <br/> {yearlyMembershipFee} Rs</h3>
+                    <h3> Yearly Membership <br /> {yearlyMembershipFee} Rs</h3>
                   </div>
                   <br />
                   <div className="membership-card">
-                    <h3> Lifetime Membership <br/> {lifetimeMembershipFee} Rs</h3>
+                    <h3> Lifetime Membership <br /> {lifetimeMembershipFee} Rs</h3>
                   </div>
                 </div>
                 <label>
@@ -781,7 +787,7 @@ const BecomeAMember = () => {
                   </select>
                 </label>
                 <div
-                  className=" mt-[30px] py-[4px] w-[400px] h-[40px] bg-indigo-800 text-white text-[27px] font-bold font-serif cursor-pointer"
+                  className=" mt-[30px] ml-[40px] py-[4px] w-[400px] h-[40px] bg-indigo-800 text-white text-[27px] font-bold font-serif cursor-pointer"
                   onClick={() => setIsFormSubmitted(3)}
                 >
                   <p>Continue to Payment Conformation</p>
@@ -799,7 +805,7 @@ const BecomeAMember = () => {
               <h1>
                 {" "}
                 Thank You {editedUser["name"]}, for joining IIT Ropar Alumni
-                Network{" "}
+                Network{" "} <br />
               </h1>
             </div>
             <div className="becomemember-payment"></div>
@@ -910,7 +916,7 @@ const BecomeAMember = () => {
                     />
                   </label>
                   <label>
-                  Admin Positions held at IIT Ropar
+                    Admin Positions held at IIT Ropar
                     <br />
                     <input
                       type="text"
@@ -1028,7 +1034,7 @@ const BecomeAMember = () => {
                     </select>
                   </label>
                   <label>
-                  Any Inputs/Suggestions
+                    Any Inputs/Suggestions
                     <br />
                     <input
                       type="text"

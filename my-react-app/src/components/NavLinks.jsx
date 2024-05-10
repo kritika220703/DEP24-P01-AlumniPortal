@@ -9,7 +9,7 @@ const NavLinks = () => {
             sublinks: [
                 { name: "News and Updates", path: "/News" },
                 // { name: "Gallery", path: "/pages/Gallery" },
-                { name: "Become A member", path: "/BecomeAMember" },
+                { name: "Become A member", path: "/signup" },
                 // { name: "Executive Committee", path: "/Executivecommittee" },
                 // { name: "Messages", path: "/Messages" },
             ]
@@ -38,6 +38,10 @@ const NavLinks = () => {
         {
             name: "Executive Committee", 
             path: "/Executivecommittee"
+        },
+        {
+            name: "Constitution", 
+            path: "/constitution"
         },
         {
             name: "Contact us",
