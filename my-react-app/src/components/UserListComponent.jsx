@@ -64,7 +64,6 @@ const UserListComponent = () => {
     approved: [],
   });
   const [filterType, setFilterType] = useState("name");
-  const [searchText, setSearchText] = useState("");
 
   const toastOptions = {
     position: "bottom-right",
@@ -122,24 +121,17 @@ const notifySuccess = (message) => {
   }, [filters]);
 
   const applyFilter = () => {
-    console.log(searchText);
     let filtered = [...users];
-    if (searchText.trim() !== "") {
-      filtered = filtered.filter((user) =>
-        user[filterType].toLowerCase().includes(searchText.toLowerCase())
-      );
-    }
+    Object.keys(filters).forEach((key) => {
+      const selectedFilters = filters[key];
+      if (selectedFilters.length > 0) {
+        filtered = filtered.filter((user) =>
+          selectedFilters.includes(user[key])
+        );
+      }
+    });
     setFilteredUsers(filtered);
   };
-
-  const handleButtonClick = (type) => {
-    setFilterType(type);
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
-  };
-
 
   const FilterDropdown = ({ options, columnName }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -304,17 +296,17 @@ const notifySuccess = (message) => {
     }
   };
 
-  const handleSearchEntryNo = (event) => {
-    const value = event.target.value.toLowerCase();
-    const filtered = users.filter(user => user.entryNo.toLowerCase().includes(value));
-    setFilteredUsers(filtered);
+  const handleFilterTypeChange = (type) => {
+    setFilterType(type);
   };
 
-  const handleSearchNameEmail = (event) => {
-    const value = event.target.value.toLowerCase();
-    const filtered = users.filter(user => user.name.toLowerCase().includes(value) || user.email.toLowerCase().includes(value));
-    setFilteredUsers(filtered);
-  };
+
+  const handleSearch = (event) => {
+  const value = event.target.value.toLowerCase();
+  const filtered = users.filter(user => user[filterType].toLowerCase().includes(value));
+  setFilteredUsers(filtered);
+};
+
 
   return (
     <div className="flex flex-row gap-[80px]">
@@ -334,39 +326,47 @@ const notifySuccess = (message) => {
                   </h2>
                 </motion.div>
               </div>
-              <div className="flex gap-4">
-              <button
-                className={`button ${filterType === "name" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-2 rounded`}
-                onClick={() => handleButtonClick("name")}
-              >
-                Name
-              </button>
-              <button
-                className={`button ${filterType === "entryNo" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-2 rounded`}
-                onClick={() => handleButtonClick("entryNo")}
-              >
-                Entry No
-              </button>
-              <button
-                className={`button ${filterType === "degree" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-2 rounded`}
-                onClick={() => handleButtonClick("degree")}
-              >
-                Degree
-              </button>
-              <button
-                className={`button ${filterType === "phone" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-4 py-2 rounded`}
-                onClick={() => handleButtonClick("phone")}
-              >
-                Phone
-              </button>
-            </div>
-            <input
-              type="text"
-              value={searchText}
-              onChange={handleSearchChange}
-              placeholder={`Search by ${filterType}`}
-              className="p-2 border-2 rounded-md w-full bg-slate-200 border-gray-700"
-            />
+              <div className=" w-[1000px] flex flex-col mb-5">
+              <div className="flex flex-row">
+                <button
+                  className={`button ${filterType === "name" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-2 py-2 rounded mr-5`}
+                  onClick={() => handleFilterTypeChange("name")}
+                >
+                  Name
+                </button>
+                <button
+                  className={`button ${filterType === "entryNo" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-2 py-2 rounded mr-5`}
+                  onClick={() => handleFilterTypeChange("entryNo")}
+                >
+                  Entry No
+                </button>
+                <button
+                  className={`button ${filterType === "degree" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-2 py-2 rounded mr-5`}
+                  onClick={() => handleFilterTypeChange("degree")}
+                >
+                  Degree
+                </button>
+                <button
+                  className={`button ${filterType === "phone" ? "bg-blue-500" : "bg-gray-500"} hover:bg-blue-700 text-white px-2 py-2 rounded mr-5`}
+                  onClick={() => handleFilterTypeChange("phone")}
+                >
+                  Phone
+                </button>
+              </div>
+              <input
+                  type="text"
+                  placeholder="Search"
+                  onChange={handleSearch}
+                  className="w-[700px] p-2 border-2 rounded-md bg-slate-200 border-gray-700"
+                />
+                {/* <input
+                  type="text"
+                  placeholder="Search Entry No."
+                  onChange={handleSearchEntryNo}
+                  className="p-2 border-2 rounded-md w-[300px] bg-slate-200 border-gray-700"
+                /> */}
+               
+              </div>
               <TableContainer component={Paper}>
                 <Table
                   sx={{ minWidth: 700 }}
