@@ -216,7 +216,7 @@ const ExecutiveCommittee = () => {
         </div>
       </div>
       {isAdmin === 'true' && (
-        <button onClick={() => setShowForm(true)} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block mx-auto">
+        <button onClick={() => setShowForm(true)} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block mx-auto mb-4">
           Add New Member
         </button>
       )}
@@ -268,7 +268,7 @@ const ExecutiveCommittee = () => {
               onChange={handleFileChange}
               className="w-full border rounded-md px-3 py-2 mb-3"
             />
-            <button onClick={handleAddMember} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded block mx-auto">
+            <button onClick={handleAddMember} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded block mx-auto mb-4">
               Add Member
             </button>
           </div>

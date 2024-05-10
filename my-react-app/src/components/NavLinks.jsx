@@ -10,7 +10,7 @@ const NavLinks = () => {
                 { name: "News and Updates", path: "/News" },
                 // { name: "Gallery", path: "/pages/Gallery" },
                 { name: "Become A member", path: "/BecomeAMember" },
-                // { name: "Counter", path: "/pages/Counter" },
+                { name: "Executive Committee", path: "/Executivecommittee" },
                 // { name: "Messages", path: "/Messages" },
             ]
         },
