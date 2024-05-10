@@ -38,6 +38,7 @@ import TableComponent from './pages/TableComponent';
 import Profile2adminside from './pages/Profile2adminside';
 import UploadForm from './components/UploadForm';
 import ExecutiveCommittee from './pages/ExecutiveCommittee';
+import Constitution from './pages/Constitution';
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
           <Route exact path="/project/:id" element={<ProjectDetails />} />
           <Route exact path="/table" element={<TableComponent />} />
           <Route exact path="/ExecutiveCommittee" element={<ExecutiveCommittee />} />
+          <Route exact path="/Constitution" element={<Constitution />} />
           {/* <Route exact path="/alumni" element={<UserListComponent/>} />
           <Route exact path="/givebackinkind" element={<GivingBackInKindListComponent/>} /> */}
           <Route exact path='/events' element={<PrivateRoute/>}>
