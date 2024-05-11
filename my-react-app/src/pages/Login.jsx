@@ -77,7 +77,7 @@ const Login = () => {
         email: email,
       };
 
-      const response = await fetch(`http://localhost:3000/email/sendotp`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/email/sendotp`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -196,7 +196,7 @@ const Login = () => {
             email: email,
         };
 
-        const response = await fetch(`http://localhost:3000/email/sendotp`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/email/sendotp`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -283,7 +283,7 @@ const Login = () => {
             return;
         }
 
-        const response = await fetch(`http://localhost:3000/email/verifyotp`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/email/verifyotp`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

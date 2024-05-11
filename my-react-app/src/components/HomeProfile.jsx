@@ -15,6 +15,8 @@ import { FcPlanner } from "react-icons/fc";
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts';
 import DataList from './DataList';
+import { useNavigate } from 'react-router-dom';
+import { FaTable } from 'react-icons/fa';
 
 const chartSetting = {
   yAxis: [
@@ -95,7 +97,7 @@ const dataset = [
 
 const valueFormatter = (value) => `${value}`;
 const HomeProfile = () => {
-
+  const navigate = useNavigate();
   const [startCounting, setStartCounting] = useState(false);
   useEffect(() => {
 
@@ -163,9 +165,9 @@ const HomeProfile = () => {
                   <TiNews />
                   <p className='text-gray-800 text-[18px]'>Workshops</p>
                 </div>
-                <div className='text-[#C40C0C] text-[50px] w-[70px] h-[100px] flex flex-col items-center justify-center ' onClick={() => setSelectedOption('Startup Presentations')} style={{ cursor: 'pointer' }}>
-                  <MdEventAvailable />
-                  <p className='text-gray-800 text-[18px]'>Startup</p>
+                <div className='text-[#FFDB5C] text-[50px] flex flex-col items-center justify-center' onClick={() => navigate('/upload')} style={{ cursor: 'pointer' }}>
+                  <FaTable />
+                      <p className='text-gray-800 text-[18px]'> Export Excel</p>
                 </div>
 
 
@@ -204,7 +206,6 @@ const HomeProfile = () => {
                 </div>
               </div>
             </div>
-
             <BarChart
               dataset={dataset}
               xAxis={[{ scaleType: 'band', dataKey: 'month' }]}

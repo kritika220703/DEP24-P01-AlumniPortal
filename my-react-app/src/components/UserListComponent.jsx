@@ -239,7 +239,7 @@ const notifySuccess = (message) => {
 
         // Send rejection email to the user
         // Implement your email sending logic here
-        const response = await fetch(`http://localhost:3000/email/rejection`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/email/rejection`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json",

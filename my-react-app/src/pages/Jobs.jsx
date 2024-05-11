@@ -58,7 +58,7 @@ const Internship = () => {
       toast.success('Information stored successfully', toastOptions);
       
       // Send form data to backend to send email
-      const response = await fetch('http://localhost:3000/email/jobs', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/email/jobs`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

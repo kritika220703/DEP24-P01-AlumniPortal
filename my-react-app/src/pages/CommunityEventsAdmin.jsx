@@ -111,7 +111,7 @@ function CommunityEventsAdmin() {
                                 };
                           
                                 console.log("calling api")
-                                const response = await fetch(`http://localhost:3000/email/invite`, {
+                                const response = await fetch(`${process.env.REACT_APP_API_URL}/email/invite`, {
                                   method: "POST",
                                   body: JSON.stringify(data),
                                   headers: {

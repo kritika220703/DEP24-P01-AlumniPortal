@@ -173,7 +173,7 @@ const SmartID = () => {
       };
 
       console.log("calling api")
-      const response = await fetch(`http://localhost:3000/email/givingBackInKind`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/email/givingBackInKind`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {

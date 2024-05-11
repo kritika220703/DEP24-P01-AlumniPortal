@@ -99,7 +99,7 @@ const Contact = () => {
       };
 
       console.log("calling api")
-      const response = await fetch(`http://localhost:3000/email/contactUs`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/email/contactUs`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {

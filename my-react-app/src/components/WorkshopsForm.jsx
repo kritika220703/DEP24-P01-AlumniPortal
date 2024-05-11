@@ -119,7 +119,7 @@ const WorkshopsForm = () => {
                     additionalInfo: additionalInfo
                 };
 
-                const response = await fetch(`http://localhost:3000/email/events/workshops`, {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/email/events/workshops`, {
                     method: "POST",
                     headers: {
                     "Content-Type": "application/json",
