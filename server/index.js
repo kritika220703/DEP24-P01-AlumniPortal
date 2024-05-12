@@ -19,6 +19,6 @@ app.get('/', (req,res) => {
     console.log('Welcome to the Alumni portal');
 });
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen(4444, () => {
+    console.log('Server started on port 4444');
 });
