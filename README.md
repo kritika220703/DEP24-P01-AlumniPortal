@@ -3,4 +3,4 @@
 
 # Alumni Portal
 
-A way connect alums with each other, to current and prospective students and mostl importantly to the institute.
+A way connect alums with each other, to current and prospective students and most importantly to the institute.
