@@ -1,6 +1,10 @@
-DEP24-P01-AlumniPortal
+# DEP24-P01-AlumniPortal
+
 A way connect alums with each other, to current and prospective students and most importantly to the institute.
 
+## 🚀 Setup & Installation  
+
+Follow these steps to set up and run the project on your local machine: 
 
 1. Unzip the given folder
 2. Run command "npm i" in the server folder 
